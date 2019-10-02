@@ -1,0 +1,4 @@
+0x00001000 : kernel
+0x00007c00 : bootloader
+0x00009000 : stack
+0x00009100 : memory map
