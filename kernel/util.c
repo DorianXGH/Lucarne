@@ -1,6 +1,21 @@
 #include "util.h"
 
 
+
+bool strcompare(char * a, char * b)
+{
+    bool eq = true;
+    int i = 0;
+    while(a[i]!=0 && b[i]!=0)
+    {
+        eq &= a[i]==b[i];
+        i++;
+    }
+    eq &= a[i]==b[i];
+    return eq;
+}
+
+
 void memory_copy(char *source, char *dest, int nbytes) {
     int i;
     for (i = 0; i < nbytes; i++) {

@@ -8,12 +8,13 @@
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
 extern struct memory_seg_des *memmap;
+extern int* nummem;
 
 void dummy_test_entrypoint() {}
 void main() {
   if (1) {
     memmap = (struct memory_seg_des * ) 0x9104;
-    int * nummem = (int*)0x9100;
+    nummem = (int*)0x9100;
     default_screen.width = 80;
     default_screen.height = 25;
     default_screen.cursorx = 0;
@@ -41,28 +42,6 @@ void main() {
     putstring(&default_screen, "Keyboard Loaded\n");
     clear(&default_screen);
     shell_invite(&default_shell);
-    int select = 3;
 
-    char basenum[16];
-    char lennum[16];
-    prntnum(memmap[select].base, '+', basenum, 16);
-    prntnum(memmap[select].length, '+', lennum, 16);
-    putstring(&default_screen, basenum);
-    putchar(&default_screen, '|');
-    putstring(&default_screen, lennum);
-    putchar(&default_screen, ' ');
-
-    if(memmap[select].type == 0)
-    {
-        putstring(&default_screen, "not a segment");
-    }
-    if(memmap[select].type == 1)
-    {
-        putstring(&default_screen, "usable");
-    }
-    if(memmap[select].type >= 2)
-    {
-        putstring(&default_screen, "unusable");
-    }
   }
 }
