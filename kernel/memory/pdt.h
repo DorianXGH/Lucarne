@@ -13,4 +13,5 @@ struct pde {
     char sysinfo :3;
     int page_table_address :20;
 } __attribute__((packed));
+
 #endif
