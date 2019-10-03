@@ -1,5 +1,6 @@
 #include "util.h"
 
+
 void memory_copy(char *source, char *dest, int nbytes) {
     int i;
     for (i = 0; i < nbytes; i++) {
@@ -37,16 +38,16 @@ short int high_16(int a)
     return (short int)(a>>16);
 }
 
-void prntnum(unsigned long n, int base, char sign, char *outbuf, int size)
+void prntnum(uint64_t n, char sign, char *outbuf, int size)
 {
 
     int i = 12;
     int j = 0;
 
     do{
-        outbuf[i%size] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[n % base];
+        outbuf[i%size] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[n % 16];
         i--;
-        n = n/base;
+        n = n>>4;
     }while( n > 0);
 
     if(sign != ' '){

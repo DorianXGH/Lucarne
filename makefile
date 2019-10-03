@@ -3,6 +3,7 @@
 # $^ = all dependencies
 
 utilpath = /usr/local/i386elfgcc/bin
+gccargs = i386-elf-gcc -ffreestanding
 
 # First rule is the one executed when no parameters are fed to the Makefile
 all: run
@@ -18,31 +19,31 @@ interrupts.o: kernel/interrupts.asm
 	nasm $< -f elf -o $@
 
 screen.o: kernel/drivers/screen.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 shell.o: kernel/shell/shell.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 keyboard.o: kernel/drivers/keyboard.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 timer.o: kernel/drivers/timer.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 port.o: kernel/drivers/port.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 kernel.o: kernel/kernel.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 isr.o: kernel/isr.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 idt.o: kernel/idt.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 util.o: kernel/util.c
-	$(utilpath)/i386-elf-gcc -ffreestanding -c $< -o $@
+	$(utilpath)/$(gccargs) -c $< -o $@
 
 # Rule to disassemble the kernel - may be useful to debug
 kernel.dis: kernel.bin
