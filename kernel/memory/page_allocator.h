@@ -12,6 +12,7 @@ uint8_t * page_tracker;
 
 int palloc();
 void pfree(int pagenum);
+void preserve(int pagenum);
 void init_page_alloc();
 
 

@@ -107,6 +107,8 @@ global irq12
 global irq13
 global irq14
 global irq15
+; ISR SYSCALL
+global isr48
 
 ; 0: Divide By Zero Exception
 isr0:
@@ -422,3 +424,10 @@ irq15:
 	push byte 15
 	push byte 47
 	jmp irq_common_stub
+
+; 31: Reserved
+isr48:
+    cli
+    push byte 0
+    push byte 48
+    jmp isr_common_stub
