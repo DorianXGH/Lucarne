@@ -134,6 +134,10 @@ void irq_handler(registers_t r) {
 
 void isr_handler(registers_t r) {
   putstring(&default_screen, "received interrupt: ");
+  if(r.int_no < 32)
+  {
+      
+  }
   char s[3];
   int_to_ascii(r.int_no, s);
   putstring(&default_screen, s);

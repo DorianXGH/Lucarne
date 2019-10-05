@@ -10,8 +10,7 @@ extern struct def_shell default_shell;
 extern struct memory_seg_des *memmap;
 extern int* nummem;
 
-void dummy_test_entrypoint() {}
-void main() {
+void _start() {
   if (1) {
     memmap = (struct memory_seg_des * ) 0x9104;
     nummem = (int*)0x9100;
