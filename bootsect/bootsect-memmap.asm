@@ -44,7 +44,6 @@ do_e820:
 	jne short .e820lp
 .e820f:
 	mov [mmap_ent], bp	; store the entry count
-    mov [mmap_ent-4], 0xFFFFAAAA
 	clc			; there is "jc" on end of list to this point, so the carry must be cleared
 	ret
 .failed:

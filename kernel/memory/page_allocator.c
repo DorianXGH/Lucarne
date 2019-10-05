@@ -43,17 +43,15 @@ void preserve(int pagenum)
 void init_page_alloc()
 {
     uint64_t maxmem = 0;
-    for(int i = 0; i<*memnum; i++)
-    {
-        maxmem += memmap[i].length;
-    }
+    maxmem += memmap[*nummem - 1].base+memmap[*nummem - 1].length;
+
     max_page = maxmem>>12; //4kb blocks
     uint64_t blocks = max_page >> 3; //number of blocks for the map
     int diff = max_page - (blocks << 3);
     uint8_t last = 256 - (1<<(8-diff));
     page_tracker[max_page-1] = last;
     //todo : reserve unusable memory using memmap
-    for(int i = 0; i<*memnum; i++)
+    for(int i = 0; i<*nummem; i++)
     {
         if(memmap[i].type != 1)
         {

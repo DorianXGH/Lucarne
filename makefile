@@ -4,12 +4,13 @@
 
 utilpath = /usr/local/i386elfgcc/bin
 gccargs = i386-elf-gcc -ffreestanding
+obj = $(wildcard *.o)
 
 # First rule is the one executed when no parameters are fed to the Makefile
 all: run
 
 # Notice how dependencies are built as needed
-kernel.bin: kernel_entry.o kernel.o screen.o isr.o idt.o util.o interrupts.o port.o keyboard.o timer.o shell.o memmap.o
+kernel.bin: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o
 	$(utilpath)/i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 kernel_entry.o: kernel/kernel-entry.asm
@@ -22,6 +23,9 @@ screen.o: kernel/drivers/screen.c
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 memmap.o: kernel/memory/memory_segment.c
+	$(utilpath)/$(gccargs) -c $< -o $@
+
+page_allocator.o: kernel/memory/page_allocator.c
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 shell.o: kernel/shell/shell.c
@@ -47,6 +51,8 @@ idt.o: kernel/idt.c
 
 util.o: kernel/util.c
 	$(utilpath)/$(gccargs) -c $< -o $@
+
+
 
 # Rule to disassemble the kernel - may be useful to debug
 kernel.dis: kernel.bin

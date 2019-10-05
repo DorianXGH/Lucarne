@@ -3,8 +3,8 @@
 #include "memory_segment.h"
 #include <stdint.h>
 
-extern memory_seg_des * memmap;
-extern int * memnum;
+extern struct memory_seg_des * memmap;
+extern int * nummem;
 
 int next_available;
 int max_page;
