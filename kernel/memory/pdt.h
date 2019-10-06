@@ -1,8 +1,7 @@
 #ifndef PDT_H
 #define PDT_H
 
-extern void load_pdt(struct pde*);
-extern void enable_paging();
+
 
 struct pde {
     bool present :1;
@@ -18,5 +17,9 @@ struct pde {
     int page_table_address :20;
 } __attribute__((packed));
 struct pde * pdt;
+
+extern void load_pdt(struct pde*);
+extern void enable_paging();
+
 void init_paging(void * a);
 #endif

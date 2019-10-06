@@ -4,6 +4,8 @@
 #include "isr.h"
 #include "memory/memory_segment.h"
 #include "shell/shell.h"
+#include "memory/page_allocator.h"
+#include "memory/pdt.h"
 
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
@@ -14,6 +16,13 @@ void _start() {
   if (1) {
     memmap = (struct memory_seg_des * ) 0x9104;
     nummem = (int*)0x9100;
+
+    init_page_alloc();
+    for(int i = 0; i< 10; i++)
+    {
+        preserve(i);
+    }
+
     default_screen.width = 80;
     default_screen.height = 25;
     default_screen.cursorx = 0;
