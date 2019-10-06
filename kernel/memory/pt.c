@@ -22,3 +22,16 @@ void init_pt(void * pt_p)
         pt[i] = def;
     }
 }
+
+bool insert_page(void * pt_p, struct pte page_entry)
+{
+    struct pte * pt = (struct pte *) pt_p;
+    int i = 0;
+
+    while (pt[i].sysinfo != 0 && i < 1024) { // find an unused entry
+        i++;
+    }
+    if (i < 1024)            // if there's still an available entry
+        pt[i] = page_entry;  // set it
+    return i < 1024;
+}

@@ -40,3 +40,21 @@ bool insert_page_table(void * pdt_p, struct pde page_dir_entry)
         pdt[i] = page_dir_entry;  // set it
     return i < 1024;
 }
+
+bool insert_page_in_pdt(void * pdt_p, struct pte page_entry)
+{
+    struct pde * pdt = (struct pde *) pdt_p;
+    int i         = 0;
+    bool inserted = false;
+
+    while (pdt[i].sysinfo != 0 && i < 1024) {                                              // on all tables
+        inserted = insert_page((void *) (pdt[i].page_table_address * 0x1000), page_entry); // try to insert
+    }
+    if (i < 1024) {                               // if there's an unused entry
+        void * pt = (void *) (palloc() * 0x1000); // allocate a page for a table
+        init_pt(pt);                              // initialize it
+        inserted = insert_page(pt, page_entry);   // and insert the page in the table
+    }
+
+    return inserted;
+}

@@ -56,4 +56,7 @@ void init_page_alloc()
             }
         }
     }
+    for (int i = 0xA00; i < 0x1000; i++) {
+        preserve(i);
+    }
 }

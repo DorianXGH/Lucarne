@@ -1,5 +1,7 @@
 #ifndef PT_H
 #define PT_H
+#include <stdbool.h>
+
 struct pte {
     bool present : 1;
     bool write : 1;
@@ -15,6 +17,6 @@ struct pte {
 } __attribute__((packed));
 
 void init_pt(void * pt_p);
-
+bool insert_page(void * pt_p, struct pte);
 
 #endif /* ifndef PT_H */

@@ -1,6 +1,7 @@
 #ifndef PDT_H
 #define PDT_H
 #include "pt.h"
+#include "page_allocator.h"
 #include <stdbool.h>
 
 
@@ -24,5 +25,7 @@ extern void enable_paging();
 void init_paging(void * a);
 void init_pdt(void * a);
 bool insert_page_table(void * pdt_p, struct pde);
+bool insert_page_in_pdt(void * pdt_p, struct pte);
+void identity_page(void * pdt_p, int number_of_pages);
 
 #endif /* ifndef PDT_H */
