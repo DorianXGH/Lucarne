@@ -6,12 +6,10 @@ struct pte {
     bool present : 1;
     bool write : 1;
     bool user : 1;
-    bool wrtie_through : 1;
-    bool cached : 1;
+    char reserved : 2;
     bool accessed : 1;
     bool dirty : 1;
-    bool nullbit : 1;
-    bool global : 1;
+    char reserved2 : 2;
     char sysinfo : 3;
     int  physical_address : 20;
 } __attribute__((packed));
