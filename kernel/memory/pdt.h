@@ -16,7 +16,6 @@ struct pde {
     char sysinfo :3;
     int page_table_address :20;
 } __attribute__((packed));
-struct pde * pdt;
 
 extern void load_pdt(struct pde*);
 extern void enable_paging();

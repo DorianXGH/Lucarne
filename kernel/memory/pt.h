@@ -13,4 +13,7 @@ struct pte {
     char sysinfo :3;
     int physical_address :20;
 } __attribute__((packed));
+
+void init_pt(void * pt_p);
+
 #endif
