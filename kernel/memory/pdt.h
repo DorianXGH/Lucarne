@@ -1,6 +1,7 @@
 #ifndef PDT_H
 #define PDT_H
 #include "pt.h"
+#include <stdbool.h>
 
 
 struct pde {
@@ -22,6 +23,6 @@ extern void enable_paging();
 
 void init_paging(void * a);
 void init_pdt(void * a);
-void insert_page(void * pdt_p, struct pte);
+bool insert_page_dir(void * pdt_p, struct pde);
 
 #endif /* ifndef PDT_H */

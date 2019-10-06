@@ -28,12 +28,15 @@ void init_pdt(void * pdt_p)
     }
 }
 
-void insert_page(void * pdt_p, struct pte page_entry)
+bool insert_page_dir(void * pdt_p, struct pde page_dir_entry)
 {
     struct pde * pdt = (struct pde *) pdt_p;
     int i = 0;
 
-    while (pdt[i].sysinfo == 1) {
+    while (pdt[i].sysinfo != 0 && i < 1024) { // find an unused entry
         i++;
     }
+    if (i < 1024)                 // if there's still an available entry
+        pdt[i] = page_dir_entry;  // set it
+    return i < 1024;
 }

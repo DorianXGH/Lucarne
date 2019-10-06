@@ -46,7 +46,7 @@ void init_page_alloc()
     int diff        = max_page - (blocks << 3);
     uint8_t last    = 256 - (1 << (8 - diff));
     page_tracker[max_page - 1] = last;
-    // todo : reserve unusable memory using memmap
+    // reserve unusable memory
     for (int i = 0; i < *nummem; i++) {
         if (memmap[i].type != 1) {
             uint64_t a = memmap[i].base >> 12;                      // first unavailable page
