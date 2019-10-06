@@ -23,6 +23,6 @@ extern void enable_paging();
 
 void init_paging(void * a);
 void init_pdt(void * a);
-bool insert_page_dir(void * pdt_p, struct pde);
+bool insert_page_table(void * pdt_p, struct pde);
 
 #endif /* ifndef PDT_H */

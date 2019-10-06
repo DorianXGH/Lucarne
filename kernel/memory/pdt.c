@@ -28,7 +28,7 @@ void init_pdt(void * pdt_p)
     }
 }
 
-bool insert_page_dir(void * pdt_p, struct pde page_dir_entry)
+bool insert_page_table(void * pdt_p, struct pde page_dir_entry)
 {
     struct pde * pdt = (struct pde *) pdt_p;
     int i = 0;
