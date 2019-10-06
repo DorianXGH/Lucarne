@@ -4,7 +4,7 @@ global enable_paging
 load_pdt:
     push ebp
     mov ebp, esp
-    mov eax, 8[esp]
+    mov eax, [esp+8]
     mov cr3, eax
     mov esp, ebp
     pop ebp
@@ -12,9 +12,9 @@ load_pdt:
 
 enable_paging:
     push ebp
-    mov %esp, %ebp
-    mov %cr0, %eax
-    or $0x80000000, %eax
+    mov ebp, esp
+    mov eax, cr0
+    or eax, 0x80000000
     mov cr0, eax
     mov esp, ebp
     pop ebp

@@ -10,13 +10,16 @@ obj = $(wildcard *.o)
 all: run
 
 # Notice how dependencies are built as needed
-kernel.bin: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o
+kernel.bin: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o
 	$(utilpath)/i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 kernel_entry.o: kernel/kernel-entry.asm
 	nasm $< -f elf -o $@
 
 interrupts.o: kernel/interrupts.asm
+	nasm $< -f elf -o $@
+
+enable_paging.o: kernel/memory/enable_paging.asm
 	nasm $< -f elf -o $@
 
 screen.o: kernel/drivers/screen.c
@@ -26,6 +29,12 @@ memmap.o: kernel/memory/memory_segment.c
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 page_allocator.o: kernel/memory/page_allocator.c
+	$(utilpath)/$(gccargs) -c $< -o $@
+
+pdt.o: kernel/memory/pdt.c
+	$(utilpath)/$(gccargs) -c $< -o $@
+
+pt.o: kernel/memory/pt.c
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 shell.o: kernel/shell/shell.c

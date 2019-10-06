@@ -11,6 +11,7 @@ extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
 extern struct memory_seg_des * memmap;
 extern int * nummem;
+extern int max_page;
 
 void _start()
 {
@@ -19,9 +20,11 @@ void _start()
         nummem = (int *) 0x9100;
 
         init_page_alloc();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             preserve(i);
         }
+        void * general_page_directory = (void *) (palloc() * 0x1000);
+        identity_page(general_page_directory, max_page);
 
         default_screen.width   = 80;
         default_screen.height  = 25;
