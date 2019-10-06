@@ -8,17 +8,21 @@
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
 
-static void keyboard_callback(registers_t regs) {
+static void keyboard_callback(registers_t regs)
+{
     /* The PIC leaves us the scancode in port 0x60 */
     char scancode = port_byte_in(0x60);
+
     process_letter(scancode);
 }
 
-void init_keyboard() {
-   register_interrupt_handler(IRQ1, keyboard_callback);
+void init_keyboard()
+{
+    register_interrupt_handler(IRQ1, keyboard_callback);
 }
 
-void process_letter(char scancode) {
+void process_letter(char scancode)
+{
     switch (scancode) {
         case 0x0:
             putstring(&default_screen, "ERROR");
@@ -63,7 +67,7 @@ void process_letter(char scancode) {
             putchar_sh(&default_shell, '+');
             break;
         case 0x0E:
-            //Backspace
+            // Backspace
             break;
         case 0x0F:
             putchar_sh(&default_shell, 'Tab');
@@ -98,24 +102,24 @@ void process_letter(char scancode) {
         case 0x19:
             putchar_sh(&default_shell, 'P');
             break;
-		case 0x1A:
-			putchar_sh(&default_shell, '[');
-			break;
-		case 0x1B:
-			putchar_sh(&default_shell, ']');
-			break;
-		case 0x1C:
-			putchar_sh(&default_shell, '\n');
-			break;
-		case 0x1D:
-			//Lctrl
-			break;
-		case 0x1E:
-			putchar_sh(&default_shell, 'A');
-			break;
-		case 0x1F:
-			putchar_sh(&default_shell, 'S');
-			break;
+        case 0x1A:
+            putchar_sh(&default_shell, '[');
+            break;
+        case 0x1B:
+            putchar_sh(&default_shell, ']');
+            break;
+        case 0x1C:
+            putchar_sh(&default_shell, '\n');
+            break;
+        case 0x1D:
+            // Lctrl
+            break;
+        case 0x1E:
+            putchar_sh(&default_shell, 'A');
+            break;
+        case 0x1F:
+            putchar_sh(&default_shell, 'S');
+            break;
         case 0x20:
             putchar_sh(&default_shell, 'D');
             break;
@@ -146,24 +150,24 @@ void process_letter(char scancode) {
         case 0x29:
             putchar_sh(&default_shell, '`');
             break;
-		case 0x2A:
-			//Lshift
-			break;
-		case 0x2B:
-			putchar_sh(&default_shell, '\\');
-			break;
-		case 0x2C:
-			putchar_sh(&default_shell, 'Z');
-			break;
-		case 0x2D:
-			putchar_sh(&default_shell, 'X');
-			break;
-		case 0x2E:
-			putchar_sh(&default_shell, 'C');
-			break;
-		case 0x2F:
-			putchar_sh(&default_shell, 'V');
-			break;
+        case 0x2A:
+            // Lshift
+            break;
+        case 0x2B:
+            putchar_sh(&default_shell, '\\');
+            break;
+        case 0x2C:
+            putchar_sh(&default_shell, 'Z');
+            break;
+        case 0x2D:
+            putchar_sh(&default_shell, 'X');
+            break;
+        case 0x2E:
+            putchar_sh(&default_shell, 'C');
+            break;
+        case 0x2F:
+            putchar_sh(&default_shell, 'V');
+            break;
         case 0x30:
             putchar_sh(&default_shell, 'B');
             break;
@@ -183,27 +187,29 @@ void process_letter(char scancode) {
             putchar_sh(&default_shell, '/');
             break;
         case 0x36:
-            //Rshift
+            // Rshift
             break;
         case 0x37:
-            //keypad
+            // keypad
             break;
         case 0x38:
-             //Lalt
+            // Lalt
             break;
         case 0x39:
             putchar_sh(&default_shell, 'Spc');
             break;
         default:
+
             /* 'keuyp' event corresponds to the 'keydown' + 0x80
              * it may still be a scancode we haven't implemented yet, or
              * maybe a control/escape sequence */
+
             /*if (scancode <= 0x7f) {
-                putstring(&default_screen, "Unknown key down");
-            } else if (scancode <= 0x39 + 0x80) {
-                putstring(&default_screen, "key up ");
-                print_letter(scancode - 0x80);
-            } else putstring(&default_screen, "Unknown key up");*/
+             *  putstring(&default_screen, "Unknown key down");
+             * } else if (scancode <= 0x39 + 0x80) {
+             *  putstring(&default_screen, "key up ");
+             *  print_letter(scancode - 0x80);
+             * } else putstring(&default_screen, "Unknown key up");*/
             break;
     }
-}
+} /* process_letter */

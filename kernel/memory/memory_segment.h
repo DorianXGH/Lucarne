@@ -13,7 +13,8 @@ struct memory_seg_des {
 struct memory_seg_des * memmap;
 int * nummem;
 
-void print_map(struct def_vga_screen * s);
+void
+print_map(struct def_vga_screen * s);
 
 
-#endif
+#endif /* ifndef MEMORY_SEGMENT_H */

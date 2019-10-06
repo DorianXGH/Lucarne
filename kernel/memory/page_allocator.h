@@ -16,4 +16,4 @@ void preserve(int pagenum);
 void init_page_alloc();
 
 
-#endif
+#endif /* ifndef PAGE_ALLOCATOR_H */
