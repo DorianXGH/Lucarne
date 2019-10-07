@@ -45,6 +45,17 @@ void newline(struct def_vga_screen * s)
     }
 }
 
+void remove_char(struct def_vga_screen * s)
+{
+    if (s->cursorx == 0) {
+        s->cursorx = s->width - 1;
+        if (s->cursory > 0) s->cursory--;
+    } else {
+        s->cursorx--;
+    }
+    raw_putchar(s, 0, s->cursorx, s->cursory);
+}
+
 void putchar(struct def_vga_screen * s, char c)
 {
     if (c == '\n') {

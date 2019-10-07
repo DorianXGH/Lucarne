@@ -14,6 +14,8 @@ void shellexec(struct def_shell * sh);
 
 void shell_invite(struct def_shell * sh);
 
+void backspace(struct def_shell * sh);
+
 struct def_shell default_shell;
 
 #endif /* ifndef SHELL_H */

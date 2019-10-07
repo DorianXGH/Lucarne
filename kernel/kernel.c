@@ -23,7 +23,6 @@ void _start()
         nummem = (int *) 0x9100;
         last_inserted_page = 0;
 
-
         putstring(&default_screen, "Loading IDT\n");
         isr_install();
         putstring(&default_screen, "IDT Loaded\n");
@@ -47,10 +46,6 @@ void _start()
 
         asm volatile ("sti");
         // init_timer(10);
-
-        /* Comment out the timer IRQ handler to read
-         * the keyboard IRQs easier */
-
 
         init_page_alloc();
         for (int i = 0; i < 50; i++) {

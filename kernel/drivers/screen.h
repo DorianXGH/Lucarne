@@ -8,7 +8,7 @@ struct def_vga_screen {
     int cursory;
 };
 struct def_vga_screen default_screen;
-
+void remove_char(struct def_vga_screen * s);
 void raw_putchar_wc(struct def_vga_screen * s, char c, char col, int x, int y);
 
 void raw_putchar(struct def_vga_screen * s, char c, int x, int y);

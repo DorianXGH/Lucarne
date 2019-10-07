@@ -67,7 +67,7 @@ void process_letter(char scancode)
             putchar_sh(&default_shell, '+');
             break;
         case 0x0E:
-            // Backspace
+            backspace(&default_shell);
             break;
         case 0x0F:
             putchar_sh(&default_shell, 'Tab');

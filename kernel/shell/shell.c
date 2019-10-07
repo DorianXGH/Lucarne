@@ -18,6 +18,15 @@ void putchar_sh(struct def_shell * sh, char c)
     }
 }
 
+void backspace(struct def_shell * sh)
+{
+    if (sh->current_index == 0) { } else {
+        sh->current_index--;
+        sh->current_input[sh->current_index] = 0;
+        remove_char(sh->appointed_screen);
+    }
+}
+
 void shellexec(struct def_shell * sh)
 {
     putchar(sh->appointed_screen, '\n');
