@@ -74,7 +74,7 @@ os-image.bin: bootsect.bin kernel.bin
 	cat $^ > $@
 
 run: os-image.bin
-	qemu-system-x86_64 -no-reboot -fda $<
+	qemu-system-x86_64 -no-reboot -monitor stdio -fda $<
 
 clean:
 	rm *.bin *.o *.dis

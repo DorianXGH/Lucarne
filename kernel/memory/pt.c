@@ -1,4 +1,5 @@
 #include "pt.h"
+extern struct def_vga_screen default_screen;
 
 void init_pt(void * pt_p)
 {
@@ -29,7 +30,11 @@ bool insert_page(void * pt_p, struct pte page_entry)
     while (pt[i].sysinfo != 0 && i < 1024) { // find an unused entry
         i++;
     }
-    if (i < 1024)            // if there's still an available entry
-        pt[i] = page_entry;  // set it
+    if (i < 1024) {         // if there's still an available entry
+        pt[i] = page_entry; // set it
+        // putchar(&default_screen, 'b');
+    } else {
+        // putchar(&default_screen, 'a');
+    }
     return i < 1024;
 }

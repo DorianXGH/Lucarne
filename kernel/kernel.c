@@ -50,48 +50,28 @@ void _start()
 
         /* Comment out the timer IRQ handler to read
          * the keyboard IRQs easier */
-        init_keyboard();
-        putstring(&default_screen, "Keyboard Loaded\n");
-        clear(&default_screen);
-        shell_invite(&default_shell);
+
+
         init_page_alloc();
         for (int i = 0; i < 50; i++) {
             preserve(i);
         }
         find_next_free();
+
         int gp_dir_page = palloc();
         void * general_page_directory = (void *) (gp_dir_page * 0x1000);
-        // int page_table_page = palloc();
+
         init_pdt(general_page_directory);
-        // struct pte * page_table = (struct pte *) (page_table_page * 0x1000);
-        // for (int i = 0; i < 1024; i++) {
-        //     struct pte entry;
-        //     entry.accessed         = 0;
-        //     entry.sysinfo          = 1;
-        //     entry.dirty            = 0;
-        //     entry.user             = 0;
-        //     entry.write            = 1;
-        //     entry.reserved2        = 0;
-        //     entry.reserved         = 0;
-        //     entry.present          = 1;
-        //     entry.physical_address = i;
-        //     page_table[i]          = entry;
-        // }
-        // struct pde entry;
-        // entry.accessed           = 0;
-        // entry.size               = 0;
-        // entry.cache_disabled     = 0;
-        // entry.sysinfo            = 1;
-        // entry.user               = 0;
-        // entry.write              = 1;
-        // entry.present            = 1;
-        // entry.global             = 0;
-        // entry.wrtie_through      = 0;
-        // entry.page_table_address = page_table_page;
-        // ((struct pde *) general_page_directory)[0] = entry;
         identity_page(general_page_directory, min(0x10000, max_page));
         load_pdt(general_page_directory);
-        putchar(&default_screen, '%');
-        // enable_paging();
+
+        enable_paging();
+
+        clear(&default_screen);
+        putstring(&default_screen, "Paging enabled");
+        putchar(&default_screen, '\n');
+        init_keyboard();
+
+        shell_invite(&default_shell);
     }
 } /* _start */

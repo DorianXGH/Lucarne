@@ -1,6 +1,7 @@
 #ifndef PT_H
 #define PT_H
 #include <stdbool.h>
+#include "../drivers/screen.h"
 
 struct pte {
     bool present : 1;

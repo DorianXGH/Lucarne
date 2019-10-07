@@ -7,7 +7,7 @@ bool pstatus(int i)
 extern struct def_vga_screen default_screen;
 int palloc()
 {
-    putchar(&default_screen, '.');
+    // putchar(&default_screen, '.');
     preserve(next_available);
     int p = next_available;
     find_next_free();
@@ -24,7 +24,7 @@ void find_next_free()
       pstatus(i);
       i++)
     {
-        putchar(&default_screen, '-');
+        // putchar(&default_screen, '-');
     }
     next_available = i;
 }
