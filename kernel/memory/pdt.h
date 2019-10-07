@@ -3,7 +3,7 @@
 #include "pt.h"
 #include "page_allocator.h"
 #include <stdbool.h>
-
+#include "../drivers/screen.h"
 
 struct pde {
     bool present : 1;

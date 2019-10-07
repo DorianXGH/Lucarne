@@ -1,4 +1,6 @@
 #include "pdt.h"
+extern struct def_vga_screen default_screen;
+
 void init_paging(void * pdt)
 {
     load_pdt(pdt);
@@ -23,6 +25,7 @@ void init_pdt(void * pdt_p)
     def.global             = 0;
 
     for (int i = 0; i < 1024; i++) {
+        putchar(&default_screen, (i % 8) + 48);
         // Page directory set as : Kernel, Writable, not present
         pdt[i] = def;
     }
@@ -47,14 +50,14 @@ bool insert_page_in_pdt(void * pdt_p, struct pte page_entry)
     int i         = 0;
     bool inserted = false;
 
-    while (pdt[i].sysinfo != 0 && i < 1024) {                                              // on all tables
-        inserted = insert_page((void *) (pdt[i].page_table_address * 0x1000), page_entry); // try to insert
+    while (pdt[i].sysinfo != 0 && i < 1024) {                                               // on all tables
+        inserted |= insert_page((void *) (pdt[i].page_table_address * 0x1000), page_entry); // try to insert
         i++;
     }
     if (i < 1024) {                               // if there's an unused entry
         void * pt = (void *) (palloc() * 0x1000); // allocate a page for a table
         init_pt(pt);                              // initialize it
-        inserted = insert_page(pt, page_entry);   // and insert the page in the table
+        inserted |= insert_page(pt, page_entry);  // and insert the page in the table
     }
 
     return inserted;
@@ -69,13 +72,11 @@ void identity_page(void * pdt_p, int number_of_pages)
         def.present          = 1;
         def.user             = 0;
         def.write            = 1;
-        def.global           = 0;
-        def.cached           = 0;
+        def.reserved         = 0;
+        def.reserved2        = 0;
         def.sysinfo          = 1;
-        def.nullbit          = 0;
-        def.wrtie_through    = 0;
+        def.dirty            = 0;
         def.physical_address = page;
-        def.global           = 0;
         insert_page_in_pdt(pdt_p, def);
     }
 }

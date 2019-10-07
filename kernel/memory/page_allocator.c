@@ -1,16 +1,32 @@
 #include "page_allocator.h"
+bool pstatus(int i)
+{
+    return (page_tracker[i / 8] >> (i % 8)) & 1;
+}
+
+extern struct def_vga_screen default_screen;
 int palloc()
 {
+    putchar(&default_screen, '.');
+    preserve(next_available);
     int p = next_available;
+    find_next_free();
+    return p;
+}
 
-    for (int i = p + 1;
-      i <= max_page &&
-      (page_tracker[i / 8] >> (i % 8)) & 1;
+void find_next_free()
+{
+    int p = next_available;
+    int i = 0;
+
+    for (i = p + 1;
+      (i <= max_page) &&
+      pstatus(i);
       i++)
     {
-        next_available = i;
+        putchar(&default_screen, '-');
     }
-    return p;
+    next_available = i;
 }
 
 void pfree(int pagenum)
@@ -18,10 +34,11 @@ void pfree(int pagenum)
     int8_t a = page_tracker[pagenum / 8];
     int r    = pagenum % 8;
 
-    if ((a >> r) & 1) {
+    if (pstatus(pagenum)) {
         a -= 1 << r;
         page_tracker[pagenum / 8] = a;
     } else   { }
+    next_available = pagenum;
 }
 
 void preserve(int pagenum)
@@ -29,7 +46,7 @@ void preserve(int pagenum)
     int8_t a = page_tracker[pagenum / 8];
     int r    = pagenum % 8;
 
-    if ((a >> r) & 1) { } else {
+    if (pstatus(pagenum)) { } else {
         a += 1 << r;
         page_tracker[pagenum / 8] = a;
     }
@@ -56,7 +73,7 @@ void init_page_alloc()
             }
         }
     }
-    for (int i = 0xA00; i < 0x1000; i++) {
+    for (int i = 0xA0; i < 0x100; i++) {
         preserve(i);
     }
 }

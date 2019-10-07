@@ -6,6 +6,7 @@
 #include "shell/shell.h"
 #include "memory/page_allocator.h"
 #include "memory/pdt.h"
+#include "memory/pt.h"
 
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
@@ -32,19 +33,6 @@ void _start()
         clear(&default_screen);
         int k = 0;
 
-        init_page_alloc();
-        for (int i = 0; i < 50; i++) {
-            preserve(i);
-        }
-
-        /*
-         * void * general_page_directory = (void *) (palloc() * 0x1000);
-         * identity_page(general_page_directory, 0x10000);
-         * load_pdt(general_page_directory);
-         * enable_paging();
-         * for (int i = 0; i < 0x1000000; i++) k++;
-         */
-
 
         default_shell.appointed_screen = &default_screen;
         for (int i = 0; i < 256; i++) {
@@ -63,8 +51,43 @@ void _start()
         putstring(&default_screen, "Keyboard Loaded\n");
         clear(&default_screen);
         shell_invite(&default_shell);
-        char num[10];
-        prntnum(sizeof(struct pte), '+', num, 10);
-        putstring(&default_screen, num);
+        init_page_alloc();
+        for (int i = 0; i < 50; i++) {
+            preserve(i);
+        }
+        find_next_free();
+        int gp_dir_page = palloc();
+        void * general_page_directory = (void *) (gp_dir_page * 0x1000);
+        // int page_table_page = palloc();
+        init_pdt(general_page_directory);
+        // struct pte * page_table = (struct pte *) (page_table_page * 0x1000);
+        // for (int i = 0; i < 1024; i++) {
+        //     struct pte entry;
+        //     entry.accessed         = 0;
+        //     entry.sysinfo          = 1;
+        //     entry.dirty            = 0;
+        //     entry.user             = 0;
+        //     entry.write            = 1;
+        //     entry.reserved2        = 0;
+        //     entry.reserved         = 0;
+        //     entry.present          = 1;
+        //     entry.physical_address = i;
+        //     page_table[i]          = entry;
+        // }
+        // struct pde entry;
+        // entry.accessed           = 0;
+        // entry.size               = 0;
+        // entry.cache_disabled     = 0;
+        // entry.sysinfo            = 1;
+        // entry.user               = 0;
+        // entry.write              = 1;
+        // entry.present            = 1;
+        // entry.global             = 0;
+        // entry.wrtie_through      = 0;
+        // entry.page_table_address = page_table_page;
+        // ((struct pde *) general_page_directory)[0] = entry;
+        identity_page(general_page_directory, 0xF00);
+        load_pdt(general_page_directory);
+        enable_paging();
     }
 } /* _start */
