@@ -4,6 +4,7 @@
 #include "page_allocator.h"
 #include <stdbool.h>
 #include "../drivers/screen.h"
+#include "../util.h"
 
 struct pde {
     bool present : 1;
@@ -25,7 +26,9 @@ extern void enable_paging();
 void init_paging(void * a);
 void init_pdt(void * a);
 bool insert_page_table(void * pdt_p, struct pde);
-bool insert_page_in_pdt(void * pdt_p, struct pte);
+bool insert_page_in_pdt(void * pdt_p, struct pte, bool);
 void identity_page(void * pdt_p, int number_of_pages);
+
+int last_inserted_page;
 
 #endif /* ifndef PDT_H */

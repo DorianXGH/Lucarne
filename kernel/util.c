@@ -1,5 +1,8 @@
 #include "util.h"
-
+int min(int a, int b)
+{
+    return (a < b) ? a : b;
+}
 
 bool strcompare(char * a, char * b)
 {

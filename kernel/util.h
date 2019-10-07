@@ -10,4 +10,5 @@ void prntnum(uint64_t n, char sign, char * outbuf, int size);
 short int low_16(int a);
 short int high_16(int a);
 bool strcompare(char * a, char * b);
+int min(int a, int b);
 #endif /* ifndef UTIL_H */

@@ -13,12 +13,15 @@ extern struct def_shell default_shell;
 extern struct memory_seg_des * memmap;
 extern int * nummem;
 extern int max_page;
+extern int last_inserted_page;
+
 
 void _start()
 {
     if (1) {
         memmap = (struct memory_seg_des *) 0x9104;
         nummem = (int *) 0x9100;
+        last_inserted_page = 0;
 
 
         putstring(&default_screen, "Loading IDT\n");
@@ -86,8 +89,9 @@ void _start()
         // entry.wrtie_through      = 0;
         // entry.page_table_address = page_table_page;
         // ((struct pde *) general_page_directory)[0] = entry;
-        identity_page(general_page_directory, 0xF00);
+        identity_page(general_page_directory, min(0x10000, max_page));
         load_pdt(general_page_directory);
-        enable_paging();
+        putchar(&default_screen, '%');
+        // enable_paging();
     }
 } /* _start */
