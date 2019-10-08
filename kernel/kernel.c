@@ -22,16 +22,24 @@ void _start()
         memmap = (struct memory_seg_des *) 0x9104;
         nummem = (int *) 0x9100;
         last_inserted_page = 0;
-
-        putstring(&default_screen, "Loading IDT\n");
         isr_install();
-        putstring(&default_screen, "IDT Loaded\n");
-        putstring(&default_screen, "Loading Shell\n");
 
-        default_screen.width   = 80;
-        default_screen.height  = 25;
-        default_screen.cursorx = 0;
-        default_screen.cursory = 0;
+        default_screen.width        = 80;
+        default_screen.height       = 25;
+        default_screen.cursorx      = 0;
+        default_screen.cursory      = 0;
+        default_screen.type         = TEXT;
+        default_screen.video_memory = (char *) 0xB8000;
+
+        if (1) {
+            default_screen.width        = 320;
+            default_screen.height       = 200;
+            default_screen.cursorx      = 0;
+            default_screen.cursory      = 0;
+            default_screen.type         = GRAPHIC;
+            default_screen.video_memory = (char *) 0xA0000;
+        }
+
         clear(&default_screen);
         int k = 0;
 
@@ -68,5 +76,10 @@ void _start()
         init_keyboard();
 
         shell_invite(&default_shell);
+        for (int x = 50; x < 250; x++) {
+            for (int y = 50; y < 150; y++) {
+                putpixel(&default_screen, 10, x, y);
+            }
+        }
     }
 } /* _start */
