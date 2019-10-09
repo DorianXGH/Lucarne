@@ -42,5 +42,5 @@ sectors_error:
 disk_loop:
     jmp $
 
-DISK_ERROR: db "DReadE", 0
-SECTORS_ERROR: db "SReadE", 0
+DISK_ERROR: db "DRE", 0
+SECTORS_ERROR: db "SRE", 0

@@ -6,8 +6,8 @@ KERNEL_OFFSET equ 0x1000 ; The same one we used when linking the kernel
     mov bp, 0x9000
     mov sp, bp
 
-    mov ax, 0x13
-    int 10h
+    ;mov ax, 0x13
+    ;int 10h
 
     call load_kernel ; read the kernel from disk
     call switch_to_pm ; disable interrupts, load GDT,  etc. Finally jumps to 'BEGIN_PM'

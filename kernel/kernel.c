@@ -15,7 +15,6 @@ extern int * nummem;
 extern int max_page;
 extern int last_inserted_page;
 
-
 void _start()
 {
     if (1) {
@@ -31,7 +30,7 @@ void _start()
         default_screen.type         = TEXT;
         default_screen.video_memory = (char *) 0xB8000;
 
-        if (1) {
+        if (0) {
             default_screen.width        = 320;
             default_screen.height       = 200;
             default_screen.cursorx      = 0;
@@ -76,10 +75,11 @@ void _start()
         init_keyboard();
 
         shell_invite(&default_shell);
-        for (int x = 50; x < 250; x++) {
-            for (int y = 50; y < 150; y++) {
-                putpixel(&default_screen, 10, x, y);
-            }
-        }
+
+        // for (int x = 50; x < 250; x++) {
+        //     for (int y = 50; y < 150; y++) {
+        //         putpixel(&default_screen, 10, x, y);
+        //     }
+        // }
     }
 } /* _start */

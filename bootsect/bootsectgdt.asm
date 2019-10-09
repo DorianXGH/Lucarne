@@ -23,14 +23,6 @@ gdt_data:
     db 11001111b
     db 0x0
 
-gdt_memmap:
-    dw 0xffff
-    dw 0x9100
-    db 0x0
-    db 10010010b
-    db 11001111b
-    db 0x0
-
 gdt_end:
 
 ; GDT descriptor
@@ -41,4 +33,3 @@ gdt_descriptor:
 ; define some constants for later use
 CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
-MEMMAP_SEG equ gdt_memmap - gdt_start

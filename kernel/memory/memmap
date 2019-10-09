@@ -8,6 +8,17 @@ Info:
 sysinfo : 0 : available
 sysinfo : 1 : used
 
+GRUB bootloader
+0x00100000 : kernel
+0x00200000 : grub_info
+0x00300000 : stack
+
+Internal Page Memory Map
+cell : 32 bits -> 2 bit info
+Map : 0 = free
+To allocate : check if all 0, then put the smallest number different from its adjacent cell.
+To free : put to 0 all adjacent cellinfo having the same number
+
 
 // old code : may be useful : idendity page first 4 kio
 
