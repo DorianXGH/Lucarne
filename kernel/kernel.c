@@ -21,8 +21,8 @@ void _start()
 {
     if (1) {
         struct gdt dt;
-        struct gde en[16];
-        dt.base = (uint32_t) en;
+        struct gde * en = 0x9500;
+        dt.base = 0x9500;
         dt.size = 0xFFFF; // 0-1 = 2 complement
         add_to_gdt(&dt, 0, 0, 0, NULL);
         add_to_gdt(&dt, 0, 0xFFFFF, 0, CODE);
@@ -33,7 +33,7 @@ void _start()
         nummem = (int *) 0x9100;
         last_inserted_page = 0;
         isr_install();
-        load_gdt(&dt);
+        // load_gdt(&dt);
         // reload_segs(8, 16);
 
         default_screen.width        = 80;
@@ -77,7 +77,7 @@ void _start()
         void * general_page_directory = (void *) (gp_dir_page * 0x1000);
 
         init_pdt(general_page_directory);
-        identity_page(general_page_directory, min(0x80000, max_page));
+        fast_identity_page(general_page_directory, min(0x10000, max_page));
         load_pdt(general_page_directory);
 
         enable_paging();

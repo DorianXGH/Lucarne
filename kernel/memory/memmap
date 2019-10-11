@@ -2,6 +2,7 @@
 0x00007c00 : bootloader
 0x00009000 : stack
 0x00009100 : memory map
+0x00009500 : GDT
 
 
 Info:

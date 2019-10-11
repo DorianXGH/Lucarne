@@ -97,3 +97,44 @@ void identity_page(void * pdt_p, int number_of_pages)
         insert_page_in_pdt(pdt_p, def, true);
     }
 }
+
+void fast_identity_page(void * pdt_p, int number_of_pages)
+{
+    struct pde * pdt  = (struct pde *) pdt_p;
+    int current_index = -1;
+    uint32_t dirtofill;
+
+    for (int page = 0; page < number_of_pages; page++) {
+        if (page % 1024 == 0) {
+            uint32_t newdir = palloc();
+            struct pde dir;
+            dir.accessed           = 0;
+            dir.present            = 1;
+            dir.user               = 0;
+            dir.write              = 1;
+            dir.size               = 0;
+            dir.cache_disabled     = 0;
+            dir.sysinfo            = 1;
+            dir.nullbit            = 0;
+            dir.wrtie_through      = 0;
+            dir.page_table_address = newdir;
+            dir.global             = 0;
+            current_index++;
+            pdt[current_index] = dir;
+            dirtofill = newdir;
+        }
+        struct pte def;
+        def.accessed         = 0;
+        def.present          = 1;
+        def.user             = 0;
+        def.write            = 1;
+        def.reserved         = 0;
+        def.reserved2        = 0;
+        def.sysinfo          = 1;
+        def.dirty            = 0;
+        def.physical_address = page;
+        uint32_t addr       = dirtofill * 0x1000 + (sizeof(struct pte) * (page % 1024));
+        struct pte * tofill = (struct pte *) addr;
+        *tofill = def;
+    }
+} /* fast_identity_page */
