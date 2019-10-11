@@ -21,6 +21,7 @@ struct pde {
 } __attribute__((packed));
 
 extern void load_pdt(struct pde *);
+
 extern void enable_paging();
 
 void init_paging(void * a);

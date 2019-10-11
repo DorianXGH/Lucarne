@@ -6,7 +6,8 @@
 enum seg_type {
     CODE,
     DATA,
-    TSS
+    TSS,
+    NULL
 };
 
 struct gde {
@@ -24,6 +25,7 @@ struct gde {
     uint8_t  null : 2;
     bool     bitsize_16_32 : 1;
     bool     granularity : 1;
+    uint8_t  base_c : 8;
 } __attribute__((packed));
 
 struct gdt {
@@ -31,6 +33,10 @@ struct gdt {
     uint32_t base : 32;
 } __attribute__((packed));
 
+
 void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type);
+extern void load_gdt(struct gdt * desc);
+extern void reload_segs(uint16_t code, uint16_t data);
+
 
 #endif /* ifndef GDT_H */

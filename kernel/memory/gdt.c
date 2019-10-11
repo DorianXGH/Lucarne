@@ -1,11 +1,12 @@
 #include "gdt.h"
 void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type)
 {
-    struct gde * dt = desc->base;
+    struct gde * dt = (struct gde *) desc->base;
     struct gde new;
 
     new.base_a        = base & 0xFFFF;
     new.base_b        = (base >> 16) & 0xFF;
+    new.base_c        = (base >> 24) & 0xFF;
     new.limit_a       = size & 0xFFFF;
     new.limit_b       = (size >> 16) & 0xF;
     new.accessed      = 0;
@@ -30,10 +31,25 @@ void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, e
             new.descriptor = 0;
             break;
         default:
-            new.executable = 0;
-            new.descriptor = 1;
+            new.executable    = 0;
+            new.descriptor    = 0;
+            new.base_a        = 0;
+            new.base_b        = 0;
+            new.base_c        = 0;
+            new.limit_a       = 0;
+            new.limit_b       = 0;
+            new.accessed      = 0;
+            new.present       = 0;
+            new.RW            = 0;
+            new.granularity   = 0;
+            new.bitsize_16_32 = 0;
+            new.null          = 0;
+            new.ring          = 0;
+            new.DC            = 0;
             break;
     }
-    dt[desc->size + 1] = new;
-    desc->size++;
+    dt[(desc->size) + 1] = new;
+    (desc->size)++;
 } /* add_to_gdt */
+
+void load_gdt(struct gdt * desc);

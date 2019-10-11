@@ -7,6 +7,7 @@
 #include "memory/page_allocator.h"
 #include "memory/pdt.h"
 #include "memory/pt.h"
+#include "memory/gdt.h"
 
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
@@ -15,13 +16,25 @@ extern int * nummem;
 extern int max_page;
 extern int last_inserted_page;
 
+
 void _start()
 {
     if (1) {
+        struct gdt dt;
+        struct gde en[16];
+        dt.base = (uint32_t) en;
+        dt.size = 0xFFFF; // 0-1 = 2 complement
+        add_to_gdt(&dt, 0, 0, 0, NULL);
+        add_to_gdt(&dt, 0, 0xFFFFF, 0, CODE);
+        add_to_gdt(&dt, 0, 0xFFFFF, 0, DATA);
+
+
         memmap = (struct memory_seg_des *) 0x9104;
         nummem = (int *) 0x9100;
         last_inserted_page = 0;
         isr_install();
+        load_gdt(&dt);
+        // reload_segs(8, 16);
 
         default_screen.width        = 80;
         default_screen.height       = 25;
@@ -55,7 +68,7 @@ void _start()
         // init_timer(10);
 
         init_page_alloc();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 500; i++) {
             preserve(i);
         }
         find_next_free();
@@ -64,7 +77,7 @@ void _start()
         void * general_page_directory = (void *) (gp_dir_page * 0x1000);
 
         init_pdt(general_page_directory);
-        identity_page(general_page_directory, min(0x10000, max_page));
+        identity_page(general_page_directory, min(0x80000, max_page));
         load_pdt(general_page_directory);
 
         enable_paging();
