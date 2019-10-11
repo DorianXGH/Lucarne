@@ -12,6 +12,7 @@ GRUB bootloader
 0x00100000 : kernel
 0x00200000 : grub_info
 0x00300000 : stack
+0x00400000 : GDT
 
 Internal Page Memory Map
 cell : 32 bits -> 2 bit info
