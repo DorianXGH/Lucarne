@@ -15,26 +15,28 @@ extern struct memory_seg_des * memmap;
 extern int * nummem;
 extern int max_page;
 extern int last_inserted_page;
-
+extern struct gdt dt;
 
 void _start()
 {
     if (1) {
-        struct gdt dt;
-        struct gde * en = 0x9500;
-        dt.base = 0x9500;
-        dt.size = 0xFFFF; // 0-1 = 2 complement
-        add_to_gdt(&dt, 0, 0, 0, NULL);
-        add_to_gdt(&dt, 0, 0xFFFFF, 0, CODE);
-        add_to_gdt(&dt, 0, 0xFFFFF, 0, DATA);
+        struct gdt * edt = 0x9450;
+        struct gde * en  = 0x9500;
+        edt->base = 0x9500;
+        edt->size = 0xFFFF; // 0-1 = 2 complement
+        add_to_gdt(edt, 0, 0, 0, NULL, 0);
+        add_to_gdt(edt, 0, 0xFFFFF, 0, CODE, 1);
+        add_to_gdt(edt, 0, 0xFFFFF, 0, DATA, 2);
+        dt = *edt;
 
 
         memmap = (struct memory_seg_des *) 0x9104;
         nummem = (int *) 0x9100;
         last_inserted_page = 0;
+
         isr_install();
-        // load_gdt(&dt);
-        // reload_segs(8, 16);
+        load_gdt();
+
 
         default_screen.width        = 80;
         default_screen.height       = 25;

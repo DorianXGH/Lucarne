@@ -1,5 +1,5 @@
 #include "gdt.h"
-void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type)
+void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type, int ent)
 {
     struct gde * dt = (struct gde *) desc->base;
     struct gde new;
@@ -48,8 +48,6 @@ void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, e
             new.DC            = 0;
             break;
     }
-    dt[(desc->size) + 1] = new;
-    (desc->size)++;
+    dt[ent]       = new;
+    (desc->size) += 8;
 } /* add_to_gdt */
-
-void load_gdt(struct gdt * desc);

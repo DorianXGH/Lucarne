@@ -83,5 +83,8 @@ os-image.bin: bootsect.bin kernel.bin
 run: os-image.bin
 	qemu-system-x86_64 -monitor stdio -d cpu_reset -fda $<
 
+test: os-image.bin
+	bochs
+
 clean:
 	rm *.bin *.o *.dis

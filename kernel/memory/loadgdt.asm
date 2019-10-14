@@ -1,9 +1,11 @@
 global load_gdt
 global reload_segs
+extern dt
 
 load_gdt:
-    pop eax
-    lgdt [eax]
+    lgdt [dt]
+    ;jmp $
+    jmp 0x08:reload
     ret
 
 reload_segs:
@@ -12,10 +14,10 @@ reload_segs:
     push bx
     jmp 0x8:reload
 reload:
-    pop bx
-    mov ds, bx
-    mov ss, bx
-    mov es, bx
-    mov fs, bx
-    mov gs, bx
+    mov ebx, 0x10
+    mov ds, ebx
+    mov ss, ebx
+    mov es, ebx
+    mov fs, ebx
+    mov gs, ebx
     ret

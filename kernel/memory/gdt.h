@@ -33,10 +33,10 @@ struct gdt {
     uint32_t base : 32;
 } __attribute__((packed));
 
+struct gdt dt;
 
-void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type);
-extern void load_gdt(struct gdt * desc);
-extern void reload_segs(uint16_t code, uint16_t data);
+void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type, int);
+extern void load_gdt();
 
 
 #endif /* ifndef GDT_H */
