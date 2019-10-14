@@ -8,6 +8,7 @@
 #include "memory/pdt.h"
 #include "memory/pt.h"
 #include "memory/gdt.h"
+#include "multiboot/mb_info_block.h"
 
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
@@ -17,7 +18,7 @@ extern int max_page;
 extern int last_inserted_page;
 extern struct gdt dt;
 
-void _start()
+void _start(struct mb_info_block * mbblck)
 {
     if (1) {
         struct gdt * edt = 0x9450;
