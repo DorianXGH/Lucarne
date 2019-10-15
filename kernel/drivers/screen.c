@@ -1,6 +1,38 @@
 #include "screen.h"
 
-void putpixel(struct def_vga_screen * s, char c, int x, int y)
+void putpixel(struct def_vga_screen * s, uint32_t c, int x, int y)
+{
+    switch (s->type) {
+        case GRAPHIC:
+            putpixel_VGA(s, c & 0xFF, x, y);
+            break;
+        case VESA:
+            switch (s->bpp) {
+                case 24: { struct color_24 c24;
+                           c24.r = (c >> 16) & 0xFF;
+                           c24.g = (c >> 8) & 0xFF;
+                           c24.b = c & 0xFF;
+                           putpixel_24(s, c24, x, y);
+                }
+                break;
+                case 32: { struct color_32 c32;
+                           c32.r = (c >> 16) & 0xFF;
+                           c32.g = (c >> 8) & 0xFF;
+                           c32.b = c & 0xFF;
+                           c32.a = 0;
+                           putpixel_32(s, c32, x, y);
+                }
+                break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void putpixel_VGA(struct def_vga_screen * s, char c, int x, int y)
 { if (s->type == GRAPHIC) s->video_memory[s->width * y + x] = c; }
 
 void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y)

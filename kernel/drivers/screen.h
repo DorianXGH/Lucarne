@@ -38,7 +38,8 @@ void raw_putchar_wc(struct def_vga_screen * s, char c, char col, int x, int y);
 
 void raw_putchar(struct def_vga_screen * s, char c, int x, int y);
 
-void putpixel(struct def_vga_screen * s, char c, int x, int y);
+void putpixel_VGA(struct def_vga_screen * s, char c, int x, int y);
+void putpixel(struct def_vga_screen * s, uint32_t c, int x, int y);
 void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y);
 void putpixel_32(struct def_vga_screen * s, struct color_32 c, int x, int y);
 
