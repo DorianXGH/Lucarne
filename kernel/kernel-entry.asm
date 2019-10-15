@@ -1,6 +1,8 @@
 [bits 32]
 [extern _start] ; Define calling point. Must have same name as kernel.c 'main' function
 entry:
+    mov esp, 0x00300000
+    mov ebp, esp
     push ebx
     call _start ; Calls the C function. The linker will know where it is placed in memory
     jmp $
@@ -15,8 +17,8 @@ multiboot_header:
 %define BSSENDADDR  0
 %define ENTADDR  0
 %define GMODETYPE  0
-%define GWIDTH  1024
-%define GHEIGHT  728
+%define GWIDTH  1280
+%define GHEIGHT  720
 %define GDEPTH  24
 dd MAGIC
 dd MFLAGS

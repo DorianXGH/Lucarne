@@ -92,7 +92,7 @@ test: os-image.bin
 	bochs
 
 runiso: os.iso
-	qemu-system-x86_64 -monitor stdio -d int,cpu_reset -cdrom $<
+	qemu-system-x86_64 -monitor stdio -d cpu_reset -cdrom $<
 
 runisobochs: os.iso
 	bochs -f bochsrciso.txt

@@ -80,14 +80,13 @@ void _start(struct mb_info_block * mbblck)
         default_screen.cursory      = 0;
         default_screen.type         = TEXT;
         default_screen.video_memory = (char *) 0xB8000;
-
-        if (0) {
-            default_screen.width        = 320;
-            default_screen.height       = 200;
+        if (1) {
+            default_screen.width        = mbblck->framebuffer_width;
+            default_screen.height       = mbblck->framebuffer_height;
             default_screen.cursorx      = 0;
             default_screen.cursory      = 0;
             default_screen.type         = GRAPHIC;
-            default_screen.video_memory = (char *) 0xA0000;
+            default_screen.video_memory = (char *) mbblck->framebuffer_addr;
         }
 
         clear(&default_screen);
@@ -126,7 +125,7 @@ void _start(struct mb_info_block * mbblck)
 
             init_pdt(general_page_directory);
             putstring(&default_screen, "Starting ID Paging");
-            fast_identity_page(general_page_directory, min(0x10000, max_page));
+            fast_identity_page(general_page_directory, min(0x30000, max_page));
             load_pdt(general_page_directory);
             putstring(&default_screen, "Loaded PDT");
 
@@ -139,10 +138,33 @@ void _start(struct mb_info_block * mbblck)
 
             shell_invite(&default_shell);
         }
+        if (mbblck->flags & (1 << 12) && 1) {
+            // default_screen.video_memory[4] = 250;
+            char framebuffer_addr[10];
+            char framebuffer_type[10];
+            char framebuffer_width[10];
+            char framebuffer_height[10];
+            char framebuffer_bpp[10];
+            prntnum(mbblck_copy->framebuffer_addr, ' ', framebuffer_addr, 10);
+            prntnum(mbblck_copy->framebuffer_type, ' ', framebuffer_type, 10);
+            prntnum(mbblck_copy->framebuffer_width, ' ', framebuffer_width, 10);
+            prntnum(mbblck_copy->framebuffer_height, ' ', framebuffer_height, 10);
+            prntnum(mbblck_copy->framebuffer_bytesperpixel, ' ', framebuffer_bpp, 10);
+            putstring(&default_screen, framebuffer_addr);
+            putstring(&default_screen, "\n");
+            putstring(&default_screen, framebuffer_type);
+            putstring(&default_screen, "\n");
+            putstring(&default_screen, framebuffer_width);
+            putstring(&default_screen, "\n");
+            putstring(&default_screen, framebuffer_height);
+            putstring(&default_screen, "\n");
+            putstring(&default_screen, framebuffer_bpp);
+        }
         // for (int x = 50; x < 250; x++) {
         //     for (int y = 50; y < 150; y++) {
         //         putpixel(&default_screen, 10, x, y);
         //     }
         // }
+        for (int i = 0; i < 3000; i++) default_screen.video_memory[i] = 255;
     }
 } /* _start */
