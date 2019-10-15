@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 struct mb_info_block {
+    uint32_t flags;
     uint32_t mem_low;
     uint32_t mem_high;
     uint32_t boot_device;
@@ -30,6 +31,6 @@ struct mb_info_block {
     uint8_t  framebuffer_bytesperpixel;
     uint8_t  framebuffer_type;
     uint16_t color_info[6];
-};
+} __attribute__((packed));
 
 #endif /* ifndef MB_INFO_BLOCK */

@@ -1,6 +1,5 @@
 #include "memory_segment.h"
-void
-print_map(struct def_vga_screen * s)
+void print_map(struct def_vga_screen * s)
 {
     for (int i = 0; i < *nummem; i++) {
         char basenum[16];

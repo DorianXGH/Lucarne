@@ -7,7 +7,7 @@ entry:
 align 4
 multiboot_header:
 %define MAGIC 0x1BADB002
-%define MFLAGS  1000100b
+%define MFLAGS  000000110b
 %define CHECK  (-MAGIC-MFLAGS)
 %define HEADADDR  0
 %define LOADADDR  0
@@ -16,7 +16,7 @@ multiboot_header:
 %define ENTADDR  0
 %define GMODETYPE  0
 %define GWIDTH  1024
-%define GHEIGHT  720
+%define GHEIGHT  728
 %define GDEPTH  24
 dd MAGIC
 dd MFLAGS

@@ -63,16 +63,20 @@ void init_page_alloc()
     int diff        = max_page - (blocks << 3);
     uint8_t last    = 256 - (1 << (8 - diff));
     page_tracker[max_page - 1] = last;
+    putstring(&default_screen, "Reserving unuable memory\n");
     // reserve unusable memory
     for (int i = 0; i < *nummem; i++) {
         if (memmap[i].type != 1) {
+            putstring(&default_screen, "Found unusable memory\n");
             uint64_t a = memmap[i].base >> 12;                      // first unavailable page
             uint64_t b = (memmap[i].base + memmap[i].length) >> 12; // last unavailable page
             for (uint64_t j = a; j <= b; j++) {
                 preserve(j);
             }
+            putstring(&default_screen, "Reserved space\n");
         }
     }
+    putstring(&default_screen, "Reserved unuable memory\n");
     for (int i = 0xA0; i < 0x100; i++) {
         preserve(i);
     }
