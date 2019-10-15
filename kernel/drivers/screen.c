@@ -3,6 +3,25 @@
 void putpixel(struct def_vga_screen * s, char c, int x, int y)
 { if (s->type == GRAPHIC) s->video_memory[s->width * y + x] = c; }
 
+void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y)
+{
+    if (s->type == VESA && s->bpp == 24) {
+        s->video_memory[s->pitch * y + x * 3]     = c.r;
+        s->video_memory[s->pitch * y + x * 3 + 1] = c.g;
+        s->video_memory[s->pitch * y + x * 3 + 2] = c.b;
+    }
+}
+
+void putpixel_32(struct def_vga_screen * s, struct color_32 c, int x, int y)
+{
+    if (s->type == VESA && s->bpp == 32) {
+        s->video_memory[s->pitch * y + x * 4]     = c.r;
+        s->video_memory[s->pitch * y + x * 4 + 1] = c.g;
+        s->video_memory[s->pitch * y + x * 4 + 2] = c.b;
+        s->video_memory[s->pitch * y + x * 4 + 3] = c.a;
+    }
+}
+
 void raw_putchar_wc(struct def_vga_screen * s, char c, char col, int x, int y)
 {
     if (s->type == TEXT) {

@@ -81,12 +81,14 @@ void _start(struct mb_info_block * mbblck)
         default_screen.type         = TEXT;
         default_screen.video_memory = (char *) 0xB8000;
         if (1) {
-            default_screen.width        = mbblck->framebuffer_width;
-            default_screen.height       = mbblck->framebuffer_height;
+            default_screen.width        = mbblck_copy->framebuffer_width;
+            default_screen.height       = mbblck_copy->framebuffer_height;
+            default_screen.pitch        = mbblck_copy->framebuffer_pitch;
+            default_screen.bpp          = mbblck_copy->framebuffer_bytesperpixel;
             default_screen.cursorx      = 0;
             default_screen.cursory      = 0;
-            default_screen.type         = GRAPHIC;
-            default_screen.video_memory = (char *) mbblck->framebuffer_addr;
+            default_screen.type         = VESA;
+            default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
         }
 
         clear(&default_screen);
@@ -125,7 +127,7 @@ void _start(struct mb_info_block * mbblck)
 
             init_pdt(general_page_directory);
             putstring(&default_screen, "Starting ID Paging");
-            fast_identity_page(general_page_directory, min(0x30000, max_page));
+            fast_identity_page(general_page_directory, max_page);
             load_pdt(general_page_directory);
             putstring(&default_screen, "Loaded PDT");
 
@@ -165,6 +167,22 @@ void _start(struct mb_info_block * mbblck)
         //         putpixel(&default_screen, 10, x, y);
         //     }
         // }
-        for (int i = 0; i < 3000; i++) default_screen.video_memory[i] = 255;
+        int rs = 10000;
+        int x0 = 500;
+        int y0 = 300;
+        if (1) {
+            for (int x = 0; x < default_screen.width; x++) {
+                for (int y = 0; y < default_screen.height; y++) {
+                    int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
+                    if (ns <= rs) {
+                        struct color_24 c;
+                        c.r = ns / 50;
+                        c.g = ns / 50;
+                        c.b = ns / 50;
+                        putpixel_24(&default_screen, c, x, y);
+                    }
+                }
+            }
+        }
     }
 } /* _start */
