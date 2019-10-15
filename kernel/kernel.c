@@ -177,8 +177,14 @@ void _start(struct mb_info_block * mbblck)
                     if (ns <= rs) {
                         struct color_24 c;
                         c.r = ns / 50;
-                        c.g = ns / 50;
-                        c.b = ns / 50;
+                        c.g = 255 - ns / 50;
+                        c.b = 255 / (ns + 1);
+                        putpixel_24(&default_screen, c, x, y);
+                    } else {
+                        struct color_24 c;
+                        c.r = ns / 50;
+                        c.g = 255 / (ns + 1);
+                        c.b = 255 - ns / 50;
                         putpixel_24(&default_screen, c, x, y);
                     }
                 }
