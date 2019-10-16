@@ -166,7 +166,7 @@ void putsprite(struct def_vga_screen * s, struct sprite * spr, int x0, int y0)
 
     for (int i = 0; i < (spr->width * spr->height); i++) {
         if (sprbytespp == 4 && (bytespp == 3 || bytespp == 4) ) {
-            float alpha = spr->pixels[wherespr + 3];
+            float alpha = spr->pixels[wherespr + 3] / 255.;
             for (int j = 0; j < 3; j++) {
                 float v = (1. - alpha) * s->video_memory[where + j] + alpha * spr->pixels[wherespr + j];
                 s->video_memory[where + j] = (uint8_t) v;

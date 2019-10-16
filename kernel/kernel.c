@@ -127,7 +127,8 @@ void _start(struct mb_info_block * mbblck)
 
             init_pdt(general_page_directory);
             putstring(&default_screen, "Starting ID Paging");
-            fast_identity_page(general_page_directory, max_page);
+            fast_identity_page(general_page_directory, min(1024 * 1024, max_page));
+            putstring(&default_screen, "ID Paged");
             load_pdt(general_page_directory);
             putstring(&default_screen, "Loaded PDT");
 
@@ -161,33 +162,133 @@ void _start(struct mb_info_block * mbblck)
             putstring(&default_screen, framebuffer_height);
             putstring(&default_screen, "\n");
             putstring(&default_screen, framebuffer_bpp);
+            putstring(&default_screen, "\n");
         }
         // for (int x = 50; x < 250; x++) {
         //     for (int y = 50; y < 150; y++) {
         //         putpixel(&default_screen, 10, x, y);
         //     }
         // }
-        int rs = 10000;
-        int x0 = 500;
-        int y0 = 300;
         if (1) {
-            for (int x = 0; x < default_screen.width; x++) {
-                for (int y = 0; y < default_screen.height; y++) {
-                    int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
-                    if (ns <= rs) {
-                        struct color_24 c;
-                        c.r = ns / 50;
-                        c.g = 255 - ns / 50;
-                        c.b = 255 / (ns + 1);
-                        putpixel_24(&default_screen, c, x, y);
-                    } else {
-                        struct color_24 c;
-                        c.r = ns / 50;
-                        c.g = 255 / (ns + 1);
-                        c.b = 255 - ns / 50;
-                        putpixel_24(&default_screen, c, x, y);
+            int rs = 10000;
+            int x0 = 500;
+            int y0 = 300;
+            if (1) {
+                for (int x = 0; x < default_screen.width; x++) {
+                    for (int y = 0; y < default_screen.height; y++) {
+                        int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
+                        if (ns <= rs) {
+                            struct color_32 c;
+                            c.r = ns / 50;
+                            c.g = 255 - ns / 50;
+                            c.b = 255 / (ns + 1);
+
+                            putpixel_32(&default_screen, c, x, y);
+                        } else {
+                            struct color_32 c;
+                            c.r = ns / 50;
+                            c.g = 255 / (ns + 1);
+                            c.b = 255 - ns / 50;
+                            putpixel_32(&default_screen, c, x, y);
+                        }
                     }
                 }
+                int32_t testalpha[] = { 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF,
+                                        0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF, 0x99FFFFFF };
+                struct sprite talpha;
+                talpha.bpp    = 32;
+                talpha.height = 9;
+                talpha.width  = 90;
+                talpha.pixels = (uint8_t *) testalpha;
+                // putsprite(&default_screen, &talpha, 305, 305);
             }
         }
     }

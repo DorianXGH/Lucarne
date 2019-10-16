@@ -72,7 +72,6 @@ void init_page_alloc()
             uint64_t b = (memmap[i].base + memmap[i].length) >> 12; // last unavailable page
             for (uint64_t j = a; j <= b; j++) {
                 preserve(j);
-                putstring(&default_screen, ".");
             }
             putstring(&default_screen, "Reserved space\n");
         }
