@@ -51,6 +51,7 @@ void putpixel(struct def_vga_screen * s, uint32_t c, int x, int y);
 void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y);
 void putpixel_32(struct def_vga_screen * s, struct color_32 c, int x, int y);
 
+void putsprite(struct def_vga_screen * s, struct sprite * spr, int x, int y);
 
 void scrollup(struct def_vga_screen * s, int amount);
 void newline(struct def_vga_screen * s);
