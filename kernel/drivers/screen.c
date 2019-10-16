@@ -154,3 +154,28 @@ void putstring(struct def_vga_screen * s, char * str)
         i++;
     }
 }
+
+void putsprite(struct def_vga_screen * s, struct sprite * spr, int x0, int y0)
+{
+    int bytespp    = (s->bpp / 8);
+    int sprbytespp = (spr->bpp / 8);
+    int where      = y0 * s->pitch + x0 * bytespp;
+    int wherespr   = 0;
+    int y = 0;
+    int x = 0;
+
+    for (int i = 0; i < (spr->width * spr->height); i++) {
+        for (int j = 0; j < min(bytespp, sprbytespp); j++) {
+            s->video_memory[where + j] = spr->pixels[wherespr + j];
+        }
+        x++;
+        where    += bytespp;
+        wherespr += sprbytespp;
+        if (x >= spr->width) {
+            x = 0;
+            y++;
+            where    = (y0 + y) * s->pitch + x0 * bytespp;
+            wherespr = y * spr->width * sprbytespp;
+        }
+    }
+}

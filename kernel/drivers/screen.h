@@ -1,6 +1,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 #include <stdint.h>
+#include "../util.h"
 
 enum display_type {
     TEXT,
