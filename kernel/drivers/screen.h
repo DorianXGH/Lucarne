@@ -32,6 +32,14 @@ struct color_32 {
     uint8_t a;
 } __attribute__((packed));
 
+struct sprite {
+    uint32_t  bpp;
+    uint32_t  width;
+    uint32_t  height;
+    uint8_t * pixels;
+} __attribute__((packed));
+
+
 struct def_vga_screen default_screen;
 void remove_char(struct def_vga_screen * s);
 void raw_putchar_wc(struct def_vga_screen * s, char c, char col, int x, int y);
