@@ -32,10 +32,10 @@ void putpixel(struct def_vga_screen * s, uint32_t c, int x, int y)
     }
 }
 
-void putpixel_VGA(struct def_vga_screen * s, char c, int x, int y)
+inline void putpixel_VGA(struct def_vga_screen * s, char c, int x, int y)
 { if (s->type == GRAPHIC) s->video_memory[s->width * y + x] = c; }
 
-void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y)
+inline void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y)
 {
     if (s->type == VESA && s->bpp == 24) {
         s->video_memory[s->pitch * y + x * 3]     = c.r;
@@ -44,13 +44,10 @@ void putpixel_24(struct def_vga_screen * s, struct color_24 c, int x, int y)
     }
 }
 
-void putpixel_32(struct def_vga_screen * s, struct color_32 c, int x, int y)
+inline void putpixel_32(struct def_vga_screen * s, struct color_32 c, int x, int y)
 {
     if (s->type == VESA && s->bpp == 32) {
-        s->video_memory[s->pitch * y + x * 4]     = c.r;
-        s->video_memory[s->pitch * y + x * 4 + 1] = c.g;
-        s->video_memory[s->pitch * y + x * 4 + 2] = c.b;
-        s->video_memory[s->pitch * y + x * 4 + 3] = c.a;
+        *((uint32_t *) (s->video_memory + s->pitch * y + x * 4)) = *(uint32_t *) (&c);
     }
 }
 
@@ -166,9 +163,11 @@ void putsprite(struct def_vga_screen * s, struct sprite * spr, int x0, int y0)
 
     for (int i = 0; i < (spr->width * spr->height); i++) {
         if (sprbytespp == 4 && (bytespp == 3 || bytespp == 4) ) {
-            float alpha = spr->pixels[wherespr + 3] / 255.;
+            float alpha = (float) ((int32_t) spr->pixels[wherespr + 3]) / 255.01;
             for (int j = 0; j < 3; j++) {
-                float v = (1. - alpha) * s->video_memory[where + j] + alpha * spr->pixels[wherespr + j];
+                int or  = (uint8_t) s->video_memory[where + j];
+                int nw  = spr->pixels[wherespr + j];
+                float v = (1. - alpha) * or + alpha * nw;
                 s->video_memory[where + j] = (uint8_t) v;
             }
         } else {
@@ -186,4 +185,4 @@ void putsprite(struct def_vga_screen * s, struct sprite * spr, int x0, int y0)
             wherespr = y * spr->width * sprbytespp;
         }
     }
-}
+} /* putsprite */
