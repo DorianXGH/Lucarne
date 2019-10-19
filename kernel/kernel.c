@@ -90,6 +90,8 @@ void _start(struct mb_info_block * mbblck)
             default_screen.type         = VESA;
             default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
         }
+        struct def_vga_screen double_buffer = default_screen;
+        double_buffer.bpp = 32;
 
         clear(&default_screen);
         int k = 0;
@@ -171,40 +173,32 @@ void _start(struct mb_info_block * mbblck)
         // }
         if (1) {
             int rs = 10000;
-            int x0 = 500;
-            int y0 = 300;
+            int x0 = default_screen.width / 2;
+            int y0 = default_screen.height / 2;
             if (1) {
                 for (int x = 0; x < default_screen.width; x++) {
                     for (int y = 0; y < default_screen.height; y++) {
                         int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
-                        if (ns <= rs) {
-                            struct color_32 c;
-                            c.r = ns / 50;
-                            c.g = 255 - ns / 50;
-                            c.b = 255 / (ns + 1);
-
-                            putpixel_32(&default_screen, c, x, y);
-                        } else {
-                            struct color_32 c;
-                            c.r = ns / 50;
-                            c.g = 255 / (ns + 1);
-                            c.b = 255 - ns / 50;
-                            putpixel_32(&default_screen, c, x, y);
-                        }
+                        ns /= 3;
+                        struct color_32 c;
+                        c.r = ns / 50;
+                        c.g = 255 / (ns + 1);
+                        c.b = 255 - ns / 50;
+                        putpixel_32(&default_screen, c, x, y);
                     }
                 }
-                int numpix = 400 * 400;
-                int32_t testalpha[numpix];
+                int numpix = (default_screen.width - 50) * (default_screen.height - 50);
+                uint32_t * testalpha = (uint32_t *) (palloc() * 0x1000);
                 for (int r = 0; r < numpix; r++) {
-                    testalpha[r] = 0x55FFFFFF;
+                    testalpha[r] = 0xE0000000;
                 }
 
                 struct sprite talpha;
                 talpha.bpp    = 32;
-                talpha.height = 400;
-                talpha.width  = 400;
+                talpha.height = default_screen.height - 50;
+                talpha.width  = default_screen.width - 50;
                 talpha.pixels = (uint8_t *) testalpha;
-                putsprite(&default_screen, &talpha, 100, 100);
+                putsprite(&default_screen, &talpha, 25, 25);
             }
         }
     }
