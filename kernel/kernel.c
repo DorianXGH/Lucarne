@@ -9,6 +9,8 @@
 #include "memory/pt.h"
 #include "memory/gdt.h"
 #include "multiboot/mb_info_block.h"
+#include "fonts/font_desc.h"
+#include "fonts/font_basic.h"
 
 #define MULTIB
 #ifdef MULTIB
@@ -34,6 +36,7 @@ extern int * nummem;
 extern int max_page;
 extern int last_inserted_page;
 extern struct gdt dt;
+extern struct font_desc ft_basic;
 
 void _start(struct mb_info_block * mbblck)
 {
@@ -189,8 +192,9 @@ void _start(struct mb_info_block * mbblck)
                 }
                 int numpix = (default_screen.width - 50) * (default_screen.height - 50);
                 uint32_t * testalpha = (uint32_t *) (palloc() * 0x1000);
+
                 for (int r = 0; r < numpix; r++) {
-                    testalpha[r] = 0xE0000000;
+                    testalpha[r] = 0xFF000000;
                 }
 
                 struct sprite talpha;
@@ -199,6 +203,15 @@ void _start(struct mb_info_block * mbblck)
                 talpha.width  = default_screen.width - 50;
                 talpha.pixels = (uint8_t *) testalpha;
                 putsprite(&default_screen, &talpha, 25, 25);
+
+                ft_basic_install();
+
+                ft_print_char(&default_screen, &ft_basic, 'a', 30, 30, 0xFF00FF);
+                ft_print_char(&default_screen, &ft_basic, 'b', 38, 30, 0xFFFFFF);
+                ft_print_char(&default_screen, &ft_basic, 'q', 46, 30, 0xFFFFFF);
+                ft_print_char(&default_screen, &ft_basic, 'w', 30, 42, 0xFFFFFF);
+                ft_print_char(&default_screen, &ft_basic, 'w', 38, 42, 0xFFFFFF);
+                ft_print_char(&default_screen, &ft_basic, 'w', 46, 42, 0xFFFFFF);
             }
         }
     }

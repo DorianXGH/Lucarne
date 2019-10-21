@@ -17,8 +17,8 @@ multiboot_header:
 %define BSSENDADDR  0
 %define ENTADDR  0
 %define GMODETYPE  0
-%define GWIDTH  1920
-%define GHEIGHT  1080
+%define GWIDTH  1024
+%define GHEIGHT  768
 %define GDEPTH  32
 dd MAGIC
 dd MFLAGS

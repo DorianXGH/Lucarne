@@ -17,7 +17,8 @@ void ft_print_char(struct def_vga_screen * s, struct font_desc * ft, uint8_t c, 
     spr.width  = ft->charwidth;
     uint8_t * alphamap = ft->chars[ft->charmap[c]];
     for (int i = 0; i < spr.height * spr.width; i++) {
-        pixs[i] = color | (alphamap[i] << 24);
+        pixs[i] = color | (((uint32_t) alphamap[i]) << 24);
     }
+    spr.pixels = (uint8_t *) pixs;
     putsprite(s, &spr, x, y);
 }

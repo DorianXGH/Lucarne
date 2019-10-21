@@ -4,6 +4,7 @@
 #include "font_desc.h"
 
 struct font_desc ft_basic;
+
 void ft_basic_install();
 
 
