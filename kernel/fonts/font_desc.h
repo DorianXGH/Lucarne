@@ -9,7 +9,15 @@ struct font_desc {
     int       charwidth;
     int       charheight;
     int       numchar;
+    int       interchar_x;
+    int       interchar_y;
 };
+
+struct char_desc {
+    char               c;
+    uint32_t           color;
+    struct font_desc * desc;
+} __attribute__((packed));
 
 void ft_add_char(struct font_desc * ft, uint8_t * sp, uint8_t c);
 

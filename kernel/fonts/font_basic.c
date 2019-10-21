@@ -440,43 +440,45 @@ uint8_t ft_basic_exmark_data[] = { 0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
                                    0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
                                    0, 0, 0, 0xFF, 0xFF, 0, 0, 0 };
 
-uint8_t ft_basic_eqsign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
-                                   0, 0, 0,    0,    0,    0,    0, 0,
-                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                   0, 0, 0,    0,    0,    0,    0, 0,
-                                   0, 0, 0,    0,    0,    0,    0, 0,
-                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                   0, 0, 0,    0,    0,    0,    0, 0,
-                                   0, 0, 0,    0,    0,    0,    0, 0 };
+uint8_t ft_basic_eqsign_data[] = { 0, 0,    0,    0,    0,    0,    0,    0,
+                                   0, 0,    0,    0,    0,    0,    0,    0,
+                                   0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                   0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                   0, 0,    0,    0,    0,    0,    0,    0,
+                                   0, 0,    0,    0,    0,    0,    0,    0,
+                                   0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                   0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                   0, 0,    0,    0,    0,    0,    0,    0,
+                                   0, 0,    0,    0,    0,    0,    0,    0 };
 
-uint8_t ft_basic_plssign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
-                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                    0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0 };
+uint8_t ft_basic_plssign_data[] = { 0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                                    0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                                    0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                    0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                    0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                                    0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0 };
 
-uint8_t ft_basic_minsign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0,
-                                    0, 0, 0,    0,    0,    0,    0, 0 };
+uint8_t ft_basic_minsign_data[] = { 0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                    0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0,
+                                    0, 0,    0,    0,    0,    0,    0,    0 };
 void ft_basic_install()
 {
-    ft_basic.charheight = 10;
-    ft_basic.charwidth  = 8;
-    ft_basic.numchar    = 0;
+    ft_basic.charheight  = 10;
+    ft_basic.charwidth   = 8;
+    ft_basic.numchar     = 0;
+    ft_basic.interchar_x = 0;
+    ft_basic.interchar_y = 1;
 
     ft_add_char(&ft_basic, ft_basic_space_data, ' ');
     ft_add_char(&ft_basic, ft_basic_a_data, 'a');
@@ -521,4 +523,6 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_qmark_data, '?');
     ft_add_char(&ft_basic, ft_basic_exmark_data, '!');
     ft_add_char(&ft_basic, ft_basic_eqsign_data, '=');
+    ft_add_char(&ft_basic, ft_basic_plssign_data, '+');
+    ft_add_char(&ft_basic, ft_basic_minsign_data, '-');
 } /* ft_basic_install */

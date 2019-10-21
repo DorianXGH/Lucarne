@@ -210,8 +210,8 @@ void _start(struct mb_info_block * mbblck)
                 ft_print_char(&default_screen, &ft_basic, '?', 38, 30, 0xEE4444);
                 ft_print_char(&default_screen, &ft_basic, '!', 46, 30, 0xEE4444);
                 ft_print_char(&default_screen, &ft_basic, '=', 30, 42, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, 'u', 38, 42, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, 'c', 46, 42, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, '+', 38, 42, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, '-', 46, 42, 0xEE4444);
             }
         }
     }

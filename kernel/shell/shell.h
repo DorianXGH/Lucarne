@@ -1,11 +1,14 @@
 #ifndef SHELL_H
 #define SHELL_H
 #include "../drivers/screen.h"
+#include "../fonts/font_desc.h"
 
 struct def_shell {
     struct def_vga_screen * appointed_screen;
     char                    current_input[256];
     char                    current_index;
+    uint32_t                term_color;
+    struct font_desc *      font;
 };
 
 void putchar_sh(struct def_shell * sh, char c);
