@@ -206,12 +206,12 @@ void _start(struct mb_info_block * mbblck)
 
                 ft_basic_install();
 
-                ft_print_char(&default_screen, &ft_basic, 'a', 30, 30, 0xFF00FF);
-                ft_print_char(&default_screen, &ft_basic, 'b', 38, 30, 0xFFFFFF);
-                ft_print_char(&default_screen, &ft_basic, 'q', 46, 30, 0xFFFFFF);
-                ft_print_char(&default_screen, &ft_basic, 'w', 30, 42, 0xFFFFFF);
-                ft_print_char(&default_screen, &ft_basic, 'w', 38, 42, 0xFFFFFF);
-                ft_print_char(&default_screen, &ft_basic, 'w', 46, 42, 0xFFFFFF);
+                ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, '?', 38, 30, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, '!', 46, 30, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, '=', 30, 42, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, 'u', 38, 42, 0xEE4444);
+                ft_print_char(&default_screen, &ft_basic, 'c', 46, 42, 0xEE4444);
             }
         }
     }

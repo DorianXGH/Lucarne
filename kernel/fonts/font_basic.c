@@ -330,27 +330,148 @@ uint8_t ft_basic_2_data[] = { 0, 0,    0xFF, 0xFF, 0xFF, 0,    0, 0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0 };
 
-uint8_t ft_basic_3_data[] = { 0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
-                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
-                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
-                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
-                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
-                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
-                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
-                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
-                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0 };
+uint8_t ft_basic_3_data[] = { 0, 0,    0xFF, 0xFF, 0xFF, 0,    0, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0,    0, 0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0,    0, 0 };
 
-uint8_t ft_basic_4_data[] = { 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+uint8_t ft_basic_4_data[] = {  0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                               0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                               0, 0,    0xFF, 0xFF, 0xFF, 0,    0,    0,
+                               0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
+                               0, 0xFF, 0xFF, 0xFF, 0,    0,    0,    0,
+                               0, 0xFF, 0xFF, 0,    0,    0,    0,    0,
+                               0, 0xFF, 0xFF, 0,    0xFF, 0xFF, 0,    0,
+                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                               0, 0,    0,    0,    0xFF, 0xFF, 0,    0 };
+
+uint8_t ft_basic_5_data[] = { 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0,    0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0,    0,    0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0,    0,    0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0,    0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0 };
+
+uint8_t ft_basic_6_data[] = { 0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0,    0,    0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0 };
+
+uint8_t ft_basic_7_data[] = { 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
                               0, 0,    0,    0,    0xFF, 0xFF, 0,    0,
                               0, 0,    0,    0,    0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0xFF, 0,    0,
                               0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
                               0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
                               0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
                               0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0,    0,    0,    0 };
+
+uint8_t ft_basic_8_data[] = { 0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0 };
+
+uint8_t ft_basic_9_data[] = { 0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
-                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0 };
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0,    0,    0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0 };
+
+uint8_t ft_basic_dot_data[] = { 0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0,    0,    0, 0, 0,
+                                0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                0, 0, 0, 0xFF, 0xFF, 0, 0, 0 };
+
+uint8_t ft_basic_qmark_data[] = { 0, 0, 0,    0xFF, 0xFF, 0,    0,    0,
+                                  0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                                  0, 0, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                                  0, 0, 0,    0,    0,    0xFF, 0xFF, 0,
+                                  0, 0, 0,    0,    0,    0xFF, 0xFF, 0,
+                                  0, 0, 0,    0xFF, 0xFF, 0xFF, 0,    0,
+                                  0, 0, 0,    0xFF, 0xFF, 0,    0,    0,
+                                  0, 0, 0,    0,    0,    0,    0,    0,
+                                  0, 0, 0,    0xFF, 0xFF, 0,    0,    0,
+                                  0, 0, 0,    0xFF, 0xFF, 0,    0,    0 };
+
+uint8_t ft_basic_exmark_data[] = { 0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0,    0,    0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0,
+                                   0, 0, 0, 0xFF, 0xFF, 0, 0, 0 };
+
+uint8_t ft_basic_eqsign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
+                                   0, 0, 0,    0,    0,    0,    0, 0,
+                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                   0, 0, 0,    0,    0,    0,    0, 0,
+                                   0, 0, 0,    0,    0,    0,    0, 0,
+                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                   0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                   0, 0, 0,    0,    0,    0,    0, 0,
+                                   0, 0, 0,    0,    0,    0,    0, 0 };
+
+uint8_t ft_basic_plssign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                    0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0 };
+
+uint8_t ft_basic_minsign_data[] = { 0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                    0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0,
+                                    0, 0, 0,    0,    0,    0,    0, 0 };
 void ft_basic_install()
 {
     ft_basic.charheight = 10;
@@ -389,4 +510,15 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_1_data, '1');
     ft_add_char(&ft_basic, ft_basic_2_data, '2');
     ft_add_char(&ft_basic, ft_basic_3_data, '3');
+    ft_add_char(&ft_basic, ft_basic_4_data, '4');
+    ft_add_char(&ft_basic, ft_basic_5_data, '5');
+    ft_add_char(&ft_basic, ft_basic_6_data, '6');
+    ft_add_char(&ft_basic, ft_basic_7_data, '7');
+    ft_add_char(&ft_basic, ft_basic_8_data, '8');
+    ft_add_char(&ft_basic, ft_basic_9_data, '9');
+
+    ft_add_char(&ft_basic, ft_basic_dot_data, '.');
+    ft_add_char(&ft_basic, ft_basic_qmark_data, '?');
+    ft_add_char(&ft_basic, ft_basic_exmark_data, '!');
+    ft_add_char(&ft_basic, ft_basic_eqsign_data, '=');
 } /* ft_basic_install */
