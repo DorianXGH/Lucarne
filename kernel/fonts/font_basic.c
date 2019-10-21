@@ -1,4 +1,16 @@
 #include "font_basic.h"
+
+uint8_t ft_basic_space_data[] = { 0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 0, 0, 0, 0, 0, 0 };
+
 uint8_t ft_basic_a_data[] = { 0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
                               0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
                               0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
@@ -284,13 +296,68 @@ uint8_t ft_basic_z_data[] = { 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
                               0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
                               0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0 };
+
+uint8_t ft_basic_0_data[] = { 0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0,    0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0,    0,    0xFF, 0xFF, 0,
+                              0, 0,    0xFF, 0xFF, 0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0 };
+
+uint8_t ft_basic_1_data[] = { 0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0 };
+
+uint8_t ft_basic_2_data[] = { 0, 0,    0xFF, 0xFF, 0xFF, 0,    0, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0xFF, 0xFF, 0,    0xFF, 0xFF, 0, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0,    0xFF, 0xFF, 0,    0,    0, 0,
+                              0, 0,    0xFF, 0xFF, 0,    0,    0, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0 };
+
+uint8_t ft_basic_3_data[] = { 0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0,
+                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0, 0,    0,    0xFF, 0xFF, 0, 0,
+                              0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0,
+                              0, 0, 0,    0xFF, 0xFF, 0,    0, 0 };
+
+uint8_t ft_basic_4_data[] = { 0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0,    0xFF, 0xFF, 0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0,    0xFF, 0xFF, 0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
+                              0, 0,    0xFF, 0xFF, 0,    0,    0,    0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0,
+                              0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0 };
 void ft_basic_install()
 {
     ft_basic.charheight = 10;
     ft_basic.charwidth  = 8;
     ft_basic.numchar    = 0;
 
-
+    ft_add_char(&ft_basic, ft_basic_space_data, ' ');
     ft_add_char(&ft_basic, ft_basic_a_data, 'a');
     ft_add_char(&ft_basic, ft_basic_b_data, 'b');
     ft_add_char(&ft_basic, ft_basic_c_data, 'c');
@@ -317,4 +384,9 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_x_data, 'x');
     ft_add_char(&ft_basic, ft_basic_y_data, 'y');
     ft_add_char(&ft_basic, ft_basic_z_data, 'z');
+    // numeric
+    ft_add_char(&ft_basic, ft_basic_0_data, '0');
+    ft_add_char(&ft_basic, ft_basic_1_data, '1');
+    ft_add_char(&ft_basic, ft_basic_2_data, '2');
+    ft_add_char(&ft_basic, ft_basic_3_data, '3');
 } /* ft_basic_install */
