@@ -105,12 +105,7 @@ void _start(struct mb_info_block * mbblck)
         }
         #endif
 
-        default_shell.appointed_screen = &default_screen;
-        for (int i = 0; i < 256; i++) {
-            default_shell.current_input[i] = 0;
-        }
-        default_shell.current_index = 0;
-        putstring(&default_screen, "Shell Loaded\n");
+
         putstring(&default_screen, "Initializing Keyboard\n");
 
         asm volatile ("sti");
@@ -120,7 +115,13 @@ void _start(struct mb_info_block * mbblck)
         if (1) {
             init_page_alloc();
             putstring(&default_screen, "Init page allocator\n");
-            for (int i = 0; i < 0x00500; i++) {
+            for (int i = 0; i < 0x0500; i++) {
+                preserve(i);
+            }
+            for (int i = (uint32_t) default_screen.video_memory / 0x1000; // reserve video mem
+              i < ((uint32_t) default_screen.video_memory + default_screen.pitch * default_screen.width) / 0x1000 + 1;
+              i++)
+            {
                 preserve(i);
             }
             find_next_free();
@@ -128,11 +129,11 @@ void _start(struct mb_info_block * mbblck)
 
 
             int gp_dir_page = palloc();
-            void * general_page_directory = (void *) (gp_dir_page * 0x1000);
+            void * general_page_directory = (void *) (gp_dir_page * 0x1000); // finding a page to store de PDT
 
             init_pdt(general_page_directory);
             putstring(&default_screen, "Starting ID Paging");
-            fast_identity_page(general_page_directory, min(1024 * 1024, max_page));
+            fast_identity_page(general_page_directory, min(1024 * 1024, max_page)); // id page
             putstring(&default_screen, "ID Paged");
             load_pdt(general_page_directory);
             putstring(&default_screen, "Loaded PDT");
@@ -146,7 +147,7 @@ void _start(struct mb_info_block * mbblck)
 
             shell_invite(&default_shell);
         }
-        if (mbblck->flags & (1 << 12) && 1) {
+        if (mbblck->flags & (1 << 12) && 1) { // if we are in VESA mode
             // default_screen.video_memory[4] = 250;
             char framebuffer_addr[10];
             char framebuffer_type[10];
@@ -175,7 +176,7 @@ void _start(struct mb_info_block * mbblck)
         //     }
         // }
         if (1) {
-            int rs = 10000;
+            int rs = 10000; // test of screen functions : destined to be deleted
             int x0 = default_screen.width / 2;
             int y0 = default_screen.height / 2;
             if (1) {
@@ -191,7 +192,7 @@ void _start(struct mb_info_block * mbblck)
                     }
                 }
                 int numpix = (default_screen.width - 50) * (default_screen.height - 50);
-                uint32_t * testalpha = (uint32_t *) (palloc() * 0x1000);
+                uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
 
                 for (int r = 0; r < numpix; r++) {
                     testalpha[r] = 0xFF000000;
@@ -204,6 +205,21 @@ void _start(struct mb_info_block * mbblck)
                 talpha.pixels = (uint8_t *) testalpha;
                 putsprite(&default_screen, &talpha, 25, 25);
 
+                int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
+                uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+
+                for (int r = 0; r < numpix_2; r++) {
+                    testalpha[r] = 0xFFFF0000;
+                }
+
+                struct sprite talpha_2;
+                talpha_2.bpp    = 32;
+                talpha_2.height = default_screen.height - 100;
+                talpha_2.width  = default_screen.width - 100;
+                talpha_2.pixels = (uint8_t *) testalpha_2;
+                putsprite(&default_screen, &talpha_2, 50, 50);
+                putsprite(&default_screen, &talpha, 25, 25);
+
                 ft_basic_install();
 
                 ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
@@ -212,6 +228,13 @@ void _start(struct mb_info_block * mbblck)
                 ft_print_char(&default_screen, &ft_basic, '=', 30, 42, 0xEE4444);
                 ft_print_char(&default_screen, &ft_basic, '+', 38, 42, 0xEE4444);
                 ft_print_char(&default_screen, &ft_basic, '-', 46, 42, 0xEE4444);
+
+                default_shell.appointed_screen = &default_screen;
+                for (int i = 0; i < 256; i++) {
+                    default_shell.current_input[i] = 0;
+                }
+                default_shell.current_index = 0;
+                putstring(&default_screen, "Shell Loaded\n");
             }
         }
     }

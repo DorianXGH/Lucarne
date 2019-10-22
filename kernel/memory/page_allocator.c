@@ -14,6 +14,34 @@ int palloc()
     return p;
 }
 
+int palloc_n(int size)
+{
+    // putchar(&default_screen, '.');
+    int k      = next_available;
+    bool found = false;
+
+    while (!found && k < max_page) {
+        while (pstatus(k)) {
+            k++;
+        }
+        int p = k;
+        while (!pstatus(p) && (p - k <= size) && p < max_page) {
+            p++;
+        }
+        found |= p - k <= size;
+        k      = p;
+    }
+    if (found) {
+        for (int p = 0; p < size; p++) {
+            preserve(k + p);
+            putpixel(&default_screen, 0xFFFFFF, 1 + k % 10, p);
+        }
+        putpixel(&default_screen, 0xFFFFFF, 0, 0);
+    }
+    find_next_free();
+    return k;
+}
+
 void find_next_free()
 {
     int p = next_available;

@@ -145,5 +145,6 @@ void isr_handler(registers_t r)
     putstring(&default_screen, s);
     newline(&default_screen);
     putstring(&default_screen, exception_messages[r.int_no]);
+    putpixel(&default_screen, r.int_no, 1, 0);
     newline(&default_screen);
 }

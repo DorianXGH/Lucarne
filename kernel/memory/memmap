@@ -15,6 +15,8 @@ GRUB bootloader
 0x00300000 : stack
 0x00400000 : GDT
 0x00410000 : PDT
+0x00A00000 : kernel_malloc_segments
+
 
 Internal Page Memory Map
 cell : 32 bits -> 2 bit info
