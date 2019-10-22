@@ -29,7 +29,7 @@ int palloc_n(int size)
             p++;
         }
         found |= p - k <= size;
-        k      = p;
+        if (!found) k = p;
     }
     if (found) {
         for (int p = 0; p < size; p++) {
@@ -86,26 +86,24 @@ void init_page_alloc()
 
     maxmem += memmap[*nummem - 1].base + memmap[*nummem - 1].length;
 
-    max_page = maxmem >> 12;         // 4kb blocks
-    uint64_t blocks = max_page >> 3; // number of blocks for the map
-    int diff        = max_page - (blocks << 3);
-    uint8_t last    = 256 - (1 << (8 - diff));
-    page_tracker[max_page - 1] = last;
-    putstring(&default_screen, "Reserving unuable memory\n");
+    max_page = maxmem >> 12;             // 4kb blocks
+    uint64_t blocks = max_page >> 3 + 1; // number of blocks for the map
+    for (int k = 0; k < blocks; k++) {
+        page_tracker[k] = 0xFF;
+    }
+
+    putstring(&default_screen, "Reserving unusable memory\n");
     // reserve unusable memory
     for (int i = 0; i < *nummem; i++) {
-        if (memmap[i].type != 1) {
-            putstring(&default_screen, "Found unusable memory\n");
-            uint64_t a = memmap[i].base >> 12;                      // first unavailable page
-            uint64_t b = (memmap[i].base + memmap[i].length) >> 12; // last unavailable page
+        if (memmap[i].type == 1) {
+            putstring(&default_screen, "Found usable memory\n");
+            uint64_t a = memmap[i].base >> 12 + 1;                  // first available page
+            uint64_t b = (memmap[i].base + memmap[i].length) >> 12; // last available page
             for (uint64_t j = a; j <= b; j++) {
-                preserve(j);
+                pfree(j);
             }
-            putstring(&default_screen, "Reserved space\n");
         }
     }
+    next_available = 0;
     putstring(&default_screen, "Reserved unuable memory\n");
-    for (int i = 0xA0; i < 0x100; i++) {
-        preserve(i);
-    }
 }

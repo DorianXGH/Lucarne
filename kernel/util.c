@@ -68,7 +68,7 @@ void prntnum(uint64_t n, char sign, char * outbuf, int size)
     int j = 0;
 
     do {
-        outbuf[i % size] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[n % 16];
+        outbuf[i % size] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[n % 16];
         i--;
         n = n >> 4;
     } while (n > 0);

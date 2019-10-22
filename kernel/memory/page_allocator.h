@@ -10,9 +10,10 @@ extern int * nummem;
 
 int next_available;
 int max_page;
-uint8_t page_tracker[0xFFFF];
+uint8_t * page_tracker;
 
 int palloc();
+int palloc_n(int);
 void pfree(int pagenum);
 void preserve(int pagenum);
 void init_page_alloc();

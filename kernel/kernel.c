@@ -14,11 +14,12 @@
 
 #define MULTIB
 #ifdef MULTIB
-# define GDT_PTR_ADDR 0x00400000
-# define GDT_ADDR     0x00401000
-# define MMAP_PTR     0x00211000
-# define MMAP_LEN_PTR 0x00210000
-# define MB_BLCK_ADDR 0x00200000
+# define GDT_PTR_ADDR     0x00400000
+# define GDT_ADDR         0x00401000
+# define MMAP_PTR         0x00211000
+# define MMAP_LEN_PTR     0x00210000
+# define MB_BLCK_ADDR     0x00200000
+# define PAGETRACKER_ADDR 0x00B00000
 #endif
 #ifndef MULTIB
 # define GDT_PTR_ADDR 0x9450
@@ -37,6 +38,7 @@ extern int max_page;
 extern int last_inserted_page;
 extern struct gdt dt;
 extern struct font_desc ft_basic;
+extern uint8_t * page_tracker;
 
 void _start(struct mb_info_block * mbblck)
 {
@@ -49,6 +51,7 @@ void _start(struct mb_info_block * mbblck)
         add_to_gdt(edt, 0, 0xFFFFF, 0, DATA, 2);
         dt = *edt;
         #ifdef MULTIB
+
         struct mb_info_block * mbblck_copy = (struct mb_info_block *) MB_BLCK_ADDR;
         *mbblck_copy = *mbblck;
 
@@ -113,6 +116,7 @@ void _start(struct mb_info_block * mbblck)
         // init_timer(10);
 
         if (1) {
+            page_tracker = PAGETRACKER_ADDR;
             init_page_alloc();
             putstring(&default_screen, "Init page allocator\n");
             for (int i = 0; i < 0x0500; i++) {
@@ -176,6 +180,7 @@ void _start(struct mb_info_block * mbblck)
         //     }
         // }
         if (1) {
+            ft_basic_install();
             int rs = 10000; // test of screen functions : destined to be deleted
             int x0 = default_screen.width / 2;
             int y0 = default_screen.height / 2;
@@ -188,11 +193,14 @@ void _start(struct mb_info_block * mbblck)
                         c.r = ns / 50;
                         c.g = 255 / (ns + 1);
                         c.b = 255 - ns / 50;
-                        putpixel_32(&default_screen, c, x, y);
+                        putpixel(&default_screen, 0xFFFFFF, x, y);
                     }
                 }
-                int numpix = (default_screen.width - 50) * (default_screen.height - 50);
+                uint32_t numpix      = (default_screen.width - 50) * (default_screen.height - 50);
                 uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+                char ptrstr[16];
+                prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
+
 
                 for (int r = 0; r < numpix; r++) {
                     testalpha[r] = 0xFF000000;
@@ -205,22 +213,25 @@ void _start(struct mb_info_block * mbblck)
                 talpha.pixels = (uint8_t *) testalpha;
                 putsprite(&default_screen, &talpha, 25, 25);
 
-                int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
-                uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
 
-                for (int r = 0; r < numpix_2; r++) {
-                    testalpha[r] = 0xFFFF0000;
+                for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
+                    ft_print_char(&default_screen, &ft_basic, ptrstr[k], 30 + k * 8, 54, 0xFFFFFF);
                 }
+                // int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
+                // uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+                //
+                // for (int r = 0; r < numpix_2; r++) {
+                //     testalpha[r] = 0xFFFF0000;
+                // }
+                //
+                // struct sprite talpha_2;
+                // talpha_2.bpp    = 32;
+                // talpha_2.height = default_screen.height - 100;
+                // talpha_2.width  = default_screen.width - 100;
+                // talpha_2.pixels = (uint8_t *) testalpha_2;
+                // putsprite(&default_screen, &talpha_2, 50, 50);
+                // putsprite(&default_screen, &talpha, 25, 25);
 
-                struct sprite talpha_2;
-                talpha_2.bpp    = 32;
-                talpha_2.height = default_screen.height - 100;
-                talpha_2.width  = default_screen.width - 100;
-                talpha_2.pixels = (uint8_t *) testalpha_2;
-                putsprite(&default_screen, &talpha_2, 50, 50);
-                putsprite(&default_screen, &talpha, 25, 25);
-
-                ft_basic_install();
 
                 ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
                 ft_print_char(&default_screen, &ft_basic, '?', 38, 30, 0xEE4444);
