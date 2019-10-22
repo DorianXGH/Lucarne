@@ -21,14 +21,14 @@ int palloc_n(int size)
     bool found = false;
 
     while (!found && k < max_page) {
-        while (pstatus(k)) {
+        while (pstatus(k) && k < max_page) {
             k++;
         }
         int p = k;
         while (!pstatus(p) && (p - k <= size) && p < max_page) {
             p++;
         }
-        found |= p - k <= size;
+        found |= p - k >= size;
         if (!found) k = p;
     }
     if (found) {

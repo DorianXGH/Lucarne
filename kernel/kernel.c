@@ -122,6 +122,9 @@ void _start(struct mb_info_block * mbblck)
             for (int i = 0; i < 0x0500; i++) {
                 preserve(i);
             }
+            for (int i = PAGETRACKER_ADDR / 0x1000; i < ((PAGETRACKER_ADDR + 0x20000) / 0x1000) + 1; i++) {
+                preserve(i);
+            }
             for (int i = (uint32_t) default_screen.video_memory / 0x1000; // reserve video mem
               i < ((uint32_t) default_screen.video_memory + default_screen.pitch * default_screen.width) / 0x1000 + 1;
               i++)
@@ -188,12 +191,12 @@ void _start(struct mb_info_block * mbblck)
                 for (int x = 0; x < default_screen.width; x++) {
                     for (int y = 0; y < default_screen.height; y++) {
                         int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
-                        ns /= 3;
+                        ns /= 10;
                         struct color_32 c;
                         c.r = ns / 50;
                         c.g = 255 / (ns + 1);
                         c.b = 255 - ns / 50;
-                        putpixel(&default_screen, 0xFFFFFF, x, y);
+                        putpixel_32(&default_screen, c, x, y);
                     }
                 }
                 uint32_t numpix      = (default_screen.width - 50) * (default_screen.height - 50);
@@ -202,35 +205,39 @@ void _start(struct mb_info_block * mbblck)
                 prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
 
 
-                for (int r = 0; r < numpix; r++) {
-                    testalpha[r] = 0xFF000000;
-                }
-
                 struct sprite talpha;
                 talpha.bpp    = 32;
                 talpha.height = default_screen.height - 50;
                 talpha.width  = default_screen.width - 50;
                 talpha.pixels = (uint8_t *) testalpha;
+
+                for (int r = 0; r < numpix; r++) {
+                    int y = r / talpha.width - 350;
+                    int x = r % talpha.width - 500;
+                    if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;
+                }
+
                 putsprite(&default_screen, &talpha, 25, 25);
 
 
                 for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
                     ft_print_char(&default_screen, &ft_basic, ptrstr[k], 30 + k * 8, 54, 0xFFFFFF);
                 }
-                // int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
-                // uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
-                //
-                // for (int r = 0; r < numpix_2; r++) {
-                //     testalpha[r] = 0xFFFF0000;
-                // }
-                //
-                // struct sprite talpha_2;
-                // talpha_2.bpp    = 32;
-                // talpha_2.height = default_screen.height - 100;
-                // talpha_2.width  = default_screen.width - 100;
-                // talpha_2.pixels = (uint8_t *) testalpha_2;
-                // putsprite(&default_screen, &talpha_2, 50, 50);
-                // putsprite(&default_screen, &talpha, 25, 25);
+
+                int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
+                uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+
+                for (int r = 0; r < numpix_2; r++) {
+                    testalpha_2[r] = 0xFFFF0000;
+                }
+
+                struct sprite talpha_2;
+                talpha_2.bpp    = 32;
+                talpha_2.height = default_screen.height - 100;
+                talpha_2.width  = default_screen.width - 100;
+                talpha_2.pixels = (uint8_t *) testalpha_2;
+                putsprite(&default_screen, &talpha_2, 50, 50);
+                putsprite(&default_screen, &talpha, 25, 25);
 
 
                 ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
