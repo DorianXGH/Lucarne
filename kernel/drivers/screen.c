@@ -186,3 +186,23 @@ void putsprite(struct def_vga_screen * s, struct sprite * spr, int x0, int y0)
         }
     }
 } /* putsprite */
+
+void set_screen_alpha(struct def_vga_screen * s, uint8_t a)
+{
+    if (s->bpp == 32 && s->type == VESA) {
+        for (uint32_t i = 0; i < s->height * s->pitch; i++) {
+            s->video_memory[i] |= a << 24;
+        }
+    }
+}
+
+void blit(struct def_vga_screen * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0)
+{
+    struct sprite spr;
+
+    spr.bpp    = src->bpp;
+    spr.width  = src->width;
+    spr.height = src->height;
+    spr.pixels = src->video_memory;
+    putsprite(dest, &spr, x0, y0);
+}
