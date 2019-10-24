@@ -34,9 +34,7 @@ int palloc_n(int size)
     if (found) {
         for (int p = 0; p < size; p++) {
             preserve(k + p);
-            putpixel(&default_screen, 0xFFFFFF, 1 + k % 10, p);
         }
-        putpixel(&default_screen, 0xFFFFFF, 0, 0);
     }
     find_next_free();
     return k;
