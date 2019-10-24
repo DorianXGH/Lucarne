@@ -71,9 +71,11 @@ util.o: kernel/util.c
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 fonts/font_desc.o: kernel/fonts/font_desc.c
+	mkdir fonts
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 fonts/font_basic.o: kernel/fonts/font_basic.c
+	mkdir fonts
 	$(utilpath)/$(gccargs) -c $< -o $@
 
 
