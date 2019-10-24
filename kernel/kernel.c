@@ -40,6 +40,15 @@ extern struct gdt dt;
 extern struct font_desc ft_basic;
 extern uint8_t * page_tracker;
 
+void helloworld() {
+
+	char str[] = "hello world!   $  $    $$$   $$$$$";
+	for(int i=0; i<sizeof(str)/sizeof(char); i++) {
+
+                ft_print_char(&default_screen, &ft_basic, str[i], 40+8*i, 50, 0xEC15EF);
+	}
+}
+
 void _start(struct mb_info_block * mbblck)
 {
     if (1) {
@@ -227,25 +236,19 @@ void _start(struct mb_info_block * mbblck)
                 int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
                 uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
 
-                for (int r = 0; r < numpix_2; r++) {
+                /*for (int r = 0; r < numpix_2; r++) {
                     testalpha_2[r] = 0xFFFF0000;
-                }
+                }*/
 
-                struct sprite talpha_2;
+                /*struct sprite talpha_2;
                 talpha_2.bpp    = 32;
                 talpha_2.height = default_screen.height - 100;
                 talpha_2.width  = default_screen.width - 100;
                 talpha_2.pixels = (uint8_t *) testalpha_2;
                 putsprite(&default_screen, &talpha_2, 50, 50);
                 // putsprite(&default_screen, &talpha, 25, 25);
-
-
-                ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, '?', 38, 30, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, '!', 46, 30, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, '=', 30, 42, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, '+', 38, 42, 0xEE4444);
-                ft_print_char(&default_screen, &ft_basic, '-', 46, 42, 0xEE4444);
+				*/
+				helloworld();
 
                 default_shell.appointed_screen = &default_screen;
                 for (int i = 0; i < 256; i++) {
