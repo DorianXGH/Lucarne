@@ -221,7 +221,7 @@ void _start(struct mb_info_block * mbblck)
 
 
                 for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
-                    ft_print_char(&default_screen, &ft_basic, ptrstr[k], 30 + k * 8, 54, 0xFFFFFF);
+                    ft_print_char(&default_screen, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
                 }
 
                 int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
@@ -237,7 +237,7 @@ void _start(struct mb_info_block * mbblck)
                 talpha_2.width  = default_screen.width - 100;
                 talpha_2.pixels = (uint8_t *) testalpha_2;
                 putsprite(&default_screen, &talpha_2, 50, 50);
-                putsprite(&default_screen, &talpha, 25, 25);
+                // putsprite(&default_screen, &talpha, 25, 25);
 
 
                 ft_print_char(&default_screen, &ft_basic, '.', 30, 30, 0xEE4444);
