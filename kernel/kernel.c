@@ -40,12 +40,12 @@ extern struct gdt dt;
 extern struct font_desc ft_basic;
 extern uint8_t * page_tracker;
 
-void helloworld() {
+void helloworld(struct def_vga_screen *virt_screen) {
 
 	char str[] = "hello world!   $  $    $$$   $$$$$";
 	for(int i=0; i<sizeof(str)/sizeof(char); i++) {
 
-                ft_print_char(&default_screen, &ft_basic, str[i], 40+8*i, 50, 0xEC15EF);
+                ft_print_char(virt_screen, &ft_basic, str[i], 40+8*i, 50, 0xEC15EF);
 	}
 }
 
@@ -193,22 +193,28 @@ void _start(struct mb_info_block * mbblck)
         // }
         if (1) {
             ft_basic_install();
+            struct def_vga_screen virt_scr = default_screen;
+            uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000);
+            virt_scr.video_memory = virt_frb;
+
+
             int rs = 10000; // test of screen functions : destined to be deleted
-            int x0 = default_screen.width / 2;
-            int y0 = default_screen.height / 2;
+            int x0 = virt_scr.width / 2;
+            int y0 = virt_scr.height / 2;
             if (1) {
-                for (int x = 0; x < default_screen.width; x++) {
-                    for (int y = 0; y < default_screen.height; y++) {
+                for (int x = 0; x < virt_scr.width; x++) {
+                    for (int y = 0; y < virt_scr.height; y++) {
                         int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
                         ns /= 10;
                         struct color_32 c;
+                        c.a = 0xFF;
                         c.r = ns / 50;
                         c.g = 255 / (ns + 1);
                         c.b = 255 - ns / 50;
-                        putpixel_32(&default_screen, c, x, y);
+                        putpixel_32(&virt_scr, c, x, y);
                     }
                 }
-                uint32_t numpix      = (default_screen.width - 50) * (default_screen.height - 50);
+                uint32_t numpix      = (virt_scr.width - 50) * (virt_scr.height - 50);
                 uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
                 char ptrstr[16];
                 prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
@@ -216,8 +222,8 @@ void _start(struct mb_info_block * mbblck)
 
                 struct sprite talpha;
                 talpha.bpp    = 32;
-                talpha.height = default_screen.height - 50;
-                talpha.width  = default_screen.width - 50;
+                talpha.height = virt_scr.height - 50;
+                talpha.width  = virt_scr.width - 50;
                 talpha.pixels = (uint8_t *) testalpha;
 
                 for (int r = 0; r < numpix; r++) {
@@ -226,14 +232,14 @@ void _start(struct mb_info_block * mbblck)
                     if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;
                 }
 
-                putsprite(&default_screen, &talpha, 25, 25);
+                putsprite(&virt_scr, &talpha, 25, 25);
 
 
                 for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
-                    ft_print_char(&default_screen, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
+                    ft_print_char(&virt_scr, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
                 }
 
-                int numpix_2 = (default_screen.width - 100) * (default_screen.height - 100);
+                int numpix_2 = (virt_scr.width - 100) * (virt_scr.height - 100);
                 uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
 
                 /*for (int r = 0; r < numpix_2; r++) {
@@ -242,13 +248,19 @@ void _start(struct mb_info_block * mbblck)
 
                 /*struct sprite talpha_2;
                 talpha_2.bpp    = 32;
-                talpha_2.height = default_screen.height - 100;
-                talpha_2.width  = default_screen.width - 100;
+                talpha_2.height = virt_scr.height - 100;
+                talpha_2.width  = virt_scr.width - 100;
                 talpha_2.pixels = (uint8_t *) testalpha_2;
                 putsprite(&default_screen, &talpha_2, 50, 50);
                 // putsprite(&default_screen, &talpha, 25, 25);
-				*/
-				helloworld();
+				
+                putsprite(&virt_scr, &talpha_2, 50, 50);*/
+                putsprite(&virt_scr, &talpha, 25, 25);
+
+				helloworld(&virt_scr);
+
+                set_screen_alpha(&virt_scr, 0xFF);
+                blit(&virt_scr, &default_screen, 0, 0);
 
                 default_shell.appointed_screen = &default_screen;
                 for (int i = 0; i < 256; i++) {
