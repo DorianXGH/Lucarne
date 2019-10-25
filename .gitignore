@@ -1,8 +1,4 @@
-*.o
-*.bin
 .ccls-cache
-*.dis
-*.elf
-*.iso
 *.txt
 i386elfgcc
+output
