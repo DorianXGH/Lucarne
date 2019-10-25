@@ -40,6 +40,15 @@ extern struct gdt dt;
 extern struct font_desc ft_basic;
 extern uint8_t * page_tracker;
 
+void helloworld(struct def_vga_screen *virt_screen) {
+
+	char str[] = "hello world!   $  $    $$$   $$$$$";
+	for(int i=0; i<sizeof(str)/sizeof(char); i++) {
+
+                ft_print_char(virt_screen, &ft_basic, str[i], 40+8*i, 50, 0xEC15EF);
+	}
+}
+
 void _start(struct mb_info_block * mbblck)
 {
     if (1) {
@@ -233,25 +242,22 @@ void _start(struct mb_info_block * mbblck)
                 int numpix_2 = (virt_scr.width - 100) * (virt_scr.height - 100);
                 uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
 
-                for (int r = 0; r < numpix_2; r++) {
+                /*for (int r = 0; r < numpix_2; r++) {
                     testalpha_2[r] = 0xFFFF0000;
-                }
+                }*/
 
-                struct sprite talpha_2;
+                /*struct sprite talpha_2;
                 talpha_2.bpp    = 32;
                 talpha_2.height = virt_scr.height - 100;
                 talpha_2.width  = virt_scr.width - 100;
                 talpha_2.pixels = (uint8_t *) testalpha_2;
-                putsprite(&virt_scr, &talpha_2, 50, 50);
+                putsprite(&default_screen, &talpha_2, 50, 50);
+                // putsprite(&default_screen, &talpha, 25, 25);
+				
+                putsprite(&virt_scr, &talpha_2, 50, 50);*/
                 putsprite(&virt_scr, &talpha, 25, 25);
 
-
-                ft_print_char(&virt_scr, &ft_basic, '.', 30, 30, 0xEE4444);
-                ft_print_char(&virt_scr, &ft_basic, '?', 38, 30, 0xEE4444);
-                ft_print_char(&virt_scr, &ft_basic, '!', 46, 30, 0xEE4444);
-                ft_print_char(&virt_scr, &ft_basic, '=', 30, 42, 0xEE4444);
-                ft_print_char(&virt_scr, &ft_basic, '+', 38, 42, 0xEE4444);
-                ft_print_char(&virt_scr, &ft_basic, '-', 46, 42, 0xEE4444);
+				helloworld(&virt_scr);
 
                 set_screen_alpha(&virt_scr, 0xFF);
                 blit(&virt_scr, &default_screen, 0, 0);
