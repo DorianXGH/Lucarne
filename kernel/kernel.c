@@ -191,83 +191,64 @@ void _start(struct mb_info_block * mbblck)
     //         putpixel(&default_screen, 10, x, y);
     //     }
     // }
-    if (1) {
-        ft_basic_install();
-        struct def_vga_screen virt_scr = default_screen;
-        uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000);
-        virt_scr.video_memory = virt_frb;
+
+    ft_basic_install();
+    struct def_vga_screen virt_scr = default_screen;
+    uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000);
+    virt_scr.video_memory = virt_frb;
 
 
-        int rs = 10000; // test of screen functions : destined to be deleted
-        int x0 = virt_scr.width / 2;
-        int y0 = virt_scr.height / 2;
-        if (1) {
-            for (int x = 0; x < virt_scr.width; x++) {
-                for (int y = 0; y < virt_scr.height; y++) {
-                    int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
-                    ns /= 10;
-                    struct color_32 c;
-                    c.a = 0xFF;
-                    c.r = ns / 50;
-                    c.g = 255 / (ns + 1);
-                    c.b = 255 - ns / 50;
-                    putpixel_32(&virt_scr, c, x, y);
-                }
-            }
-            uint32_t numpix      = (virt_scr.width - 50) * (virt_scr.height - 50);
-            uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
-            char ptrstr[16];
-            prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
+    int rs = 10000; // test of screen functions : destined to be deleted
+    int x0 = virt_scr.width / 2;
+    int y0 = virt_scr.height / 2;
 
-
-            struct sprite talpha;
-            talpha.bpp    = 32;
-            talpha.height = virt_scr.height - 50;
-            talpha.width  = virt_scr.width - 50;
-            talpha.pixels = (uint8_t *) testalpha;
-
-            for (int r = 0; r < numpix; r++) {
-                int y = r / talpha.width - 350;
-                int x = r % talpha.width - 500;
-                if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;
-            }
-
-            putsprite(&virt_scr, &talpha, 25, 25);
-
-
-            for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
-                ft_print_char(&virt_scr, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
-            }
-
-            int numpix_2 = (virt_scr.width - 100) * (virt_scr.height - 100);
-            uint32_t * testalpha_2 = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
-
-            /*for (int r = 0; r < numpix_2; r++) {
-             *  testalpha_2[r] = 0xFFFF0000;
-             * }*/
-
-            /*struct sprite talpha_2;
-             * talpha_2.bpp    = 32;
-             * talpha_2.height = virt_scr.height - 100;
-             * talpha_2.width  = virt_scr.width - 100;
-             * talpha_2.pixels = (uint8_t *) testalpha_2;
-             * putsprite(&default_screen, &talpha_2, 50, 50);
-             * // putsprite(&default_screen, &talpha, 25, 25);
-             *
-             * putsprite(&virt_scr, &talpha_2, 50, 50);*/
-            putsprite(&virt_scr, &talpha, 25, 25);
-
-            helloworld(&virt_scr);
-
-            set_screen_alpha(&virt_scr, 0xFF);
-            blit(&virt_scr, &default_screen, 0, 0);
-
-            default_shell.appointed_screen = &default_screen;
-            for (int i = 0; i < 256; i++) {
-                default_shell.current_input[i] = 0;
-            }
-            default_shell.current_index = 0;
-            putstring(&default_screen, "Shell Loaded\n");
+    for (int x = 0; x < virt_scr.width; x++) {
+        for (int y = 0; y < virt_scr.height; y++) {
+            int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
+            ns /= 10;
+            struct color_32 c;
+            c.a = 0xFF;
+            c.r = ns / 50;
+            c.g = 255 / (ns + 1);
+            c.b = 255 - ns / 50;
+            putpixel_32(&virt_scr, c, x, y);
         }
     }
+    uint32_t numpix      = (virt_scr.width - 50) * (virt_scr.height - 50);
+    uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+    char ptrstr[16];
+    prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
+
+
+    struct sprite talpha;
+    talpha.bpp    = 32;
+    talpha.height = virt_scr.height - 50;
+    talpha.width  = virt_scr.width - 50;
+    talpha.pixels = (uint8_t *) testalpha;
+
+    for (int r = 0; r < numpix; r++) {
+        int y = r / talpha.width - 350;
+        int x = r % talpha.width - 500;
+        if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;
+    }
+
+    putsprite(&virt_scr, &talpha, 25, 25);
+
+
+    for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
+        ft_print_char(&virt_scr, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
+    }
+
+
+    helloworld(&virt_scr);
+
+    set_screen_alpha(&virt_scr, 0xFF);
+    blit(&virt_scr, &default_screen, 0, 0);
+
+    default_shell.appointed_screen = &default_screen;
+    for (int i = 0; i < 256; i++) {
+        default_shell.current_input[i] = 0;
+    }
+    default_shell.current_index = 0;
+    putstring(&default_screen, "Shell Loaded\n");
 } /* _start */
