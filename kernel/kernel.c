@@ -102,9 +102,6 @@ void _start(struct mb_info_block * mbblck)
     default_screen.type         = VESA;
     default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
 
-    struct def_vga_screen double_buffer = default_screen; // double buffering
-    double_buffer.bpp = 32;                               // enable alpha channel
-
     clear(&default_screen); // clear the screen
 
 
@@ -118,7 +115,7 @@ void _start(struct mb_info_block * mbblck)
     page_tracker       = PAGETRACKER_ADDR; // set the page tracker where it's supposed to be
     init_page_alloc();                     // init the tracker and allocator by allowing allocation on usable memory
     putstring(&default_screen, "Init page allocator\n");
-    for (int i = 0; i < 0x0500; i++) {
+    for (int i = 0; i < 0x0500; i++) { // reserve mory for kernel code
         preserve(i);
     }
     for (int i = PAGETRACKER_ADDR / 0x1000; i < ((PAGETRACKER_ADDR + (max_page / 8) ) / 0x1000) + 1; i++) { // reserve space for the page tracker
@@ -130,55 +127,34 @@ void _start(struct mb_info_block * mbblck)
     {
         preserve(i);
     }
-    find_next_free();
+    find_next_free(); // find first allocatable page
     putstring(&default_screen, "Enabled page allocator\n");
 
 
     int gp_dir_page = palloc();
     void * general_page_directory = (void *) (gp_dir_page * 0x1000); // finding a page to store de PDT
 
-    init_pdt(general_page_directory);
+    init_pdt(general_page_directory); // initialise the PDT
     putstring(&default_screen, "Starting ID Paging");
     fast_identity_page(general_page_directory, min(1024 * 1024, max_page)); // id page
     putstring(&default_screen, "ID Paged");
-    load_pdt(general_page_directory);
+    load_pdt(general_page_directory); // load the PDT
     putstring(&default_screen, "Loaded PDT");
 
-    enable_paging();
+    enable_paging(); // enable paging (duh)
 
     clear(&default_screen);
     putstring(&default_screen, "Paging enabled");
     putchar(&default_screen, '\n');
-    init_keyboard();
+    init_keyboard(); // initialise keyboard driver
 
 
-    if (mbblck->flags & (1 << 12) && 1) { // if we are in VESA mode
-        // default_screen.video_memory[4] = 250;
-        char framebuffer_addr[10];
-        char framebuffer_type[10];
-        char framebuffer_width[10];
-        char framebuffer_height[10];
-        char framebuffer_bpp[10];
-        prntnum(mbblck_copy->framebuffer_addr, ' ', framebuffer_addr, 10);
-        prntnum(mbblck_copy->framebuffer_type, ' ', framebuffer_type, 10);
-        prntnum(mbblck_copy->framebuffer_width, ' ', framebuffer_width, 10);
-        prntnum(mbblck_copy->framebuffer_height, ' ', framebuffer_height, 10);
-        prntnum(mbblck_copy->framebuffer_bytesperpixel, ' ', framebuffer_bpp, 10);
-        putstring(&default_screen, framebuffer_addr);
-        putstring(&default_screen, "\n");
-        putstring(&default_screen, framebuffer_type);
-        putstring(&default_screen, "\n");
-        putstring(&default_screen, framebuffer_width);
-        putstring(&default_screen, "\n");
-        putstring(&default_screen, framebuffer_height);
-        putstring(&default_screen, "\n");
-        putstring(&default_screen, framebuffer_bpp);
-        putstring(&default_screen, "\n");
-    }
+    ft_basic_install(); // load the basic font
 
-    ft_basic_install();
-    struct def_vga_screen virt_scr = default_screen;
-    uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000);
+
+    struct def_vga_screen virt_scr = default_screen;                                                         // double bufffering
+    virt_scr.bpp = 32;                                                                                       // enable alpha channel
+    uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000); // allocate video memory
     virt_scr.video_memory = virt_frb;
 
 
@@ -195,16 +171,18 @@ void _start(struct mb_info_block * mbblck)
             c.r = ns / 50;
             c.g = 255 / (ns + 1);
             c.b = 255 - ns / 50;
-            putpixel_32(&virt_scr, c, x, y);
+            putpixel_32(&virt_scr, c, x, y); // write weird things on the screen
         }
     }
-    uint32_t numpix      = (virt_scr.width - 50) * (virt_scr.height - 50);
-    uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000);
+
+    // draw a black rectangle on the screen
+    uint32_t numpix      = (virt_scr.width - 50) * (virt_scr.height - 50);        // number of pixels
+    uint32_t * testalpha = (uint32_t *) (palloc_n((numpix / 1024) + 1) * 0x1000); // allocate necessary memory
     char ptrstr[16];
-    prntnum((uint32_t) testalpha, ' ', ptrstr, 16);
+    prntnum((uint32_t) testalpha, ' ', ptrstr, 16); // where was it put in memory ?
 
 
-    struct sprite talpha;
+    struct sprite talpha; // data on the sprite
     talpha.bpp    = 32;
     talpha.height = virt_scr.height - 50;
     talpha.width  = virt_scr.width - 50;
@@ -213,21 +191,21 @@ void _start(struct mb_info_block * mbblck)
     for (int r = 0; r < numpix; r++) {
         int y = r / talpha.width - 350;
         int x = r % talpha.width - 500;
-        if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;
+        if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;  // write black
     }
 
-    putsprite(&virt_scr, &talpha, 25, 25);
+    putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
 
 
     for (int k = 0; k < 10 && ptrstr[k] != '\0'; k++) {
-        ft_print_char(&virt_scr, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF);
+        ft_print_char(&virt_scr, &ft_basic, ptrstr[k], 2 + k * 8, 2, 0xFFFFFF); // display where the rectable is in memory
     }
 
 
-    helloworld(&virt_scr);
+    helloworld(&virt_scr); // write helloworld
 
-    set_screen_alpha(&virt_scr, 0xFF);
-    blit(&virt_scr, &default_screen, 0, 0);
+    set_screen_alpha(&virt_scr, 0xFF);      // set the virtual screen at 100% opacity;
+    blit(&virt_scr, &default_screen, 0, 0); // blit the virtual screen on the real screen
 
     default_shell.appointed_screen = &default_screen;
     for (int i = 0; i < 256; i++) {
