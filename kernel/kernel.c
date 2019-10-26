@@ -70,61 +70,47 @@ void _start(struct mb_info_block * mbblck)
     nummem = (int *) MMAP_LEN_PTR;
 
     #ifdef MULTIB
-    if (mbblck->mmap_length > 0 && (mbblck->flags & 0x00000040)) {
-        struct memory_seg_des * mmap = mbblck->mmap_addr;
+    if (mbblck->mmap_length > 0 && (mbblck->flags & 0x00000040)) { // if the bootloader gave the memmap info
+        struct memory_seg_des * mmap = mbblck->mmap_addr;          // get the pointer to it
 
         int ind = 0;
-        while ((int) mmap < mbblck->mmap_addr + mbblck->mmap_length) {
-            memmap[ind] = *mmap;
-            mmap        = (struct memory_seg_des *) ( (unsigned int) mmap + mmap->size + 4 );
+        while ((int) mmap < mbblck->mmap_addr + mbblck->mmap_length) {                        // while there's stille something to copy
+            memmap[ind] = *mmap;                                                              // copy
+            mmap        = (struct memory_seg_des *) ( (unsigned int) mmap + mmap->size + 4 ); // move the pointer
             ind++;
         }
         *nummem = ind;
     }
     #endif /* ifdef MULTIB */
 
-    last_inserted_page = 0;
-
+    // load Interrupts Descriptor Table
     isr_install();
+    // load GDT and reload segment registers
     load_gdt();
 
-
-    default_screen.width        = 80;
-    default_screen.height       = 25;
+    default_screen.width        = mbblck_copy->framebuffer_width;
+    default_screen.height       = mbblck_copy->framebuffer_height;
+    default_screen.pitch        = mbblck_copy->framebuffer_pitch;
+    default_screen.bpp          = mbblck_copy->framebuffer_bytesperpixel;
     default_screen.cursorx      = 0;
     default_screen.cursory      = 0;
-    default_screen.type         = TEXT;
-    default_screen.video_memory = (char *) 0xB8000;
-    if (1) {
-        default_screen.width        = mbblck_copy->framebuffer_width;
-        default_screen.height       = mbblck_copy->framebuffer_height;
-        default_screen.pitch        = mbblck_copy->framebuffer_pitch;
-        default_screen.bpp          = mbblck_copy->framebuffer_bytesperpixel;
-        default_screen.cursorx      = 0;
-        default_screen.cursory      = 0;
-        default_screen.type         = VESA;
-        default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
-    }
+    default_screen.type         = VESA;
+    default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
+
     struct def_vga_screen double_buffer = default_screen;
     double_buffer.bpp = 32;
 
     clear(&default_screen);
-    int k = 0;
-    #ifdef MULTIB
-    putstring(&default_screen, "Multib\n");
-    if (mbblck->mmap_length > 0 && (mbblck->flags & 0x00000040)) {
-        putstring(&default_screen, "Mem map initialized\n");
-    }
-    #endif
 
 
-    putstring(&default_screen, "Initializing Keyboard\n");
-
+    // Interrupts enable
     asm volatile ("sti");
     putstring(&default_screen, "Interrupts restart\n");
     // init_timer(10);
 
-    page_tracker = PAGETRACKER_ADDR;
+    // Paging initialisation part
+    last_inserted_page = 0;
+    page_tracker       = PAGETRACKER_ADDR;
     init_page_alloc();
     putstring(&default_screen, "Init page allocator\n");
     for (int i = 0; i < 0x0500; i++) {
