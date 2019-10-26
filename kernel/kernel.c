@@ -124,45 +124,43 @@ void _start(struct mb_info_block * mbblck)
     putstring(&default_screen, "Interrupts restart\n");
     // init_timer(10);
 
-    if (1) {
-        page_tracker = PAGETRACKER_ADDR;
-        init_page_alloc();
-        putstring(&default_screen, "Init page allocator\n");
-        for (int i = 0; i < 0x0500; i++) {
-            preserve(i);
-        }
-        for (int i = PAGETRACKER_ADDR / 0x1000; i < ((PAGETRACKER_ADDR + 0x20000) / 0x1000) + 1; i++) {
-            preserve(i);
-        }
-        for (int i = (uint32_t) default_screen.video_memory / 0x1000; // reserve video mem
-          i < ((uint32_t) default_screen.video_memory + default_screen.pitch * default_screen.width) / 0x1000 + 1;
-          i++)
-        {
-            preserve(i);
-        }
-        find_next_free();
-        putstring(&default_screen, "Enabled page allocator\n");
-
-
-        int gp_dir_page = palloc();
-        void * general_page_directory = (void *) (gp_dir_page * 0x1000); // finding a page to store de PDT
-
-        init_pdt(general_page_directory);
-        putstring(&default_screen, "Starting ID Paging");
-        fast_identity_page(general_page_directory, min(1024 * 1024, max_page)); // id page
-        putstring(&default_screen, "ID Paged");
-        load_pdt(general_page_directory);
-        putstring(&default_screen, "Loaded PDT");
-
-        enable_paging();
-
-        clear(&default_screen);
-        putstring(&default_screen, "Paging enabled");
-        putchar(&default_screen, '\n');
-        init_keyboard();
-
-        shell_invite(&default_shell);
+    page_tracker = PAGETRACKER_ADDR;
+    init_page_alloc();
+    putstring(&default_screen, "Init page allocator\n");
+    for (int i = 0; i < 0x0500; i++) {
+        preserve(i);
     }
+    for (int i = PAGETRACKER_ADDR / 0x1000; i < ((PAGETRACKER_ADDR + (max_page / 8) ) / 0x1000) + 1; i++) { // reserve space for the page tracker
+        preserve(i);
+    }
+    for (int i = (uint32_t) default_screen.video_memory / 0x1000; // reserve video mem
+      i < ((uint32_t) default_screen.video_memory + default_screen.pitch * default_screen.width) / 0x1000 + 1;
+      i++)
+    {
+        preserve(i);
+    }
+    find_next_free();
+    putstring(&default_screen, "Enabled page allocator\n");
+
+
+    int gp_dir_page = palloc();
+    void * general_page_directory = (void *) (gp_dir_page * 0x1000); // finding a page to store de PDT
+
+    init_pdt(general_page_directory);
+    putstring(&default_screen, "Starting ID Paging");
+    fast_identity_page(general_page_directory, min(1024 * 1024, max_page)); // id page
+    putstring(&default_screen, "ID Paged");
+    load_pdt(general_page_directory);
+    putstring(&default_screen, "Loaded PDT");
+
+    enable_paging();
+
+    clear(&default_screen);
+    putstring(&default_screen, "Paging enabled");
+    putchar(&default_screen, '\n');
+    init_keyboard();
+
+
     if (mbblck->flags & (1 << 12) && 1) { // if we are in VESA mode
         // default_screen.video_memory[4] = 250;
         char framebuffer_addr[10];
@@ -186,11 +184,6 @@ void _start(struct mb_info_block * mbblck)
         putstring(&default_screen, framebuffer_bpp);
         putstring(&default_screen, "\n");
     }
-    // for (int x = 50; x < 250; x++) {
-    //     for (int y = 50; y < 150; y++) {
-    //         putpixel(&default_screen, 10, x, y);
-    //     }
-    // }
 
     ft_basic_install();
     struct def_vga_screen virt_scr = default_screen;
@@ -251,4 +244,5 @@ void _start(struct mb_info_block * mbblck)
     }
     default_shell.current_index = 0;
     putstring(&default_screen, "Shell Loaded\n");
+    shell_invite(&default_shell);
 } /* _start */
