@@ -51,22 +51,24 @@ void helloworld(struct def_vga_screen * virt_screen)
 
 void _start(struct mb_info_block * mbblck)
 {
-    struct gdt * edt = GDT_PTR_ADDR;
+    struct gdt * edt = GDT_PTR_ADDR; // pointer to where the GDT Descriptor will be
 
-    edt->base = GDT_ADDR;
-    edt->size = 0xFFFF; // 0-1 = 2 complement
-    add_to_gdt(edt, 0, 0, 0, NULL, 0);
-    add_to_gdt(edt, 0, 0xFFFFF, 0, CODE, 1);
-    add_to_gdt(edt, 0, 0xFFFFF, 0, DATA, 2);
-    dt = *edt;
+    edt->base = GDT_ADDR;                    // put the adress of the GDT in it
+    edt->size = 0xFFFF;                      // 0-1 = 2 complement : size of GDT is always 1 less than it should. Why ? ask intel
+    add_to_gdt(edt, 0, 0, 0, NULL, 0);       // null segment, needed because the first segment is ignored. Why ? ASK INTEL
+    add_to_gdt(edt, 0, 0xFFFFF, 0, CODE, 1); // code segment spanning the whole memory
+    add_to_gdt(edt, 0, 0xFFFFF, 0, DATA, 2); // same for data segment
+    dt = *edt;                               // load the pointer to the gdt descriptor in the global pointer to pass it to assembly code
+
+    // if we used Multiboot spec
     #ifdef MULTIB
 
-    struct mb_info_block * mbblck_copy = (struct mb_info_block *) MB_BLCK_ADDR;
+    struct mb_info_block * mbblck_copy = (struct mb_info_block *) MB_BLCK_ADDR; // copy the info block to the inteded loacation to prevent overwriting it
     *mbblck_copy = *mbblck;
 
     #endif
 
-    memmap = (struct memory_seg_des *) MMAP_PTR;
+    memmap = (struct memory_seg_des *) MMAP_PTR; // load the correct locations
     nummem = (int *) MMAP_LEN_PTR;
 
     #ifdef MULTIB
@@ -88,6 +90,9 @@ void _start(struct mb_info_block * mbblck)
     // load GDT and reload segment registers
     load_gdt();
 
+
+    // load screen data from info block
+    // TODO : Multiboot sanity
     default_screen.width        = mbblck_copy->framebuffer_width;
     default_screen.height       = mbblck_copy->framebuffer_height;
     default_screen.pitch        = mbblck_copy->framebuffer_pitch;
@@ -97,10 +102,10 @@ void _start(struct mb_info_block * mbblck)
     default_screen.type         = VESA;
     default_screen.video_memory = (char *) (mbblck_copy->framebuffer_addr);
 
-    struct def_vga_screen double_buffer = default_screen;
-    double_buffer.bpp = 32;
+    struct def_vga_screen double_buffer = default_screen; // double buffering
+    double_buffer.bpp = 32;                               // enable alpha channel
 
-    clear(&default_screen);
+    clear(&default_screen); // clear the screen
 
 
     // Interrupts enable
@@ -109,9 +114,9 @@ void _start(struct mb_info_block * mbblck)
     // init_timer(10);
 
     // Paging initialisation part
-    last_inserted_page = 0;
-    page_tracker       = PAGETRACKER_ADDR;
-    init_page_alloc();
+    last_inserted_page = 0;                // allow Fast ID paging by storing the last index inserted
+    page_tracker       = PAGETRACKER_ADDR; // set the page tracker where it's supposed to be
+    init_page_alloc();                     // init the tracker and allocator by allowing allocation on usable memory
     putstring(&default_screen, "Init page allocator\n");
     for (int i = 0; i < 0x0500; i++) {
         preserve(i);
