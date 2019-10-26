@@ -1,5 +1,7 @@
 #include "gdt.h"
-void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type, int ent)
+void add_to_gdt(struct gdt * desc, uint32_t base, uint32_t size, uint8_t ring, enum seg_type type, int ent) // this adds an entry to the GDT : desc : points to
+// the beginning of the GDT; base : pointer to the beginning of the new segment; size : size of the new segment in pages; ring : priviledge level of the segment
+// type : see enum; ent : which entry (index) do you set
 {
     struct gde * dt = (struct gde *) desc->base; // points to the first entry of the table
     struct gde new;                              // the new entry
