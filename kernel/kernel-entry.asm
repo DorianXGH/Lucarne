@@ -1,10 +1,10 @@
 [bits 32]
-[extern _start] ; Define calling point. Must have same name as kernel.c 'main' function
+[extern _start] ; Define calling point.
 entry:
-    mov esp, 0x00300000
-    mov ebp, esp
-    push ebx
-    call _start ; Calls the C function. The linker will know where it is placed in memory
+    mov esp, 0x00300000 ; put the stack at a defined location
+    mov ebp, esp ; make it a new callframe
+    push ebx ; pass Multiboot info block pointer as argument
+    call _start ; Calls the C function.
     jmp $
 align 4
 multiboot_header:

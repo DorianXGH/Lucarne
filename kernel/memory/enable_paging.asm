@@ -1,7 +1,7 @@
 global load_pdt
 global enable_paging
 
-load_pdt:
+load_pdt: ; puts the PDT pointer in cr3 which stores the PDT location
     push ebp
     mov ebp, esp
     mov eax, [esp+8]
@@ -10,7 +10,7 @@ load_pdt:
     pop ebp
     ret
 
-enable_paging:
+enable_paging: ; enable paging on the CPU, after this, each adress will be interpreted by the pagination system 
     push ebp
     mov ebp, esp
     mov eax, cr0
