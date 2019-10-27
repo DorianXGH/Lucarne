@@ -1,4 +1,6 @@
 #include "util.h"
+
+
 int min(int a, int b)
 {
     return (a < b) ? a : b;
@@ -17,7 +19,7 @@ bool strcompare(char * a, char * b)
     return eq;
 }
 
-void memory_copy(char * source, char * dest, int nbytes)
+void memcpy(char * source, char * dest, int nbytes)
 {
     int i;
 
@@ -26,7 +28,7 @@ void memory_copy(char * source, char * dest, int nbytes)
     }
 }
 
-void memory_set(char * dest, char val, int len)
+void memset(char * dest, char val, int len)
 {
     char * temp = (char *) dest;
 
@@ -52,14 +54,14 @@ void int_to_ascii(int n, char str[])
     /* TODO: implement "reverse" */
 }
 
-short int low_16(int a)
+uint16_t low_16(uint32_t a)
 {
-    return (short int) a;
+    return (uint16_t) a;
 }
 
-short int high_16(int a)
+uint16_t high_16(uint32_t a)
 {
-    return (short int) (a >> 16);
+    return (uint16_t) (a >> 16);
 }
 
 void prntnum(uint64_t n, char sign, char * outbuf, int size)
