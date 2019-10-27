@@ -2,7 +2,7 @@
 #define MB_INFO_BLOCK
 #include <stdint.h>
 
-struct mb_info_block {
+struct mb_info_block { // just go see the multiboot spec, it's really easy to understand
     uint32_t flags;
     uint32_t mem_low;
     uint32_t mem_high;
