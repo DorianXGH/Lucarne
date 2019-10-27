@@ -145,6 +145,22 @@ void isr_handler(registers_t r)
     putstring(&default_screen, s);
     newline(&default_screen);
     putstring(&default_screen, exception_messages[r.int_no]);
-    putpixel(&default_screen, r.int_no, 1, 0);
+    // debug info
+    putpixel(&default_screen, r.int_no, 0, 40);
+    putpixel(&default_screen, r.int_no, 0, 41);
+    putpixel(&default_screen, r.int_no, 1, 40);
+    putpixel(&default_screen, r.int_no, 1, 41);
+    putpixel(&default_screen, r.int_no, 2, 40);
+    putpixel(&default_screen, r.int_no, 2, 41);
+    putpixel(&default_screen, r.int_no, 3, 40);
+    putpixel(&default_screen, r.int_no, 3, 41);
+    putpixel(&default_screen, r.int_no, 0, 42);
+    putpixel(&default_screen, r.int_no, 0, 43);
+    putpixel(&default_screen, r.int_no, 1, 42);
+    putpixel(&default_screen, r.int_no, 1, 43);
+    putpixel(&default_screen, r.int_no, 2, 42);
+    putpixel(&default_screen, r.int_no, 2, 43);
+    putpixel(&default_screen, r.int_no, 3, 42);
+    putpixel(&default_screen, r.int_no, 3, 43);
     newline(&default_screen);
 }
