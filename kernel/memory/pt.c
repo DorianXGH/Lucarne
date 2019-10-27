@@ -2,7 +2,7 @@
 extern struct def_vga_screen default_screen;
 int pt_last_entry = 0;
 
-void init_pt(void * pt_p)
+void init_pt(void * pt_p) // initialises the page table - the directory's entries - with "null" pages
 {
     struct pte * pt = (struct pte *) pt_p;
     struct pte def;
@@ -28,20 +28,12 @@ bool insert_page(void * pt_p, struct pte page_entry)
     struct pte * pt = (struct pte *) pt_p;
     int i = 0;
 
-    /* if (pt[pt_last_entry + 1].sysinfo == 0 && pt_last_entry + 1 < 1024) { // if our remembered last entry is followed by a blank page, use it.
-     *  i = pt_last_entry + 1;
-     * }*/
-
     while (pt[i].sysinfo != 0 && i < 1024) { // find an unused entry
         i++;
     }
     if (i < 1024) {                 // if there's still an available entry
         pt[i]         = page_entry; // set it
         pt_last_entry = i;
-        // putchar(&default_screen, 'b');
-    } else {
-        // pt_last_entry = 0; // if there's no page left to allocate in the directory, reset the counter
-        // putchar(&default_screen, 'a');
-    }
+    } else { }
     return i < 1024;
 }

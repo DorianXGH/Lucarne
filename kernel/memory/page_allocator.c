@@ -64,7 +64,7 @@ void pfree(int pagenum) // frees the page passed as argument
     next_available = pagenum; // set it as the next available
 }
 
-void preserve(int pagenum)
+void preserve(int pagenum) // reserve a page, see above for comments : it behaves the same
 {
     int8_t a = page_tracker[pagenum / 8];
     int r    = pagenum % 8;
@@ -75,11 +75,11 @@ void preserve(int pagenum)
     }
 }
 
-void init_page_alloc()
+void init_page_alloc() // initialises the allocator
 {
     uint64_t maxmem = 0;
 
-    maxmem += memmap[*nummem - 1].base + memmap[*nummem - 1].length;
+    maxmem += memmap[*nummem - 1].base + memmap[*nummem - 1].length; // get the amount of memory present from the last memory segment in the map
 
     max_page = maxmem >> 12;             // 4kb blocks
     uint64_t blocks = max_page >> 3 + 1; // number of blocks for the map
@@ -94,7 +94,7 @@ void init_page_alloc()
             putstring(&default_screen, "Found usable memory\n");
             uint64_t a = memmap[i].base >> 12 + 1;                  // first available page
             uint64_t b = (memmap[i].base + memmap[i].length) >> 12; // last available page
-            for (uint64_t j = a; j <= b; j++) {
+            for (uint64_t j = a; j <= b; j++) {                     // free the available pages
                 pfree(j);
             }
         }
