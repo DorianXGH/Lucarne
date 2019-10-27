@@ -1,5 +1,5 @@
 #include "util.h"
-
+// these functions are pretty much self explanatory
 
 int min(int a, int b)
 {

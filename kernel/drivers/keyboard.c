@@ -8,7 +8,7 @@
 extern struct def_vga_screen default_screen;
 extern struct def_shell default_shell;
 
-static void keyboard_callback(registers_t regs)
+static void keyboard_callback(registers_t * regs)
 {
     /* The PIC leaves us the scancode in port 0x60 */
     char scancode = port_byte_in(0x60);
@@ -74,6 +74,22 @@ void process_letter(char scancode)
             break;
         case 0x10:
             putchar_sh(&default_shell, 'Q');
+            putpixel(&default_screen, 0xFFFFFF, 0, 60);
+            putpixel(&default_screen, 0xFFFFFF, 0, 61);
+            putpixel(&default_screen, 0xFFFFFF, 0, 62);
+            putpixel(&default_screen, 0xFFFFFF, 0, 63);
+            putpixel(&default_screen, 0xFFFFFF, 0, 64);
+            putpixel(&default_screen, 0xFFFFFF, 0, 65);
+            putpixel(&default_screen, 0xFFFFFF, 0, 66);
+            putpixel(&default_screen, 0xFFFFFF, 0, 67);
+            putpixel(&default_screen, 0xFFFFFF, 1, 60);
+            putpixel(&default_screen, 0xFFFFFF, 1, 61);
+            putpixel(&default_screen, 0xFFFFFF, 1, 62);
+            putpixel(&default_screen, 0xFFFFFF, 1, 63);
+            putpixel(&default_screen, 0xFFFFFF, 1, 64);
+            putpixel(&default_screen, 0xFFFFFF, 1, 65);
+            putpixel(&default_screen, 0xFFFFFF, 1, 66);
+            putpixel(&default_screen, 0xFFFFFF, 1, 67);
             break;
         case 0x11:
             putchar_sh(&default_shell, 'W');
