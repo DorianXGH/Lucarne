@@ -1,9 +1,10 @@
 #ifndef PORT_H
 #define PORT_H
+#include <stdint.h>
 
-unsigned char port_byte_in(short int port);
-void port_byte_out(short int port, char data);
-unsigned short port_word_in(short int port);
-void port_word_out(short int port, short int data);
+uint8_t port_byte_in(uint16_t port);
+void port_byte_out(uint16_t port, uint8_t data);
+uint16_t port_word_in(uint16_t port);
+void port_word_out(uint16_t port, uint16_t data);
 
 #endif

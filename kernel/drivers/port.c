@@ -3,7 +3,7 @@
 /**
  * Read a byte from the specified port
  */
-unsigned char port_byte_in(short int port)
+uint8_t port_byte_in(uint16_t port)
 {
     char result;
 
@@ -19,7 +19,7 @@ unsigned char port_byte_in(short int port)
     return result;
 }
 
-void port_byte_out(short int port, char data)
+void port_byte_out(uint16_t port, uint8_t data)
 {
     /* Notice how here both registers are mapped to C variables and
      * nothing is returned, thus, no equals '=' in the asm syntax
@@ -29,7 +29,7 @@ void port_byte_out(short int port, char data)
     __asm__ __volatile__ ("out %%al, %%dx" : : "a" (data), "d" (port));
 }
 
-unsigned short int port_word_in(short int port)
+uint16_t port_word_in(uint16_t port)
 {
     short int result;
 
@@ -37,7 +37,7 @@ unsigned short int port_word_in(short int port)
     return result;
 }
 
-void port_word_out(short int port, short int data)
+void port_word_out(uint16_t port, uint16_t data)
 {
     __asm__ __volatile__ ("out %%ax, %%dx" : : "a" (data), "d" (port));
 }
