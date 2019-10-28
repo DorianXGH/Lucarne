@@ -13,8 +13,10 @@ void putchar_sh(struct def_shell * sh, char c)
         }
         shell_invite(sh);
     } else {
-        sh->current_input[sh->current_index] = c;
-        sh->current_index++;
+        if (sh->current_index < 128) {
+            sh->current_input[sh->current_index] = c;
+            sh->current_index++;
+        }
     }
 }
 

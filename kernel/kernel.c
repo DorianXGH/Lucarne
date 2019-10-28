@@ -207,11 +207,25 @@ void _start(struct mb_info_block * mbblck)
     set_screen_alpha(&virt_scr, 0xFF);      // set the virtual screen at 100% opacity;
     blit(&virt_scr, &default_screen, 0, 0); // blit the virtual screen on the real screen
 
-    default_shell.appointed_screen = &default_screen;
+    struct def_vga_screen terminal_screen;
+
+    terminal_screen.width        = 60;
+    terminal_screen.height       = 25;
+    terminal_screen.pitch        = 2 * 60;
+    terminal_screen.bpp          = 16;
+    terminal_screen.cursorx      = 0;
+    terminal_screen.cursory      = 0;
+    terminal_screen.type         = TEXT;
+    terminal_screen.video_memory = (char *) (palloc() * 0x1000);
+
+    default_shell.appointed_screen = &terminal_screen;
+    default_shell.font       = &ft_basic;
+    default_shell.term_color = 0xFFFFFF;
     for (int i = 0; i < 256; i++) {
         default_shell.current_input[i] = 0;
     }
     default_shell.current_index = 0;
-    putstring(&default_screen, "Shell Loaded\n");
+    putstring(&terminal_screen, "Shell Loaded\n");
     shell_invite(&default_shell);
+    blit_shell(&default_shell, &default_screen, 40, 60);
 } /* _start */

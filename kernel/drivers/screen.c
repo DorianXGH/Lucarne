@@ -214,3 +214,18 @@ void blit(struct def_vga_screen * src, struct def_vga_screen * dest, uint32_t x0
     spr.pixels = src->video_memory;
     putsprite(dest, &spr, x0, y0);
 }
+
+void blit_shell(struct def_shell * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0)
+{
+    if (src->appointed_screen->type == TEXT && dest->type == VESA) {
+        int x = x0;
+        int y = y0;
+        for (int i = 0; i < src->appointed_screen->height; i++) {
+            for (int j = 0; j < src->appointed_screen->width; j++) {
+                ft_print_char(dest, src->font, src->appointed_screen->video_memory[2 * (i * src->appointed_screen->width + j)], x, y, src->term_color);
+                x += src->font->interchar_x + src->font->charwidth;
+            }
+            y += src->font->interchar_y + src->font->charheight;
+        }
+    }
+}
