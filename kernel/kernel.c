@@ -227,5 +227,9 @@ void _start(struct mb_info_block * mbblck)
     default_shell.current_index = 0;
     putstring(&terminal_screen, "Shell Loaded\n");
     shell_invite(&default_shell);
-    blit_shell(&default_shell, &default_screen, 40, 60);
+    while (1) {
+        putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
+        blit_shell(&default_shell, &virt_scr, 40, 60);
+        blit(&virt_scr, &default_screen, 0, 0);
+    }
 } /* _start */
