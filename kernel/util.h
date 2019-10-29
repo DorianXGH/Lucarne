@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 void memcpy(char * source, char * dest, int nbytes);
+void memcpy2(char * src, char * dest, int n);
 void memset(char * dest, char val, int len);
 void int_to_ascii(int n, char str[]);
 void prntnum(uint64_t n, char sign, char * outbuf, int size);

@@ -241,8 +241,8 @@ void _start(struct mb_info_block * mbblck)
         putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 26);
         putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 27);
         putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 28);
-        set_screen_alpha(&virt_scr, 0xFF);
-        blit(&virt_scr, &default_screen, 0, 0);
+        // set_screen_alpha(&virt_scr, 0xFF);
+        screencopy(&virt_scr, &default_screen);
         for (int k = 0; k < 1000; k++) { }
         azer++;
     }

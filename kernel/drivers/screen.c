@@ -215,6 +215,13 @@ void blit(struct def_vga_screen * src, struct def_vga_screen * dest, uint32_t x0
     putsprite(dest, &spr, x0, y0);
 }
 
+void screencopy(struct def_vga_screen * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0)
+{
+    if (src->width == dest->width && src->height == dest->height && src->bpp == dest->bpp) {
+        memcpy2(src->video_memory, dest->video_memory, src->height * src->pitch);
+    }
+}
+
 void blit_shell(struct def_shell * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0)
 {
     if (src->appointed_screen->type == TEXT && dest->type == VESA) {
