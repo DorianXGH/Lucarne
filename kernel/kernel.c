@@ -228,7 +228,7 @@ void _start(struct mb_info_block * mbblck)
         default_shell.current_input[i] = 0;
     }
     default_shell.current_index = 0;
-    putstring(&terminal_screen, "Shell Loaded\n");
+    putstring(&terminal_screen, "Shell Loaded, awaiting instructions. <Lucarne's Kernel:\"beta\"> \n");
     shell_invite(&default_shell);
     int azer = 0;
     while (1) {
