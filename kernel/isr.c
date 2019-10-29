@@ -1,11 +1,13 @@
 #include "isr.h"
 #include "drivers/screen.h"
 #include "drivers/port.h"
+#include "fonts/font_desc.h"
 #include "idt.h"
 #include "util.h"
 
 isr_t interrupt_handlers[256];
 extern struct def_vga_screen default_screen;
+extern struct font_desc ft_basic;
 
 /* Can't do this with a loop because we need the address
  * of the function names */
@@ -146,6 +148,9 @@ void isr_handler(registers_t r)
     newline(&default_screen);
     putstring(&default_screen, exception_messages[r.int_no]);
     // debug info
+    for (int i = 0; s[i] != 0 && i < 3; i++) {
+        ft_print_char(&default_screen, &ft_basic, s[i], 100 + i * (ft_basic.charwidth + ft_basic.interchar_x), 0, 0xFF0000);
+    }
     putpixel(&default_screen, r.int_no, 0, 40);
     putpixel(&default_screen, r.int_no, 0, 41);
     putpixel(&default_screen, r.int_no, 1, 40);

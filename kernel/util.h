@@ -2,6 +2,10 @@
 #define UTIL_H
 #include <stdint.h>
 #include <stdbool.h>
+#include "cpuid/cpuid.h"
+#include "drivers/screen.h"
+
+extern struct def_vga_screen default_screen;
 
 void memcpy(char * source, char * dest, int nbytes);
 void memcpy2(char * src, char * dest, int n);

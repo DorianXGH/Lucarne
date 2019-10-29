@@ -30,21 +30,58 @@ void memcpy(char * source, char * dest, int nbytes)
 
 void memcpy2(char * src, char * dest, int n)
 {
-    uint32_t num_dwords = n / 4;
-    uint32_t num_bytes  = n % 4;
-    uint32_t * dest32   = (uint32_t *) dest;
-    uint32_t * src32    = (uint32_t *) src;
-    uint8_t * dest8     = ((uint8_t *) dest) + num_dwords * 4;
-    uint8_t * src8      = ((uint8_t *) src) + num_dwords * 4;
-    uint32_t i;
+    uint32_t ecx;
+    uint32_t edx;
+    bool not_advanced_enough = false;
 
-    for (i = 0; i < num_dwords; i++) {
-        dest32[i] = src32[i];
+    cpuid_get_features(&ecx, &edx);
+    putpixel(&default_screen, 0xFF0000, 200, 10);
+
+    if (edx & CPUID_FEAT_EDX_SSE) {
+        int i;
+
+        for (i = 0; i < n / 16; i++) {
+            __asm__ __volatile__ ("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n" : : "r" (src), "r" (dest) : "memory");
+
+            src  += 16;
+            dest += 16;
+        }
+        putpixel(&default_screen, 0xFFFFFF, 205, 10);
+    } else if (n & 15 && edx & CPUID_FEAT_EDX_MMX) {
+        n = n & 15;
+        int i;
+        for (i = 0; i < n / 8; i++) {
+            __asm__ __volatile__ ("movq (%0), %%mm0\n" "movq %%mm0, (%1)\n" : : "r" (src), "r" (dest) : "memory");
+            src  += 8;
+            dest += 8;
+        }
+        putpixel(&default_screen, 0xFF0000, 210, 10);
+    } else {
+        not_advanced_enough = true;
+
+        memcpy(src, dest, n);
+        putpixel(&default_screen, 0xFFFFFF, 215, 10);
+        putpixel(&default_screen, 0xFFFFFF, 215, 11);
     }
-    for (i = 0; i < num_bytes; i++) {
-        dest8[i] = src8[i];
+    if (n & 7 && !not_advanced_enough) {
+        n = n & 7;
+
+        int d0, d1, d2;
+        __asm__ __volatile__ (
+            "rep ; movsl\n\t"
+            "testb $2,%b4\n\t"
+            "je 1f\n\t"
+            "movsw\n"
+            "1:\ttestb $1,%b4\n\t"
+            "je 2f\n\t"
+            "movsb\n"
+            "2:"
+            : "=&c" (d0), "=&D" (d1), "=&S" (d2)
+            : "0" (n / 4), "q" (n), "1" ((long) dest), "2" ((long) src)
+            : "memory");
+        putpixel(&default_screen, 0xFF0000, 220, 10);
     }
-}
+} /* memcpy2 */
 
 void memset(char * dest, char val, int len)
 {
