@@ -21,4 +21,5 @@ void ft_print_char(struct def_vga_screen * s, struct font_desc * ft, uint8_t c, 
     }
     spr.pixels = (uint8_t *) pixs;
     putsprite(s, &spr, x, y);
+    pfree(p);
 }

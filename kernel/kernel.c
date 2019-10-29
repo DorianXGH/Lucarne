@@ -216,7 +216,7 @@ void _start(struct mb_info_block * mbblck)
     terminal_screen.cursorx      = 0;
     terminal_screen.cursory      = 0;
     terminal_screen.type         = TEXT;
-    terminal_screen.video_memory = (char *) (palloc() * 0x1000);
+    terminal_screen.video_memory = (char *) (palloc_n(4) * 0x1000);
 
     default_shell.appointed_screen = &terminal_screen;
     default_shell.font       = &ft_basic;
@@ -227,9 +227,23 @@ void _start(struct mb_info_block * mbblck)
     default_shell.current_index = 0;
     putstring(&terminal_screen, "Shell Loaded\n");
     shell_invite(&default_shell);
+    int azer = 0;
     while (1) {
         putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
         blit_shell(&default_shell, &virt_scr, 40, 60);
+        helloworld(&virt_scr);
+        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 26);
+        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 27);
+        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 28);
+        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 26);
+        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 27);
+        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 28);
+        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 26);
+        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 27);
+        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 28);
+        set_screen_alpha(&virt_scr, 0xFF);
         blit(&virt_scr, &default_screen, 0, 0);
+        for (int k = 0; k < 1000; k++) { }
+        azer++;
     }
 } /* _start */
