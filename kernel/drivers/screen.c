@@ -233,6 +233,7 @@ void blit_shell(struct def_shell * src, struct def_vga_screen * dest, uint32_t x
                 x += src->font->interchar_x + src->font->charwidth;
             }
             y += src->font->interchar_y + src->font->charheight;
+            x  = x0;
         }
     }
 }

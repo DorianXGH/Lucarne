@@ -487,6 +487,17 @@ uint8_t ft_basic_dick_data[] = { 0,     0, 0, $, $, 0, 0, 0,
                                      0, $, $, 0, 0, $, $, 0,
                                      0, 0, 0, 0, 0, 0, 0, 0 };
 
+uint8_t ft_basic_morethan_data[] = { 0, 0, 0, 0, 0, 0, 0, 0,
+                                     0, 0, $, $, 0, 0, 0, 0,
+                                     0, 0, $, $, $, 0, 0, 0,
+                                     0, 0, 0, $, $, $, 0, 0,
+                                     0, 0, 0, 0, $, $, $, 0,
+                                     0, 0, 0, 0, $, $, $, 0,
+                                     0, 0, 0, $, $, $, 0, 0,
+                                     0, 0, $, $, $, 0, 0, 0,
+                                     0, 0, $, $, 0, 0, 0, 0,
+                                     0, 0, 0, 0, 0, 0, 0, 0 };
+
 
 void ft_basic_install()
 {
@@ -510,7 +521,7 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_k_data, 'k');
     ft_add_char(&ft_basic, ft_basic_l_data, 'l');
     ft_add_char(&ft_basic, ft_basic_m_data, 'm');
-    ft_add_char(&ft_basic, ft_basic_m_data, 'n');
+    ft_add_char(&ft_basic, ft_basic_n_data, 'n');
     ft_add_char(&ft_basic, ft_basic_o_data, 'o');
     ft_add_char(&ft_basic, ft_basic_p_data, 'p');
     ft_add_char(&ft_basic, ft_basic_q_data, 'q');
@@ -537,7 +548,7 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_k_data, 'K');
     ft_add_char(&ft_basic, ft_basic_l_data, 'L');
     ft_add_char(&ft_basic, ft_basic_m_data, 'M');
-    ft_add_char(&ft_basic, ft_basic_m_data, 'N');
+    ft_add_char(&ft_basic, ft_basic_n_data, 'N');
     ft_add_char(&ft_basic, ft_basic_o_data, 'O');
     ft_add_char(&ft_basic, ft_basic_p_data, 'P');
     ft_add_char(&ft_basic, ft_basic_q_data, 'Q');
@@ -570,4 +581,6 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_plssign_data, '+');
     ft_add_char(&ft_basic, ft_basic_minsign_data, '-');
     ft_add_char(&ft_basic, ft_basic_dick_data, '$');
+
+    ft_add_char(&ft_basic, ft_basic_morethan_data, '>');
 } /* ft_basic_install */

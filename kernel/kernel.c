@@ -209,9 +209,12 @@ void _start(struct mb_info_block * mbblck)
 
     struct def_vga_screen terminal_screen;
 
-    terminal_screen.width        = 60;
-    terminal_screen.height       = 25;
-    terminal_screen.pitch        = 2 * 60;
+    int margin = 40;
+
+
+    terminal_screen.width        = ((virt_scr.width - 2 * margin) / (ft_basic.charwidth + ft_basic.interchar_x));
+    terminal_screen.height       = ((virt_scr.height - 2 * margin) / (ft_basic.charheight + ft_basic.interchar_y));
+    terminal_screen.pitch        = 2 * terminal_screen.width;
     terminal_screen.bpp          = 16;
     terminal_screen.cursorx      = 0;
     terminal_screen.cursory      = 0;
@@ -230,8 +233,7 @@ void _start(struct mb_info_block * mbblck)
     int azer = 0;
     while (1) {
         putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
-        blit_shell(&default_shell, &virt_scr, 40, 60);
-        helloworld(&virt_scr);
+        blit_shell(&default_shell, &virt_scr, margin, margin);
         putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 26);
         putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 27);
         putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 28);
