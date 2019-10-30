@@ -1,6 +1,7 @@
 #include "shell.h"
 #include "../drivers/screen.h"
 #include "../memory/memory_segment.h"
+#include "../cpuid/cpuid.h"
 
 void putchar_sh(struct def_shell * sh, char c)
 {
@@ -34,6 +35,9 @@ void shellexec(struct def_shell * sh)
     putchar(sh->appointed_screen, '\n');
     if (strcompare(sh->current_input, "MEM")) {
         print_map(sh->appointed_screen);
+    }
+    if (strcompare(sh->current_input, "CPUID")) {
+        print_cpuid(sh->appointed_screen);
     }
     putchar(sh->appointed_screen, '\n');
 }

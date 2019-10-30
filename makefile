@@ -19,7 +19,7 @@ os.iso: kernel.elf
 kernel.bin: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o
 	$(utilpath)/i386-elf-ld -o $(outpath)/$@ -Ttext 0x1000 $(addprefix $(outpath)/,$^) --oformat binary
 
-kernel.elf: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o cpuid.o
+kernel.elf: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o cpuid.o cpuid_print.o
 	$(utilpath)/i386-elf-ld -T link.ld $(addprefix $(outpath)/,$^) -o $(outpath)/$@
 
 kernel_entry.o: kernel/kernel-entry.asm
@@ -36,6 +36,9 @@ loadgdt.o: kernel/memory/loadgdt.asm
 
 cpuid.o: kernel/cpuid/cpuid.asm
 	nasm $< -f elf -o $(outpath)/$@
+
+cpuid_print.o: kernel/cpuid/cpuid_print.c
+	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
 
 screen.o: kernel/drivers/screen.c
 	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@

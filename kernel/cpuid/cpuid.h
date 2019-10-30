@@ -1,6 +1,7 @@
 #ifndef CPUID_H
 #define CPUID_H
 #include <stdint.h>
+#include "../drivers/screen.h"
 
 enum {
     CPUID_FEAT_ECX_SSE3    = 1 << 0,
@@ -63,4 +64,6 @@ enum {
 };
 
 extern void cpuid_get_features(uint32_t * features_ecx, uint32_t * features_edx);
+
+void print_cpuid(struct def_vga_screen * s);
 #endif // ifndef CPUID_H
