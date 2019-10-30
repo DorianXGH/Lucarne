@@ -648,7 +648,7 @@ void ft_basic_install()
     ft_add_char(&ft_basic, ft_basic_w_data, 'W');
     ft_add_char(&ft_basic, ft_basic_x_data, 'X');
     ft_add_char(&ft_basic, ft_basic_y_data, 'Y');
-    ft_add_char(&ft_basic, ft_basic_z_data, 'Y');
+    ft_add_char(&ft_basic, ft_basic_z_data, 'Z');
 
     // numeric
     ft_add_char(&ft_basic, ft_basic_0_data, '0');

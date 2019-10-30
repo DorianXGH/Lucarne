@@ -23,9 +23,17 @@ void init_keyboard()
 
 void process_letter(char scancode)
 {
+    /*
+     * char scn[5];
+     *
+     * prntnum(scancode, ' ', scn, 5);
+     * for (int i = 0; i < 5; i++) {
+     *  default_shell.appointed_screen->video_memory[2 * (default_shell.appointed_screen->width - 5 + i)]     = scn[i];
+     *  default_shell.appointed_screen->video_memory[2 * (default_shell.appointed_screen->width - 5 + i) + 1] = 0x07;
+     * }*/
     switch (scancode) {
         case 0x0:
-            putstring(&default_screen, "ERROR");
+            putstring(default_shell.appointed_screen, "ERROR");
             break;
         case 0x1:
 
@@ -70,7 +78,7 @@ void process_letter(char scancode)
             backspace(&default_shell);
             break;
         case 0x0F:
-            putchar_sh(&default_shell, 'Tab');
+            putchar_sh(&default_shell, '\t');
             break;
         case 0x10:
             putchar_sh(&default_shell, 'Q');
@@ -212,7 +220,7 @@ void process_letter(char scancode)
             // Lalt
             break;
         case 0x39:
-            putchar_sh(&default_shell, 'Spc');
+            putchar_sh(&default_shell, ' ');
             break;
         default:
 
