@@ -108,8 +108,7 @@ test: os-image.bin
 	bochs
 
 runiso: os.iso
-	qemu-system-x86_64 -enable-kvm -cpu host -monitor stdio -d int,cpu_reset -cdrom $(outpath)/$<
-
+	qemu-system-x86_64 -enable-kvm -cpu host -monitor stdio -d int -cdrom $(outpath)/$<
 
 runisobochs: os.iso
 	bochs -f bochsrciso.txt

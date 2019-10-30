@@ -9,12 +9,12 @@ cpuid_get_features:
     mov eax, 1
     cpuid
 
-    mov ebx, [ebp+4]
-    mov [ebx], edx
-    mov ebx, [ebp+8]
-    mov [ebx], ecx
+    mov dword ebx, [ebp+8]
+    mov dword [ebx], edx
+    mov dword ebx, [ebp+12]
+    mov dword [ebx], ecx
     
     mov esp, ebp
     pop ebp
-    
+
     ret

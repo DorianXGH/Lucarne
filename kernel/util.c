@@ -35,18 +35,22 @@ void memcpy2(char * src, char * dest, int n)
     bool not_advanced_enough = false;
 
     cpuid_get_features(&ecx, &edx);
+
     putpixel(&default_screen, 0xFF0000, 200, 10);
+
 
     if (edx & CPUID_FEAT_EDX_SSE) {
         int i;
-
+        putpixel(&default_screen, 0xFFFFFF, 205, 10);
+        putpixel(&default_screen, 0xFFFFFF, 206, 10);
+        putpixel(&default_screen, 0xFFFFFF, 205, 11);
+        putpixel(&default_screen, 0xFFFFFF, 206, 11);
         for (i = 0; i < n / 16; i++) {
             __asm__ __volatile__ ("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n" : : "r" (src), "r" (dest) : "memory");
 
             src  += 16;
             dest += 16;
         }
-        putpixel(&default_screen, 0xFFFFFF, 205, 10);
     } else if (n & 15 && edx & CPUID_FEAT_EDX_MMX) {
         n = n & 15;
         int i;
