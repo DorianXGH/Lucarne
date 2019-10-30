@@ -64,6 +64,7 @@ enum {
 };
 
 extern void cpuid_get_features(uint32_t * features_ecx, uint32_t * features_edx);
+extern void cpuid_enable_sse();
 
 void print_cpuid(struct def_vga_screen * s);
 #endif // ifndef CPUID_H

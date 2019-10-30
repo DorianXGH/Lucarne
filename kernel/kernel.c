@@ -11,6 +11,7 @@
 #include "multiboot/mb_info_block.h"
 #include "fonts/font_desc.h"
 #include "fonts/font_basic.h"
+#include "cpuid/cpuid.h"
 
 #define MULTIB
 #ifdef MULTIB
@@ -90,7 +91,11 @@ void _start(struct mb_info_block * mbblck)
     // load GDT and reload segment registers
     load_gdt();
 
-
+    uint32_t ecx, edx;
+    cpuid_get_features(&ecx, &edx);
+    if (edx & CPUID_FEAT_EDX_SSE) {
+        cpuid_enable_sse();
+    }
     // load screen data from info block
     // TODO : Multiboot sanity
     default_screen.width        = mbblck_copy->framebuffer_width;

@@ -65,6 +65,7 @@ void putstring(struct def_vga_screen * s, char * str);
 
 void blit(struct def_vga_screen * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0);
 void blit_shell(struct def_shell * src, struct def_vga_screen * dest, uint32_t x0, uint32_t y0);
+void screencopy(struct def_vga_screen * src, struct def_vga_screen * dest);
 void set_screen_alpha(struct def_vga_screen * s, uint8_t a);
 
 #endif /* ifndef SCREEN_H */

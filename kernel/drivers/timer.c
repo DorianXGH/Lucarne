@@ -8,7 +8,7 @@ extern struct def_vga_screen default_screen;
 
 int tick = 0;
 
-static void timer_callback(registers_t regs)
+static void timer_callback(registers_t * regs)
 {
     tick++;
     putstring(&default_screen, "Tick: ");
