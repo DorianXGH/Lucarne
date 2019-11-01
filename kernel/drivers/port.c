@@ -1,5 +1,6 @@
 #include "port.h"
 
+
 /**
  * Read a byte from the specified port
  */
@@ -41,3 +42,11 @@ void port_word_out(uint16_t port, uint16_t data)
 {
     __asm__ __volatile__ ("out %%ax, %%dx" : : "a" (data), "d" (port));
 }
+
+uint8_t inb(uint16_t port){ return port_byte_in(port); }
+
+void outb(uint16_t port, uint8_t data){ port_byte_out(port, data); }
+
+uint16_t inw(uint16_t port){ return port_word_in(port); }
+
+void outw(uint16_t port, uint16_t data){ port_word_out(port, data); }
