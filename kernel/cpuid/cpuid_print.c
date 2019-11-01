@@ -14,6 +14,8 @@ void print_cpuid(struct def_vga_screen * s)
         putstring(s, "!!!");
     }
 
+    putstring(s, "EDX : ");
+
     if (edx & CPUID_FEAT_EDX_ACPI) {
         putstring(s, "ACPI, ");
     }
@@ -103,5 +105,55 @@ void print_cpuid(struct def_vga_screen * s)
     }
     if (edx & CPUID_FEAT_EDX_VME) {
         putstring(s, "VME, ");
+    }
+    putstring(s, "\nECX : ");
+
+    if (ecx & CPUID_FEAT_ECX_MONITOR) {
+        putstring(s, "MONITOR, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_MOVBE) {
+        putstring(s, "MOVBE, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_OSXSAVE) {
+        putstring(s, "OSXSAVE, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_PCIDE) {
+        putstring(s, "PCIDE, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_PCLMUL) {
+        putstring(s, "PCLMUL, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_PDCM) {
+        putstring(s, "PDCM, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_POPCNT) {
+        putstring(s, "POPCNT, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_SMX) {
+        putstring(s, "SMX, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_SSE3) {
+        putstring(s, "MONITOR, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_SSE4_1) {
+        putstring(s, "SSE4.1, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_SSE4_2) {
+        putstring(s, "SSE4.2, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_SSSE3) {
+        putstring(s, "SSSE3, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_TM2) {
+        putstring(s, "TM2, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_VMX) {
+        putstring(s, "VMX, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_x2APIC) {
+        putstring(s, "x2APIC, ");
+    }
+    if (ecx & CPUID_FEAT_ECX_XSAVE) {
+        putstring(s, "XSAVE, ");
     }
 } /* print_cpuid */
