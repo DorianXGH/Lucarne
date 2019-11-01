@@ -5,19 +5,18 @@
 
 void putchar_sh(struct def_shell * sh, char c)
 {
-    putchar(sh->appointed_screen, c);
     if (c == '\n') {
+        putchar(sh->appointed_screen, c);
         shellexec(sh);
         sh->current_index = 0;
         for (int i = 0; i < 256; i++) {
             sh->current_input[i] = 0;
         }
         shell_invite(sh);
-    } else {
-        if (sh->current_index < 128) {
-            sh->current_input[sh->current_index] = c;
-            sh->current_index++;
-        }
+    } else if (sh->current_index < 128) {
+        putchar(sh->appointed_screen, c);
+        sh->current_input[sh->current_index] = c;
+        sh->current_index++;
     }
 }
 

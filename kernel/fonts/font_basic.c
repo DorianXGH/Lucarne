@@ -592,8 +592,8 @@ void ft_basic_install()
     ft_basic.charheight  = 10;
     ft_basic.charwidth   = 8;
     ft_basic.numchar     = 0;
-    ft_basic.interchar_x = 0;
-    ft_basic.interchar_y = 1;
+    ft_basic.interchar_x = 1;
+    ft_basic.interchar_y = 3;
 
     ft_add_char(&ft_basic, ft_basic_space_data, ' ');
     ft_add_char(&ft_basic, ft_basic_a_data, 'a');
