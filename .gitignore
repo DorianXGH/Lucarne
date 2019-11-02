@@ -2,3 +2,4 @@
 *.txt
 i386elfgcc
 output
+*.vdi
