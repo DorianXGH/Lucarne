@@ -38,6 +38,20 @@ void shellexec(struct def_shell * sh)
     if (strcompare(sh->current_input, "CPUID")) {
         print_cpuid(sh->appointed_screen);
     }
+    if (strcompare(sh->current_input, "DREAD MASTER")) {
+        char * k = palloc_n(1) * 0x1000;
+        ATA_PIO_bl_read(0, 0, 1, k, false);
+
+        k[512] = 0;
+        print_hex(sh->appointed_screen, k);
+    }
+    if (strcompare(sh->current_input, "DREAD SLAVE")) {
+        char * k = palloc_n(1) * 0x1000;
+        ATA_PIO_bl_read(1, 0, 1, k, false);
+
+        k[512] = 0;
+        print_hex(sh->appointed_screen, k);
+    }
     putchar(sh->appointed_screen, '\n');
 }
 

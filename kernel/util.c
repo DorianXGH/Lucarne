@@ -145,3 +145,16 @@ void prntnum(uint64_t n, char sign, char * outbuf, int size)
 
     outbuf[j % size] = 0;
 }
+
+void print_hex(struct def_vga_screen * s, char * a)
+{
+    unsigned char dig[16] = "0123456789abcdef";
+    uint32_t i = 0;
+
+    while (a[i] != 0 && i < INT32_MAX) {
+        unsigned char c = a[i];
+        putchar(s, dig[(c >> 4) % 16]);
+        putchar(s, dig[c % 16]);
+        i++;
+    }
+}

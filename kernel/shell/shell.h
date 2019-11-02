@@ -2,6 +2,7 @@
 #define SHELL_H
 #include "../drivers/screen.h"
 #include "../fonts/font_desc.h"
+#include "../drivers/ATA/ata_pio.h"
 
 struct def_shell {
     struct def_vga_screen * appointed_screen;
