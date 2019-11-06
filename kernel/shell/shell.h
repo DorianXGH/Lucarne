@@ -7,7 +7,7 @@
 struct def_shell {
     struct def_vga_screen * appointed_screen;
     char                    current_input[256];
-    char                    current_index;
+    uint8_t                 current_index;
     uint32_t                term_color;
     struct font_desc *      font;
 };

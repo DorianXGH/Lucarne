@@ -13,7 +13,7 @@ void putchar_sh(struct def_shell * sh, char c)
             sh->current_input[i] = 0;
         }
         shell_invite(sh);
-    } else if (sh->current_index < 128) {
+    } else if (sh->current_index < 255) {
         putchar(sh->appointed_screen, c);
         sh->current_input[sh->current_index] = c;
         sh->current_index++;
