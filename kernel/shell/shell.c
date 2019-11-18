@@ -108,6 +108,9 @@ void shellexec(struct def_shell * sh)
                     putstring(sh->appointed_screen, "LBA48 SUPPORTED\n");
                 }
                 break;
+            case 6:
+                putstring(sh->appointed_screen, "NO BUS\n");
+                break;
             default:
                 putstring(sh->appointed_screen, "UNKNOWN RETURN CODE\n");
                 break;

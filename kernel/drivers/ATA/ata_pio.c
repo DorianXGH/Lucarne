@@ -97,13 +97,20 @@ uint16_t ATA_PIO_bl_write(uint16_t drive, uint64_t numblock, uint16_t count, cha
 
 uint16_t ATA_PIO_IDENTIFY(uint16_t drive, uint8_t * buf)
 {
+    uint8_t stat = inb(0x1F7);
+
+    if (stat == 0xFF) {
+        return 6;
+    }
+
     outb(0x1F6, (drive % 2 == 0) ? 0xA0 : 0xB0); // A0 : master B0 : slave
     outb(0x1F2, 0);
     outb(0x1F3, 0);
     outb(0x1F4, 0);
     outb(0x1F5, 0);
     outb(0x1F7, 0xEC); // Send IDENTIFY Command
-    uint8_t stat = inb(0x1F7);
+
+    stat = inb(0x1F7);
     if (stat == 0) {
         return 0;
     } else {
