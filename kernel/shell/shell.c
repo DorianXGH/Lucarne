@@ -52,8 +52,40 @@ void shellexec(struct def_shell * sh)
         k[512] = 0;
         print_hex(sh->appointed_screen, k);
     }
+
+    if (strcompare(sh->current_input, "DID MASTER")) {
+        char * k    = palloc_n(1) * 0x1000;
+        uint16_t id = ATA_PIO_IDENTIFY(0, k);
+
+        k[512] = 0;
+        switch (id) {
+            case 0:
+                putstring(sh->appointed_screen, "NO DRIVE\n");
+                break;
+            case 1:
+                putstring(sh->appointed_screen, "ERR SPEC\n");
+                break;
+            case 2:
+                putstring(sh->appointed_screen, "ATAPI\n");
+                break;
+            case 3:
+                putstring(sh->appointed_screen, "ATA ABORTED\n");
+                break;
+            case 4:
+                putstring(sh->appointed_screen, "SATA\n");
+                break;
+            case 5:
+                putstring(sh->appointed_screen, "ATA\n");
+                print_hex(sh->appointed_screen, k);
+                break;
+            default:
+                putstring(sh->appointed_screen, "UNKNOWN RETURN CODE\n");
+                break;
+        }
+    }
+
     putchar(sh->appointed_screen, '\n');
-}
+} /* shellexec */
 
 void shell_invite(struct def_shell * sh)
 {

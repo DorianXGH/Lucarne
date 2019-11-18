@@ -89,7 +89,7 @@ uint16_t ATA_PIO_bl_write(uint16_t drive, uint64_t numblock, uint16_t count, cha
     return count;
 }
 
-uint16_t ATA_PIO_IDENTITY(uint16_t drive, uint8_t * buf)
+uint16_t ATA_PIO_IDENTIFY(uint16_t drive, uint8_t * buf)
 {
     outb(0x1F6, (drive % 2 == 0) ? 0xA0 : 0xB0); // A0 : master B0 : slave
     outb(0x1F2, 0);
