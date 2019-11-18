@@ -88,3 +88,46 @@ uint16_t ATA_PIO_bl_write(uint16_t drive, uint64_t numblock, uint16_t count, cha
 
     return count;
 }
+
+uint16_t ATA_PIO_IDENTITY(uint16_t drive, uint8_t * buf)
+{
+    outb(0x1F6, (drive % 2 == 0) ? 0xA0 : 0xB0); // A0 : master B0 : slave
+    outb(0x1F2, 0);
+    outb(0x1F3, 0);
+    outb(0x1F4, 0);
+    outb(0x1F5, 0);
+    outb(0x1F7, 0xEC); // Send IDENTIFY Command
+    uint8_t stat = inb(0x1F7);
+    if (stat == 0) {
+        return 0;
+    } else {
+        while (stat & (1 << 7)) {
+            stat = inb(0x1F7);
+        }
+        if (inb(0x1F4) != 0 || inb(0x1F5) != 0) {
+            return 1;
+        } else {
+            while (!((stat & 8) || (stat & 1))) { // check DRQ or ERR
+                stat = inb(0x1F7);
+            }
+            if (stat & 1) {
+                if (inb(0x1F4) == 0x14 && inb(0x1F5) == 0xEB) {
+                    return 2;
+                }
+                if (inb(0x1F4) == 0 && inb(0x1F5) == 0) {
+                    return 3;
+                }
+                if (inb(0x1F4) == 0x3C && inb(0x1F5) == 0xC3) {
+                    return 4;
+                }
+            } else { // by all logic DRQ should be set (stat & 8)
+                for (int idx = 0; idx < 256; idx++) {
+                    uint8_t tmpword = inw(0x1F0);
+                    buf[idx * 2]     = (uint8_t) tmpword;
+                    buf[idx * 2 + 1] = (uint8_t) (tmpword >> 8);
+                }
+                return 5;
+            }
+        }
+    }
+} /* ATA_PIO_IDENTITY */
