@@ -9,8 +9,7 @@ uint16_t ATA_PIO_bl_common(uint16_t drive, uint64_t numblock, uint16_t count, bo
     if (LBA48) {
         outb(0x1F6, 0x40 | (drive << 4));
 
-        // for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
-        // while (!(inb(0x1F7) & (1 << 7)));        // check BSY bit of status register
+        for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
 
         outb(0x1F1, 0x00); /* NULL byte to port 0x1F1 */
         // consecutive outs to the same ports are bad
@@ -27,8 +26,7 @@ uint16_t ATA_PIO_bl_common(uint16_t drive, uint64_t numblock, uint16_t count, bo
         /* Drive indicator, magic bits, and highest 4 bits of the block address */
         outb(0x1F6, 0xE0 | (drive << 4) | ((numblock >> 24) & 0x0F));
 
-        // for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
-        // while (!(inb(0x1F7) & (1 << 7)));        // check BSY bit of status register
+        for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
 
         outb(0x1F1, 0x00);                       /* NULL byte to port 0x1F1 */
         outb(0x1F2, count & 0xFF);               /* Sector count */
