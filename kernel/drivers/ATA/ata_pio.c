@@ -50,9 +50,15 @@ uint16_t ATA_PIO_bl_read(uint16_t drive, uint64_t numblock, uint16_t count, char
     outb(0x1F7, 0x20 | (LBA48) ? 0x4 : 0);
 
     ft_print_char(&default_screen, &ft_basic, '1', 410, 100, 0xFFFFFF);
-
+    uint8_t stat = inb(0x1F7);
     /* Wait for the drive to signal that it's ready: */
-    while (!(inb(0x1F7) & 0x08));
+    while (!((stat & 0x08) || (stat & 0x01))) {
+        stat = inb(0x1F7);
+    }
+    if (stat & 0x01) {
+        buf[0] = inb(0x1F1); // put the error bits in the buffer
+        return 0;
+    }
 
     ft_print_char(&default_screen, &ft_basic, '2', 420, 100, 0xFFFFFF);
 

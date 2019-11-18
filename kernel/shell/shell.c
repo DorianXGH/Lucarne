@@ -39,9 +39,35 @@ void shellexec(struct def_shell * sh)
         print_cpuid(sh->appointed_screen);
     }
     if (strcompare(sh->current_input, "DREAD MASTER")) {
-        char * k = palloc_n(1) * 0x1000;
-        ATA_PIO_bl_read(0, 0, 1, k, false);
-
+        char * k     = palloc_n(1) * 0x1000;
+        uint16_t ret = ATA_PIO_bl_read(0, 0, 1, k, false);
+        if (ret == 0) {
+            putstring(sh->appointed_screen, "ERR\n");
+            if (k[0] & 1) {
+                putstring(sh->appointed_screen, "ADDRESS MARK NOT FOUND\n");
+            }
+            if (k[0] & (1 << 1)) {
+                putstring(sh->appointed_screen, "TRACK 0 NOT FOUND\n");
+            }
+            if (k[0] & (1 << 2)) {
+                putstring(sh->appointed_screen, "ABORTED COMMAND\n");
+            }
+            if (k[0] & (1 << 3)) {
+                putstring(sh->appointed_screen, "MEDIA CHANGE REQUEST\n");
+            }
+            if (k[0] & (1 << 4)) {
+                putstring(sh->appointed_screen, "ID NOT FOUND\n");
+            }
+            if (k[0] & (1 << 5)) {
+                putstring(sh->appointed_screen, "MEDIA CHANGED\n");
+            }
+            if (k[0] & (1 << 6)) {
+                putstring(sh->appointed_screen, "UNCORRECTABLE DATA ERR\n");
+            }
+            if (k[0] & (1 << 7)) {
+                putstring(sh->appointed_screen, "BAD BLOCK\n");
+            }
+        }
         k[512] = 0;
         print_hex(sh->appointed_screen, k);
     }
@@ -77,6 +103,10 @@ void shellexec(struct def_shell * sh)
             case 5:
                 putstring(sh->appointed_screen, "ATA\n");
                 print_hex(sh->appointed_screen, k);
+                uint16_t * k2 = (uint16_t *) k;
+                if (k2[83] & (1 << 10)) {
+                    putstring(sh->appointed_screen, "LBA48 SUPPORTED\n");
+                }
                 break;
             default:
                 putstring(sh->appointed_screen, "UNKNOWN RETURN CODE\n");
