@@ -134,7 +134,8 @@ void shellexec(struct def_shell * sh)
 		asm("hlt");
 	}
 	else if (strcompare(sh->current_input, "HELP")) {
-	//	putstring(sh->appointed_screen, "
+		putstring(sh->appointed_screen, "LIST OF COMMANDS:\n\nMEM : PRINTS MEMORY MAP\nCPUID : SHOW CPU FEATURES\nDREAD MASTER : READS THE FIRST SECTOR OF MASTER DISK ON PRIMARY IDE BUS\nDREAD SLAVE : READS THE FIRST SECTOR OF SLAVE DISK ON PRIMARY IDE BUS\nDID MASTER : RETURNS THE RESULT OF \"ATA IDENTIFY\" ON PRIMARY DISK\nHELLOWORLD : PRINTS \"HELLO, WORLD!\"\nHALT : HALTS THE SYSTEM\nHELP : SHOWS THIS TEXT\n");
+
 	}
 	else {
 		putstring(sh->appointed_screen, "UNKNOWN COMMAND. TYPE \"HELP\" FOR HELP.\n");
