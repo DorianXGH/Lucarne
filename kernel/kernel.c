@@ -110,9 +110,6 @@ void _start(struct mb_info_block * mbblck)
     clear(&default_screen); // clear the screen
 
 
-    // Interrupts enable
-    asm volatile ("sti");
-    putstring(&default_screen, "Interrupts restart\n");
     // init_timer(10);
 
     // Paging initialisation part
@@ -233,6 +230,11 @@ void _start(struct mb_info_block * mbblck)
         default_shell.current_input[i] = 0;
     }
     default_shell.current_index = 0;
+
+    // Interrupts enable
+    asm volatile ("sti");
+    putstring(&default_screen, "Interrupts restart\n");
+
     putstring(&terminal_screen, "Shell Loaded, awaiting instructions. <Lucarne's Kernel:\"beta\"> \n");
     shell_invite(&default_shell);
     int azer = 0;
