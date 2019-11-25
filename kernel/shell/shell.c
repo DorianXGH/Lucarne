@@ -35,10 +35,10 @@ void shellexec(struct def_shell * sh)
     if (strcompare(sh->current_input, "MEM")) {
         print_map(sh->appointed_screen);
     }
-    if (strcompare(sh->current_input, "CPUID")) {
+    else if (strcompare(sh->current_input, "CPUID")) {
         print_cpuid(sh->appointed_screen);
     }
-    if (strcompare(sh->current_input, "DREAD MASTER")) {
+    else if (strcompare(sh->current_input, "DREAD MASTER")) {
         char * k     = palloc_n(1) * 0x1000;
         uint16_t ret = ATA_PIO_bl_read(0, 0, 1, k, false);
         if (ret == 0) {
@@ -71,15 +71,14 @@ void shellexec(struct def_shell * sh)
         k[512] = 0;
         print_hex(sh->appointed_screen, k);
     }
-    if (strcompare(sh->current_input, "DREAD SLAVE")) {
+    else if (strcompare(sh->current_input, "DREAD SLAVE")) {
         char * k = palloc_n(1) * 0x1000;
         ATA_PIO_bl_read(1, 0, 1, k, false);
 
         k[512] = 0;
         print_hex(sh->appointed_screen, k);
     }
-
-    if (strcompare(sh->current_input, "DID MASTER")) {
+    else if (strcompare(sh->current_input, "DID MASTER")) {
         char * k    = palloc_n(1) * 0x1000;
         uint16_t id = ATA_PIO_IDENTIFY(0, k);
 
@@ -115,7 +114,19 @@ void shellexec(struct def_shell * sh)
                 putstring(sh->appointed_screen, "UNKNOWN RETURN CODE\n");
                 break;
         }
+	}
+	else if (strcompare(sh->current_input, "HELLOWORLD")) {
+		putstring(sh->appointed_screen, "HELLO, WORLD!\n");
     }
+	else if (strcompare(sh->current_input, "HALT")) {
+		asm("hlt");
+	}
+	else if (strcompare(sh->current_input, "HELP")) {
+	//	putstring(sh->appointed_screen, "
+	}
+	else {
+		putstring(sh->appointed_screen, "UNKNOWN COMMAND. TYPE \"HELP\" FOR HELP.\n");
+	}
 
     putchar(sh->appointed_screen, '\n');
 } /* shellexec */
