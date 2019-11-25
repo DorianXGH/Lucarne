@@ -146,6 +146,29 @@ void prntnum(uint64_t n, char sign, char * outbuf, int size)
     outbuf[j % size] = 0;
 }
 
+void prntnum_nbase(uint32_t n, char sign, char * outbuf, int size, int base)
+{
+    int i = size;
+    int j = 0;
+
+    do {
+        outbuf[i % size] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[n % base];
+        i--;
+        n = n / base;
+    } while (n > 0);
+
+    if (sign != ' ') {
+        outbuf[0 % size] = sign;
+        ++j;
+    }
+
+    while (++i < size + 1) {
+        outbuf[(j++) % size] = outbuf[i % size];
+    }
+
+    outbuf[j % size] = 0;
+}
+
 void print_hex(struct def_vga_screen * s, char * a)
 {
     unsigned char dig[16] = "0123456789abcdef";

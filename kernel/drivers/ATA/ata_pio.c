@@ -7,7 +7,7 @@ extern struct font_desc ft_basic;
 uint16_t ATA_PIO_bl_common(uint16_t drive, uint64_t numblock, uint16_t count, bool LBA48)
 {
     if (LBA48) {
-        outb(0x1F6, 0x40 | (drive << 4));
+        outb(0x1F6, 0x40 | ((drive % 2) << 4));
 
         for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
 
@@ -24,7 +24,7 @@ uint16_t ATA_PIO_bl_common(uint16_t drive, uint64_t numblock, uint16_t count, bo
         outb(0x1F5, (numblock >> 40) && 0xFF);
     } else {
         /* Drive indicator, magic bits, and highest 4 bits of the block address */
-        outb(0x1F6, 0xE0 | (drive << 4) | ((numblock >> 24) & 0x0F));
+        outb(0x1F6, 0xE0 | ((drive % 2) << 4) | ((numblock >> 24) & 0x0F));
 
         for (int i = 0; i < 4; i++) inb(0x1F7);  // 400 ns delay TODO : sleep command
 

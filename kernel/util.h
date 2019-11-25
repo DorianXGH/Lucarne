@@ -12,6 +12,7 @@ void memcpy2(char * src, char * dest, int n);
 void memset(char * dest, char val, int len);
 void int_to_ascii(int n, char str[]);
 void prntnum(uint64_t n, char sign, char * outbuf, int size);
+void prntnum_nbase(uint32_t n, char sign, char * outbuf, int size, int base);
 uint16_t low_16(uint32_t a);
 uint16_t high_16(uint32_t a);
 bool strcompare(char * a, char * b);
