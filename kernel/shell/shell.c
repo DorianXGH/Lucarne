@@ -102,10 +102,22 @@ void shellexec(struct def_shell * sh)
             case 5:
                 putstring(sh->appointed_screen, "ATA\n");
                 print_hex(sh->appointed_screen, k);
+                putstring(sh->appointed_screen, "\n");
                 uint16_t * k2 = (uint16_t *) k;
                 if (k2[83] & (1 << 10)) {
                     putstring(sh->appointed_screen, "LBA48 SUPPORTED\n");
                 }
+                uint32_t LBA24_count = k2[60] << 16 + k2[61];
+                uint64_t LBA48_count = k2[100] << 48 + k2[101] << 32 + k2[102] << 16 + k2[103];
+                char LBA24_count_buf[20];
+                char LBA48_count_buf[40];
+                prntnum(LBA24_count, ' ', LBA24_count_buf, 20);
+                prntnum(LBA48_count, ' ', LBA48_count_buf, 40);
+                putstring(sh->appointed_screen, "LBA24 sectors : \0");
+                putstring(sh->appointed_screen, LBA24_count_buf);
+                putstring(sh->appointed_screen, "\nLBA48 sectors : \0");
+                putstring(sh->appointed_screen, LBA48_count_buf);
+                putstring(sh->appointed_screen, "\n\0");
                 break;
             case 6:
                 putstring(sh->appointed_screen, "NO BUS\n");
