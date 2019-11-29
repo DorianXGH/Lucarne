@@ -181,3 +181,16 @@ void print_hex(struct def_vga_screen * s, char * a)
         i++;
     }
 }
+
+void print_hex_n(struct def_vga_screen * s, char * a, uint32_t n)
+{
+    unsigned char dig[16] = "0123456789abcdef";
+    uint32_t i = 0;
+
+    while (i < n && i < INT32_MAX) {
+        unsigned char c = a[i];
+        putchar(s, dig[(c >> 4) % 16]);
+        putchar(s, dig[c % 16]);
+        i++;
+    }
+}

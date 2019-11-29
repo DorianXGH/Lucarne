@@ -34,13 +34,11 @@ void shellexec(struct def_shell * sh)
     putchar(sh->appointed_screen, '\n');
     if (strcompare(sh->current_input, "MEM")) {
         print_map(sh->appointed_screen);
-    }
-    else if (strcompare(sh->current_input, "CPUID")) {
+    } else if (strcompare(sh->current_input, "CPUID")) {
         print_cpuid(sh->appointed_screen);
-    }
-    else if (strcompare(sh->current_input, "DREAD MASTER")) {
+    } else if (strcompare(sh->current_input, "DREAD MASTER")) {
         char * k     = palloc_n(1) * 0x1000;
-        uint16_t ret = ATA_PIO_bl_read(0, 0, 1, k, false);
+        uint16_t ret = ATA_PIO_bl_read(0, 1, 1, k, false);
         if (ret == 0) {
             putstring(sh->appointed_screen, "ERR\n");
             if (k[0] & 1) {
@@ -69,16 +67,14 @@ void shellexec(struct def_shell * sh)
             }
         }
         k[512] = 0;
-        print_hex(sh->appointed_screen, k);
-    }
-    else if (strcompare(sh->current_input, "DREAD SLAVE")) {
+        print_hex_n(sh->appointed_screen, k, 512);
+    } else if (strcompare(sh->current_input, "DREAD SLAVE")) {
         char * k = palloc_n(1) * 0x1000;
         ATA_PIO_bl_read(1, 0, 1, k, false);
 
         k[512] = 0;
         print_hex(sh->appointed_screen, k);
-    }
-    else if (strcompare(sh->current_input, "DID MASTER")) {
+    } else if (strcompare(sh->current_input, "DID MASTER")) {
         char * k    = palloc_n(1) * 0x1000;
         uint16_t id = ATA_PIO_IDENTIFY(0, k);
 
@@ -126,20 +122,16 @@ void shellexec(struct def_shell * sh)
                 putstring(sh->appointed_screen, "UNKNOWN RETURN CODE\n");
                 break;
         }
-	}
-	else if (strcompare(sh->current_input, "HELLOWORLD")) {
-		putstring(sh->appointed_screen, "HELLO, WORLD!\n");
+    } else if (strcompare(sh->current_input, "HELLOWORLD")) {
+        putstring(sh->appointed_screen, "HELLO, WORLD!\n");
+    } else if (strcompare(sh->current_input, "HALT")) {
+        asm ("hlt");
+    } else if (strcompare(sh->current_input, "HELP")) {
+        putstring(sh->appointed_screen,
+          "LIST OF COMMANDS:\n\nMEM : PRINTS MEMORY MAP\nCPUID : SHOW CPU FEATURES\nDREAD MASTER : READS THE FIRST SECTOR OF MASTER DISK ON PRIMARY IDE BUS\nDREAD SLAVE : READS THE FIRST SECTOR OF SLAVE DISK ON PRIMARY IDE BUS\nDID MASTER : RETURNS THE RESULT OF \"ATA IDENTIFY\" ON PRIMARY DISK\nHELLOWORLD : PRINTS \"HELLO, WORLD!\"\nHALT : HALTS THE SYSTEM\nHELP : SHOWS THIS TEXT\n");
+    } else {
+        putstring(sh->appointed_screen, "UNKNOWN COMMAND. TYPE \"HELP\" FOR HELP.\n");
     }
-	else if (strcompare(sh->current_input, "HALT")) {
-		asm("hlt");
-	}
-	else if (strcompare(sh->current_input, "HELP")) {
-		putstring(sh->appointed_screen, "LIST OF COMMANDS:\n\nMEM : PRINTS MEMORY MAP\nCPUID : SHOW CPU FEATURES\nDREAD MASTER : READS THE FIRST SECTOR OF MASTER DISK ON PRIMARY IDE BUS\nDREAD SLAVE : READS THE FIRST SECTOR OF SLAVE DISK ON PRIMARY IDE BUS\nDID MASTER : RETURNS THE RESULT OF \"ATA IDENTIFY\" ON PRIMARY DISK\nHELLOWORLD : PRINTS \"HELLO, WORLD!\"\nHALT : HALTS THE SYSTEM\nHELP : SHOWS THIS TEXT\n");
-
-	}
-	else {
-		putstring(sh->appointed_screen, "UNKNOWN COMMAND. TYPE \"HELP\" FOR HELP.\n");
-	}
 
     putchar(sh->appointed_screen, '\n');
 } /* shellexec */

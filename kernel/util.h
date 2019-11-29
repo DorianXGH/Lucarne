@@ -18,4 +18,5 @@ uint16_t high_16(uint32_t a);
 bool strcompare(char * a, char * b);
 int min(int a, int b);
 void print_hex(struct def_vga_screen * s, char * a);
+void print_hex_n(struct def_vga_screen * s, char * a, uint32_t n);
 #endif /* ifndef UTIL_H */
