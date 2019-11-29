@@ -19,5 +19,5 @@ struct GPT_header {
     uint32_t num_partitions;
     uint32_t descriptor_size;
     uint32_t table_CRC32;
-};
+} __attribute__((packed));
 #endif // ifndef GPT_H
