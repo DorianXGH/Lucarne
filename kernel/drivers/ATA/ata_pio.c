@@ -54,7 +54,13 @@ uint16_t ATA_PIO_bl_read(uint16_t drive, uint64_t numblock, uint16_t count, char
         stat = inb(0x1F7);
     }
 
-    outb(0x1F7, 0x20 | (LBA48) ? 0x4 : 0);
+    //outb(0x1F7, 0x20 | (LBA48) ? 0x4 : 0);
+	if(LBA48) {
+		outb(0x1F7, 0x24);
+	}
+	else {
+		outb(0x1F7, 0x20);
+	}
 
     stat = inb(0x1F7);
     /* Wait for the drive to signal that it's ready: */
