@@ -68,6 +68,9 @@ void shellexec(struct def_shell * sh)
         }
         k[512] = 0;
         print_hex_n(sh->appointed_screen, k, 512);
+        putchar(sh->appointed_screen, '\n');
+        struct GPT_header * head = (struct GPT_header *) k;
+        print_hex_n(sh->appointed_screen, &(head->last_usable_LBA), 8);
     } else if (strcompare(sh->current_input, "DREAD SLAVE")) {
         char * k = palloc_n(1) * 0x1000;
         ATA_PIO_bl_read(1, 0, 1, k, false);
