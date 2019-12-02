@@ -91,7 +91,7 @@ disk.o: kernel/drivers/disk.c
 ata.o: kernel/drivers/ATA/ata.c
 	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
 
-gpt.o: kernel/drivers/filesystems/gpt.c
+gpt.o: kernel/drivers/filesystems/GPT.c
 	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
 
 fonts/font_desc.o: kernel/fonts/font_desc.c fonts_directory
