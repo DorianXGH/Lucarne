@@ -19,7 +19,7 @@ os.iso: kernel.elf
 kernel.bin: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o
 	$(utilpath)/i386-elf-ld -o $(outpath)/$@ -Ttext 0x1000 $(addprefix $(outpath)/,$^) --oformat binary
 
-kernel.elf: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o cpuid.o cpuid_print.o ata_pio.o
+kernel.elf: kernel_entry.o kernel.o interrupts.o screen.o memmap.o page_allocator.o shell.o keyboard.o timer.o port.o isr.o idt.o util.o pdt.o pt.o enable_paging.o gdt.o loadgdt.o fonts/font_desc.o fonts/font_basic.o cpuid.o cpuid_print.o ata_pio.o ata.o disk.o
 	$(utilpath)/i386-elf-ld -T link.ld $(addprefix $(outpath)/,$^) -o $(outpath)/$@
 
 kernel_entry.o: kernel/kernel-entry.asm
@@ -83,6 +83,12 @@ idt.o: kernel/idt.c
 	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
 
 util.o: kernel/util.c
+	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
+
+disk.o: kernel/drivers/disk.c
+	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
+
+ata.o: kernel/drivers/ATA/ata.c
 	$(utilpath)/$(gccargs) -c $< -o $(outpath)/$@
 
 fonts/font_desc.o: kernel/fonts/font_desc.c fonts_directory
