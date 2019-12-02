@@ -9,8 +9,8 @@ enum Drive_Protocol {
 };
 
 struct Drive {
-    Drive_Protocol protocol;
-    uint32_t       pr_id;
+    enum Drive_Protocol protocol;
+    uint32_t            pr_id;
 };
 bool sect_read(uint32_t drive, uint64_t adress, uint8_t * buf);
 bool sect_write(uint32_t drive, uint64_t adress, uint8_t * buf);
