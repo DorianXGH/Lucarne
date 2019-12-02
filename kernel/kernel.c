@@ -241,15 +241,15 @@ void _start(struct mb_info_block * mbblck)
     while (1) {
         putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
         blit_shell(&default_shell, &virt_scr, margin, margin);
-        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 26);
-        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 27);
-        putpixel(&virt_scr, 0x00FF00, azer % virt_scr.width, 28);
-        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 26);
-        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 27);
-        putpixel(&virt_scr, 0x00FF00, (azer + 1) % virt_scr.width, 28);
-        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 26);
-        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 27);
-        putpixel(&virt_scr, 0x00FF00, (azer + 2) % virt_scr.width, 28);
+        putpixel(&virt_scr, 0x00FF00, 300 + azer % (virt_scr.width - 600), 26);
+        putpixel(&virt_scr, 0x00FF00, 300 + azer % (virt_scr.width - 600), 27);
+        putpixel(&virt_scr, 0x00FF00, 300 + azer % (virt_scr.width - 600), 28);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 1) % (virt_scr.width - 600), 26);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 1) % (virt_scr.width - 600), 27);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 1) % (virt_scr.width - 600), 28);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 26);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 27);
+        putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 28);
         // set_screen_alpha(&virt_scr, 0xFF);
         screencopy(&virt_scr, &default_screen);
         for (int k = 0; k < 1000; k++) { }
