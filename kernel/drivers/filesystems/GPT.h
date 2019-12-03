@@ -20,4 +20,14 @@ struct GPT_header {
     uint32_t descriptor_size;
     uint32_t table_CRC32;
 } __attribute__((packed));
+
+struct GPT_partition {
+    uint8_t  type_GUID[16];
+    uint8_t  partition_GUID[16];
+    uint64_t first_LBA;
+    uint64_t last_LBA;
+    uint64_t flags;
+    uint16_t name[36];
+} __attribute__((packed));
+
 #endif // ifndef GPT_H

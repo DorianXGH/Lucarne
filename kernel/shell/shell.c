@@ -71,6 +71,14 @@ void shellexec(struct def_shell * sh)
         putchar(sh->appointed_screen, '\n');
         struct GPT_header * head = (struct GPT_header *) k;
         print_hex_n(sh->appointed_screen, &(head->last_usable_LBA), 8);
+        uint8_t * parts = palloc_n(1);
+        ATA_PIO_bl_read(0, head->partition_table_LBA, 1, parts, false);
+        struct GPT_partition * partitions = (struct GPT_partition *) parts;
+        putchar(sh->appointed_screen, '\n');
+        for (int p = 0; p < 36; p++) {
+            putchar(sh->appointed_screen, partitions[0].name[p]);
+        }
+        putchar(sh->appointed_screen, '\n');
     } else if (strcompare(sh->current_input, "DREAD SLAVE")) {
         char * k = palloc_n(1) * 0x1000;
         ATA_PIO_bl_read(1, 0, 1, k, false);
