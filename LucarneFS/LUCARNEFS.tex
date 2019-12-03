@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[british]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+
+\title{LucarneFS Specification}
+\author{Dorian Bourgeoisat}
+\date{\today\\v0.1}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+
+\newpage
+\section{Definitions}
+\subsection{Chain}
+Linked list with the last link pointing to the first.
+\subsection{First/Last link of a chain}
+As a result of the structure of a chain, the last or first links are defined by the objects that hold the structure. The link pointed to by the holding structure is the first link. The link pointing to it is the last link.
+
+\section{General Principles}
+\subsection{Chain of blocks}
+The underlying structures are almost always a chain. The exception to this is the block itself, or a contiguous file.
+The pointer to the next block is a 6 bytes long LBA 48 adress little-endian at the end of the block. A block is always a sector.
+
+\begin{tabular}{|c|c|}
+    \hline
+    Rel. LBA & Content \\
+    \hline
+    ... & ...  \\
+    \hline
+    506 & NEXT\_BLOCK\_LBA48  \\
+    \hline
+  \end{tabular}
+
+\subsection{Free blocks}
+Free blocks are maintained in a chain, when a file is deleted, its blocks are put in the beginning of the chain. When a file must be given new blocks, they are taken from the beginning of the chain.
+
+\end{document}link, with the last link pointing to the first
