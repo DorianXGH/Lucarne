@@ -3,3 +3,5 @@
 i386elfgcc
 output
 *.vdi
+.vscode
+.vscode/*
