@@ -21,8 +21,8 @@ As a result of the structure of a chain, the last or first links are defined by 
 
 \section{General Principles}
 \subsection{Chain of blocks}
-The underlying structures are almost always a chain. The exception to this is the block itself, or a contiguous file.
-The pointer to the next block is a 6 bytes long LBA 48 adress little-endian at the end of the block. A block is always a sector.
+The underlying structures are almost always a chain. The exception to this is the block itself, or a contiguous file. A block is always 512 bytes long.\newline
+The pointer to the next block is a 6 bytes long relative LBA 48 adress little-endian at the end of the block. It has a duplicate. Between the 2 pointers is a 2 bytes long volume identifier and a 2 bytes long metadata bitfield.
 
 \begin{tabular}{|c|c|}
     \hline
@@ -30,11 +30,24 @@ The pointer to the next block is a 6 bytes long LBA 48 adress little-endian at t
     \hline
     ... & ...  \\
     \hline
+    496 & NEXT\_BLOCK\_LBA48\_DUPLICATE \\
+    \hline
+    502 & METADATA  \\
+    \hline
+    504 & VOLUME\_ID  \\
+    \hline
     506 & NEXT\_BLOCK\_LBA48  \\
     \hline
   \end{tabular}
 
 \subsection{Free blocks}
 Free blocks are maintained in a chain, when a file is deleted, its blocks are put in the beginning of the chain. When a file must be given new blocks, they are taken from the beginning of the chain.
+\subsection{Writing to blocks}
+To write data in a file, new blocks are allocated and wrtten to with the last block allocated pointing to the rest of the file. Then, the previous block of the file will be updated to point to the new blocks.
+The replaced blocks will be put in the free blocks chain using the same method.
 
-\end{document}link, with the last link pointing to the first
+\subsection{Hierarchy}
+
+\section{Block Types}
+
+\end{document}
