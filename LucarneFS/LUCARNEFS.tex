@@ -38,15 +38,18 @@ The pointer to the next block is a 6 bytes long relative LBA 48 adress little-en
     \hline
     506 & NEXT\_BLOCK\_LBA48  \\
     \hline
-  \end{tabular}
-
+\end{tabular}
+\newline
+This 16 bytes long structure will be called in the following "block pointer".
 \subsection{Free blocks}
 Free blocks are maintained in a chain, when a file is deleted, its blocks are put in the beginning of the chain. When a file must be given new blocks, they are taken from the beginning of the chain.
-\subsection{Writing to blocks}
-To write data in a file, new blocks are allocated and wrtten to with the last block allocated pointing to the rest of the file. Then, the previous block of the file will be updated to point to the new blocks.
+\subsection{Writing to blocks} 
+To write data in a file, new blocks are allocated and wrtten to with the last block allocated pointing to the rest of the file. A special block is used to keep track of the first replaced block.
+Then, the previous block of the file will be updated to point to the new blocks.
 The replaced blocks will be put in the free blocks chain using the same method.
 
 \subsection{Hierarchy}
+
 
 \section{Block Types}
 
