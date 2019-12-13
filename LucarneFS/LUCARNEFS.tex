@@ -49,8 +49,29 @@ Then, the previous block of the file will be updated to point to the new blocks.
 The replaced blocks will be put in the free blocks chain using the same method.
 
 \subsection{Hierarchy}
+Each folder and file is described in a block in a chain. The content of a folder/file is the chain a second block pointer points to in the folder/file block.
+\newline
+\begin{tabular}{|c|c|}
+  \hline
+  Rel. LBA & Content \\
+  \hline
+  ... & ...  \\
+  \hline
+  480 & BLOCK\_POINTER\_CONTENT \\
+  \hline
+  496 & BLOCK\_POINTER\_NEXT \\
+  \hline
+\end{tabular}
 
+\subsection{Volume identifier}
 
+\begin{tabular}{|c|c|c|}
+  \hline
+  4 first bits of drive GUID & 4 bits collision prevention & first byte of partition GUID \\
+  \hline
+\end{tabular}
+\newline
+The 4 bits collision prevention is generated at partitionning. If there is a collision at partitioning with another partition, the prevention number is incremented until no collisions are found. If this fails to resolve collisions, increment the first byte of partition GUID until no collisions found. If this also fails to resolve collisions, increment 4 first bits of drive GUID.
 \section{Block Types}
 
 \end{document}
