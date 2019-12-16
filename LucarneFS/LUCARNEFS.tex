@@ -148,7 +148,9 @@ Same as above.
   \hline
   0 & BP\_NAME \\
   \hline
-  16 &  RESERVED \\
+  16 &  LENGTH\_IN\_BYTES \\
+  \hline
+  20 &  RESERVED \\
   \hline
   479 &  FLAGS \\
   \hline
@@ -168,4 +170,18 @@ Flags :
   \hline
 \end{tabular}
 \subsection{Data}
+File contents are stored in data blocks.
+\newline
+\begin{tabular}{|c|c|}
+  \hline
+  Rel. LBA & Content \\
+  \hline
+  0 & DATA \\
+  \hline
+  448 &  RESERVED \\
+  \hline
+  496 & BP\_NEXT \\
+  \hline
+  
+\end{tabular}
 \end{document}
