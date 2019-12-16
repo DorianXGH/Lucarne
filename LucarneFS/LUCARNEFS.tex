@@ -71,9 +71,7 @@ Each folder and file is described in a block in a chain. The content of a folder
   \hline
 \end{tabular}
 \newline
-The 4 bits collision prevention is generated at partitionning. If there is a collision at partitioning with another partition, the prevention number is incremented until no collisions are found. If this fails to resolve collisions, increment the first byte of partition GUID until no collisions found. If this also fails to resolve collisions, increment 4 first bits of drive GUID.
-\newline
-Note : This operation can be interpreted and implemented as an increment to the 16 bits uint interpretation of the volume identifier.
+The 4 bits collision prevention is generated at partitionning. It begins at 0. Then the volume identifier is incremented until no collisions are found. 16 bits overflow allowed and necessary for increased number of simultaneously used volumes.
 \section{Block Types}
 \subsection{Master}
 The master block is the first block of the partition. It contains a pointer to the root folder, along with the volume identifier of the partition, and filesystem structures.
