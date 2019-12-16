@@ -67,11 +67,41 @@ Each folder and file is described in a block in a chain. The content of a folder
 
 \begin{tabular}{|c|c|c|}
   \hline
-  4 first bits of drive GUID & 4 bits collision prevention & first byte of partition GUID \\
+  4 first bits of drive GUID & first byte of partition GUID & 4 bits collision prevention \\
   \hline
 \end{tabular}
 \newline
 The 4 bits collision prevention is generated at partitionning. If there is a collision at partitioning with another partition, the prevention number is incremented until no collisions are found. If this fails to resolve collisions, increment the first byte of partition GUID until no collisions found. If this also fails to resolve collisions, increment 4 first bits of drive GUID.
+\newline
+Note : This operation can be interpreted and implemented as an increment to the 16 bits uint interpretation of the volume identifier.
 \section{Block Types}
-
+\subsection{Master}
+The master block is the first block of the partition. It contains a pointer to the root folder. Along with the volume identifier of the partition, and filesystem structures.
+\newline
+\begin{tabular}{|c|c|}
+  \hline
+  Rel. LBA & Content \\
+  \hline
+  0 & ASCII for "LuFS"  \\
+  \hline
+  4 &  FS\_VERSION \\
+  \hline
+  5 &  FLAGS \\
+  \hline
+  6 &  VOLUME\_ID \\
+  \hline
+  8 &  SLAVE\_VOLUMES[64] \\
+  \hline
+  136 & RESERVED \\
+  \hline
+  464 & BP\_CURRENT\_OP \\
+  \hline
+  480 & BP\_FREE \\
+  \hline
+  496 & BP\_ROOT \\
+  \hline
+\end{tabular}
+\subsection{Folder}
+\subsection{File}
+\subsection{Data}
 \end{document}
