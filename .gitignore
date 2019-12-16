@@ -5,4 +5,4 @@ output
 *.vdi
 .vscode
 .vscode/*
-a.out
+*/a.out
