@@ -27,4 +27,27 @@ struct LuFS_master_block {
     struct LuFS_block_pointer     BP_ROOT;
 } __attribute__((packed));
 
+struct LuFS_folder_block {
+    struct LuFS_block_pointer BP_NAME;
+    uint8_t                   RESERVED[463];
+    uint8_t                   FLAGS;
+    struct LuFS_block_pointer BP_CONTENT;
+    struct LuFS_block_pointer BP_NEXT;
+} __attribute__((packed));
+
+struct LuFS_file_block {
+    struct LuFS_block_pointer BP_NAME;
+    uint32_t                  LENGTH_IN_BYTES;
+    uint8_t                   RESERVED[459];
+    uint8_t                   FLAGS;
+    struct LuFS_block_pointer BP_CONTENT;
+    struct LuFS_block_pointer BP_NEXT;
+} __attribute__((packed));
+
+struct LuFS_data_block {
+    uint8_t                   DATA[448];
+    uint8_t                   RESERVED[48];
+    struct LuFS_block_pointer BP_NEXT;
+} __attribute__((packed));
+
 #endif // ifndef LUCARNEFS_H
