@@ -76,7 +76,7 @@ The 4 bits collision prevention is generated at partitionning. If there is a col
 Note : This operation can be interpreted and implemented as an increment to the 16 bits uint interpretation of the volume identifier.
 \section{Block Types}
 \subsection{Master}
-The master block is the first block of the partition. It contains a pointer to the root folder. Along with the volume identifier of the partition, and filesystem structures.
+The master block is the first block of the partition. It contains a pointer to the root folder, along with the volume identifier of the partition, and filesystem structures.
 \newline
 \begin{tabular}{|c|c|}
   \hline
@@ -112,6 +112,60 @@ Flags :
   \hline
 \end{tabular}
 \subsection{Folder}
+The name of the folder/file is contained in a special chain. No character is forbidden except NULL (\textbackslash0).
+\newline
+\begin{tabular}{|c|c|}
+  \hline
+  Rel. LBA & Content \\
+  \hline
+  0 & BP\_NAME \\
+  \hline
+  16 &  RESERVED \\
+  \hline
+  479 &  FLAGS \\
+  \hline
+  480 & BP\_CONTENT \\
+  \hline
+  496 & BP\_NEXT \\
+  \hline
+  
+\end{tabular}
+\newline
+Flags :
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\
+  \hline
+  RES & RES & RES & RES & RES & RES & RES & 1  \\
+  \hline
+\end{tabular}
 \subsection{File}
+Same as above.
+\newline
+\begin{tabular}{|c|c|}
+  \hline
+  Rel. LBA & Content \\
+  \hline
+  0 & BP\_NAME \\
+  \hline
+  16 &  RESERVED \\
+  \hline
+  479 &  FLAGS \\
+  \hline
+  480 & BP\_CONTENT \\
+  \hline
+  496 & BP\_NEXT \\
+  \hline
+  
+\end{tabular}
+\newline
+Flags :
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\
+  \hline
+  RES & RES & RES & RES & RES & RES & RES & 0  \\
+  \hline
+\end{tabular}
 \subsection{Data}
 \end{document}
