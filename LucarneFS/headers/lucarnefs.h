@@ -12,7 +12,7 @@ struct LuFS_block_pointer {
     uint64_t                      NEXT_BLOCK_LBA48_DUPLICATE : 48;
     uint16_t                      METADATA;
     struct LuFS_volume_identifier VOLUME_ID;
-    uint64_t                      NEXT_BLOCK_LBA48_DUPLICATE : 48;
+    uint64_t                      NEXT_BLOCK_LBA48 : 48;
 } __attribute__((packed));
 
 struct LuFS_master_block {
@@ -22,7 +22,9 @@ struct LuFS_master_block {
     struct LuFS_volume_identifier VOLUME_ID;
     struct LuFS_volume_identifier SLAVE_VOLUMES[64];
     uint8_t                       RESERVED[328];
-    uint64_t                      NEXT_BLOCK_LBA48_DUPLICATE : 48;
+    struct LuFS_block_pointer     BP_CURRENT_OP;
+    struct LuFS_block_pointer     BP_FREE;
+    struct LuFS_block_pointer     BP_ROOT;
 } __attribute__((packed));
 
 #endif // ifndef LUCARNEFS_H
