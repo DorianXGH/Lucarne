@@ -6,3 +6,4 @@ output
 .vscode
 .vscode/*
 LucarneFS/lufs
+*.o

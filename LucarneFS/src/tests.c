@@ -1,6 +1,8 @@
-#include "headers/lucarnefs.h"
+#include "../headers/lucarnefs.h"
 #include <stdio.h>
-int main(int argc, char * argv[])
+#include "../headers/tests.h"
+
+int test_sizes()
 {
     printf("%d\n", sizeof(struct LuFS_volume_identifier));
     printf("%d\n", sizeof(struct LuFS_block_pointer));
