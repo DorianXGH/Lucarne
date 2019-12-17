@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.11.18)  16 DEC 2019 17:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.11.18)  17 DEC 2019 13:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.tex
-(/home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.tex
+**/home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.tex
+(/home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.tex
 LaTeX2e <2019-10-01> patch level 1
 (/usr/share/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2019/08/27 v1.4j Standard LaTeX document class
@@ -47,7 +47,7 @@ File: t1enc.def 2018/08/11 v2.0j Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 )) (/usr/share/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
-) (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.aux)
+) (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.aux)
 \openout1 = `LUCARNEFS.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
@@ -77,7 +77,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 13.
- (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.toc
+ (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -96,17 +96,17 @@ Overfull \hbox (5.73671pt too wide) in paragraph at lines 68--75
 [] 
  []
 
-[4] [5] (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.aux) ) 
+[4] [5] (/home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.aux) ) 
 Here is how much of TeX's memory you used:
  1083 strings out of 492167
- 13202 string characters out of 6131557
+ 13257 string characters out of 6131557
  92539 words of memory out of 5000000
  5480 multiletter control sequences out of 15000+600000
  25358 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,6n,27p,306b,187s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 27i,6n,27p,311b,187s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on /home/dorianb/Atomproj/LucarneKernel/LucarneFS/LUCARNEFS.pdf (5 pages, 38141 bytes).
+Output written on /home/dorianb/Atomproj/LucarneKernel/LucarneFS/spec/LUCARNEFS.pdf (5 pages, 38156 bytes).
 PDF statistics:
  29 PDF objects out of 1000 (max. 8388607)
  19 compressed objects within 1 object stream
