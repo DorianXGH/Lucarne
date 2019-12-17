@@ -4,6 +4,7 @@
 
 int test_sizes()
 {
+    printf("%d\n", sizeof(struct LuFS_file_folder_flags));
     printf("%d\n", sizeof(struct LuFS_volume_identifier));
     printf("%d\n", sizeof(struct LuFS_block_pointer));
     printf("%d\n", sizeof(struct LuFS_master_block));
