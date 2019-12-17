@@ -20,7 +20,7 @@ struct LuFS_block * drv_get_block(uint64_t LBA48, FILE * drive)
         struct LuFS_block * blck = (struct LuFS_block *) malloc(sizeof(struct LuFS_block));
         fread(blck, sizeof(struct LuFS_block), 1, drive);
         return blck;
-    } else   {
+    } else {
         printf("ERROR : tried to access not present LBA");
     }
 }
