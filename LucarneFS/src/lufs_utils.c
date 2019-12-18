@@ -6,21 +6,32 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-uint64_t drv_get_last_LBA(FILE * drive)
+uint64_t drv_get_last_LBA(struct virt_drv * drive)
 {
-    fseek(drive, 0L, SEEK_END);
-    uint64_t sz = ftell(drive);
-    return sz >> 9; // (divide by 512)
+    return drive->capacity; // (divide by 512)
 }
 
-struct LuFS_block * drv_get_block(uint64_t LBA48, FILE * drive)
+struct LuFS_block * drv_get_block(uint64_t LBA48, struct virt_drv * drive)
 {
     if (LBA48 < drv_get_last_LBA(drive)) {
-        fseek(drive, LBA48 * 512, SEEK_SET);
-        struct LuFS_block * blck = (struct LuFS_block *) malloc(sizeof(struct LuFS_block));
-        fread(blck, sizeof(struct LuFS_block), 1, drive);
+        struct LuFS_block * blck = (struct LuFS_block *) (drive + (LBA48 * 512));
         return blck;
     } else {
         printf("ERROR : tried to access not present LBA");
     }
+}
+
+struct LuFS_block * LuFS_get_free_blocks(uint32_t n, struct LuFS_master_block * master, struct virt_drv * drive)
+{
+    struct LuFS_data_block * last  = (struct LuFS_data_block *) drv_get_block(master->BP_FREE.NEXT_BLOCK_LBA48, drive);
+    struct LuFS_data_block * first = (struct LuFS_data_block *) drv_get_block(last->BP_NEXT.NEXT_BLOCK_LBA48, drive);
+    struct LuFS_data_block * p     = first;
+
+    for (int i = 0; i < n - 1; i++) {
+        p = (struct LuFS_data_block *) drv_get_block(p->BP_NEXT.NEXT_BLOCK_LBA48, drive);
+    }
+    struct LuFS_block_pointer tmp = last->BP_NEXT;
+    last->BP_NEXT = p->BP_NEXT;
+    p->BP_NEXT    = tmp;
+    return (struct LuFS_block *) first;
 }
