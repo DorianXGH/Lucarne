@@ -159,21 +159,33 @@ void _start(struct mb_info_block * mbblck)
     uint32_t * virt_frb = (uint32_t *) (palloc_n(((virt_scr.width * virt_scr.height) / 1024) + 1) * 0x1000); // allocate video memory
     virt_scr.video_memory = virt_frb;
 
+    // draw a black rectangle on the screen
+    uint32_t numpix_pattern = (virt_scr.width ) * (virt_scr.height );                        // number of pixels
+    uint32_t * spr_ptr      = (uint32_t *) (palloc_n((numpix_pattern / 1024) + 1) * 0x1000); // allocate necessary memory
+
+    struct sprite sprpat; // data on the sprite
+    sprpat.bpp    = 32;
+    sprpat.height = virt_scr.height;
+    sprpat.width  = virt_scr.width;
+    sprpat.pixels = (uint8_t *) spr_ptr;
 
     int rs = 10000; // test of screen functions : destined to be deleted
-    int x0 = virt_scr.width / 2;
-    int y0 = virt_scr.height / 2;
+    int x0 = sprpat.width / 2;
+    int y0 = sprpat.height / 2;
 
-    for (int x = 0; x < virt_scr.width; x++) {
-        for (int y = 0; y < virt_scr.height; y++) {
+    for (int x = 0; x < sprpat.width; x++) {
+        for (int y = 0; y < sprpat.height; y++) {
             int ns = (x - x0) * (x - x0) + (y - y0) * (y - y0);
-            ns /= 10;
+            ns /= 2;
             struct color_32 c;
             c.a = 0xFF;
             c.r = ns / 50;
             c.g = 255 / (ns + 1);
             c.b = 255 - ns / 50;
-            putpixel_32(&virt_scr, c, x, y); // write weird things on the screen
+            sprpat.pixels[4 * (y * sprpat.width + x)]     = c.r; // write weird things on the screen
+            sprpat.pixels[4 * (y * sprpat.width + x) + 1] = c.g; // write weird things on the screen
+            sprpat.pixels[4 * (y * sprpat.width + x) + 2] = c.b; // write weird things on the screen
+            sprpat.pixels[4 * (y * sprpat.width + x) + 3] = c.a; // write weird things on the screen
         }
     }
 
@@ -193,7 +205,7 @@ void _start(struct mb_info_block * mbblck)
     for (int r = 0; r < numpix; r++) {
         int y = r / talpha.width - 350;
         int x = r % talpha.width - 500;
-        if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xFF000000;  // write black
+        if (x * x + y * y <= 100000 || 1) testalpha[r] = 0xA0000000;  // write black
     }
 
     putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
@@ -239,7 +251,9 @@ void _start(struct mb_info_block * mbblck)
     shell_invite(&default_shell);
     int azer = 0;
     while (1) {
+        putsprite(&virt_scr, &sprpat, 0, 0);   // put in on the buffer
         putsprite(&virt_scr, &talpha, 25, 25); // put in on the buffer
+
         blit_shell(&default_shell, &virt_scr, margin, margin);
         putpixel(&virt_scr, 0x00FF00, 300 + azer % (virt_scr.width - 600), 26);
         putpixel(&virt_scr, 0x00FF00, 300 + azer % (virt_scr.width - 600), 27);
@@ -250,7 +264,7 @@ void _start(struct mb_info_block * mbblck)
         putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 26);
         putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 27);
         putpixel(&virt_scr, 0x00FF00, 300 + (azer + 2) % (virt_scr.width - 600), 28);
-        // set_screen_alpha(&virt_scr, 0xFF);
+        // set_screen_alpha(&virt_scr, 0x1F);
         screencopy(&virt_scr, &default_screen);
         for (int k = 0; k < 1000; k++) { }
         azer++;

@@ -140,32 +140,17 @@ void irq_handler(registers_t r)
 
 void isr_handler(registers_t r)
 {
-    putstring(&default_screen, "received interrupt: ");
+    putstring(default_shell.appointed_screen, "received interrupt: ");
     if (r.int_no < 32) { }
     char s[3];
     int_to_ascii(r.int_no, s);
-    putstring(&default_screen, s);
-    newline(&default_screen);
-    putstring(&default_screen, exception_messages[r.int_no]);
+    putstring(default_shell.appointed_screen, s);
+    newline(default_shell.appointed_screen);
+    putstring(default_shell.appointed_screen, exception_messages[r.int_no]);
     // debug info
     for (int i = 0; s[i] != 0 && i < 3; i++) {
-        ft_print_char(&default_screen, &ft_basic, s[i], 100 + i * (ft_basic.charwidth + ft_basic.interchar_x), 0, 0xFF0000);
+        ft_print_char(default_shell.appointed_screen, &ft_basic, s[i], 100 + i * (ft_basic.charwidth + ft_basic.interchar_x), 0, 0xFF0000);
     }
-    putpixel(&default_screen, r.int_no, 0, 40);
-    putpixel(&default_screen, r.int_no, 0, 41);
-    putpixel(&default_screen, r.int_no, 1, 40);
-    putpixel(&default_screen, r.int_no, 1, 41);
-    putpixel(&default_screen, r.int_no, 2, 40);
-    putpixel(&default_screen, r.int_no, 2, 41);
-    putpixel(&default_screen, r.int_no, 3, 40);
-    putpixel(&default_screen, r.int_no, 3, 41);
-    putpixel(&default_screen, r.int_no, 0, 42);
-    putpixel(&default_screen, r.int_no, 0, 43);
-    putpixel(&default_screen, r.int_no, 1, 42);
-    putpixel(&default_screen, r.int_no, 1, 43);
-    putpixel(&default_screen, r.int_no, 2, 42);
-    putpixel(&default_screen, r.int_no, 2, 43);
-    putpixel(&default_screen, r.int_no, 3, 42);
-    putpixel(&default_screen, r.int_no, 3, 43);
-    newline(&default_screen);
+    newline(default_shell.appointed_screen);
+    putpixel(&default_screen, 0xFFFF00FF, 0, 0);
 }
