@@ -1,6 +1,6 @@
 
 
-.start_proc: ; pid start_proc(char* path) , creates process from path-provided executable, 0 means empty process, returns new process id
+.start_proc: ; int start_proc(char* path) , creates process from path-provided executable, 0 means empty process, returns new process id
     push ebp
     mov ebp, esp
 
