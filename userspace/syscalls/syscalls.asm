@@ -66,3 +66,30 @@
     pop ebp
 
     ret
+
+.tutor: ; void tutor(int childpid, int tutorpid) , the childpid-defined process will have its parent reassigned to be the tutorpid-defined (0 means root process (NOT PARENT)) process
+    push ebp
+    mov ebp, esp
+
+    mov eax, 5
+    mov dword ebx, [ebp+8]
+    mov dword ecx, [ebp+12]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.kill: ; int kill(int pid) , kills pid-defined process, 0 means self
+    push ebp
+    mov ebp, esp
+
+    mov eax, 6
+    mov dword ebx, [ebp+8]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
