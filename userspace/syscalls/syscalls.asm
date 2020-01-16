@@ -67,7 +67,9 @@
 
     ret
 
-.tutor: ; void tutor(int childpid, int tutorpid) , the childpid-defined process will have its parent reassigned to be the tutorpid-defined (0 means root process (NOT PARENT)) process
+.tutor: ; int tutor(int childpid, int tutorpid) , 
+; the childpid-defined process will have its parent reassigned to be the tutorpid-defined (0 means root process (NOT PARENT)) process, given the tutoring process is waiting for a process, otherwise, wait for the tutoring process
+; If 0 is passed as childpid, tutorpid is ignored and it waits for a process to tutor, then returns the childpid received
     push ebp
     mov ebp, esp
 
@@ -81,11 +83,51 @@
 
     ret
 
-.kill: ; int kill(int pid) , kills pid-defined process, 0 means self
+.kill: ; void kill(int pid) , kills pid-defined process, 0 means self
     push ebp
     mov ebp, esp
 
     mov eax, 6
+    mov dword ebx, [ebp+8]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.allow_timeout:; void allow_timeout(int pid, int timeoutms) , set blocking syscalls timeout delay of pid-defined process, pid 0 means self, timeoutms 0 means no timeout
+    push ebp
+    mov ebp, esp
+
+    mov eax, 7
+    mov dword ebx, [ebp+8]
+    mov dword ecx, [ebp+12]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.curse: ; void curse(int pid) , the pid-defined process gets skipped during scheduling until forgiven, 0 means self
+    push ebp
+    mov ebp, esp
+
+    mov eax, 8
+    mov dword ebx, [ebp+8]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.forgive: ; void forgive(int pid) , the pid-defined process gets no longer skipped during scheduling
+    push ebp
+    mov ebp, esp
+
+    mov eax, 9
     mov dword ebx, [ebp+8]
     int 48
     
