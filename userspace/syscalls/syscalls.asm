@@ -1,4 +1,4 @@
-
+; each syscall returns its value in the eax register, 
 
 .start_proc: ; int start_proc(char* path) , creates process from path-provided executable, 0 means empty process, returns new process id
     push ebp
@@ -128,6 +128,32 @@
     mov ebp, esp
 
     mov eax, 9
+    mov dword ebx, [ebp+8]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.palloc: ; (void *) palloc(int num) , allocates num pages, and put them adjacent in process memory space, returns a pointer to the first page
+    push ebp
+    mov ebp, esp
+
+    mov eax, 10
+    mov dword ebx, [ebp+8]
+    int 48
+    
+    mov esp, ebp
+    pop ebp
+
+    ret
+
+.pfree: ; void pfree(void * fpage, int num) , frees num pages in adjacency order in process memory space, beginning from fpage (page aligned)
+    push ebp
+    mov ebp, esp
+
+    mov eax, 10
     mov dword ebx, [ebp+8]
     int 48
     
